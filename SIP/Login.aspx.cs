@@ -15,7 +15,7 @@ namespace SIP
     public partial class Login : System.Web.UI.Page
     {
         private UnitOfWork uow;
-        public string clave = "3ncript4d4"; // Clave de cifrado.
+        public string clave = "3ncript4d4"; // Clave de cifrado. ///
         private int ejercicioActivoId;
 
 
