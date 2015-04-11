@@ -1,0 +1,64 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MLogin.master.cs" Inherits="SIP.MLogin" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head id="Head1" runat="server">
+
+   
+    <title>Farmacia X</title>
+
+    <%--  <%: Scripts.Render("~/bundles/jquery") %>
+      <%: Scripts.Render("~/bundles/bootstrap") %>
+      <%: Styles.Render("~/Content/css") %> 
+      <%: Styles.Render("~/Content/themes/base/css") %>  --%>
+    
+    
+     <script type="text/javascript" src="<%= ResolveClientUrl("~/Scripts/WebForms/WebForms.js") %>"></script>
+     <script type="text/javascript" src="<%= ResolveClientUrl("~/Scripts/WebForms/WebUIValidation.js") %>"></script>
+     <script type="text/javascript" src="<%= ResolveClientUrl("~/Scripts/WebForms/MenuStandards.js") %>"></script>
+     <script type="text/javascript" src="<%= ResolveClientUrl("~/Scripts/WebForms/Focus.js") %>"></script>
+     <script type="text/javascript" src="<%= ResolveClientUrl("~/Scripts/WebForms/GridView.js") %>"></script>
+     <script type="text/javascript" src="<%= ResolveClientUrl("~/Scripts/WebForms/DetailsView.js") %>"></script>
+     <script type="text/javascript" src="<%= ResolveClientUrl("~/Scripts/WebForms/TreeView.js") %>"></script>
+     <script type="text/javascript" src="<%= ResolveClientUrl("~/Scripts/WebForms/WebParts.js") %>"></script>
+
+     <script type="text/javascript" src="<%= ResolveClientUrl("~/Scripts/WebForms/MsAjax/MicrosoftAjax.js") %>"></script>
+     <script type="text/javascript" src="<%= ResolveClientUrl("~/Scripts/WebForms/MsAjax/MicrosoftAjaxApplicationServices.js") %>"></script>
+     <script type="text/javascript" src="<%= ResolveClientUrl("~/Scripts/WebForms/MsAjax/MicrosoftAjaxTimer.js") %>"></script>
+     <script type="text/javascript" src="<%= ResolveClientUrl("~/Scripts/WebForms/MsAjax/MicrosoftAjaxWebForms.js") %>"></script>
+    
+     <script type="text/javascript" src="<%= ResolveClientUrl("~/Scripts/jquery-1.10.2.js") %>"></script>       
+     <script type="text/javascript" src="<%= ResolveClientUrl("~/Scripts/autoNumeric/autoNumeric-1.9.25.min.js") %>"></script>
+     <script type="text/javascript" src="<%= ResolveClientUrl("~/Scripts/bootstrap-datepicker.js") %>"></script>
+     <script type="text/javascript" src="<%= ResolveClientUrl("~/Scripts/bootstrap.min.js") %>"></script>
+    
+    <link href="<%= ResolveClientUrl("~/Content/bootstrap.css")%>" rel="stylesheet" />    
+    <link href="<%= ResolveClientUrl("~/Content/bootstrap-theme.css") %>" rel="stylesheet" />
+    <link href="<%= ResolveClientUrl("~/Content/datepicker.css") %>" rel="stylesheet" />
+        
+        
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+
+</head>
+<body>
+    <form id="Form1" runat="server">
+        <div id="contenedor" class="page">
+            <div id="encabezado" class="header">
+                <div style="text-align:center">
+                        <div style="clear:both"></div>
+                </div>
+            </div>
+            <div id="contenido" class="main">
+                <asp:ContentPlaceHolder ID="MainContent" runat="server"/>
+            </div>
+ 
+            <div id="pie" class="footer">
+            </div>
+
+        </div>
+        
+    </form>
+</body>
+</html>
+

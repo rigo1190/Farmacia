@@ -1,0 +1,103 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="NavegadorDependencia.master.cs" Inherits="SIP.NavegadorDependencia" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Secretaría de Finanzas y Planeación</title> 
+
+              
+       <%: Scripts.Render("~/bundles/jquery") %>
+       <%: Scripts.Render("~/bundles/bootstrap") %>
+       <%: Styles.Render("~/Content/css") %> 
+       <%: Styles.Render("~/Content/themes/base/css") %>  
+    
+    <script type="text/javascript">
+        $(function () {
+            // This will make every element with the class "date-picker" into a DatePicker element      
+            $('.date-picker').datepicker();
+        })
+    </script>         
+      
+  
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>   
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+</head>
+<body>
+    <form id="form1" runat="server" submitdisabledcontrols="true">
+    
+        <header>
+            <div id="encabezado" class="header"></div>
+        </header>    
+        
+        <section>
+
+            <nav class="navbar navbar-default" role="navigation">
+
+              <div class="container-fluid">
+
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="#">SIP</a>                 
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+   
+        
+                      <ul class="nav navbar-nav nav-pills">
+                             
+                          <li><a href="<%=ResolveClientUrl("~/Formas/SelectorEjercicioDependencia.aspx") %>"><span class="glyphicon glyphicon-home"></span> Inicio</a></li>
+
+                          <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-search"></span> POA<b class="caret"></b></a>
+                             <ul class="dropdown-menu">
+                                  <li><a href="<%=ResolveClientUrl("~/Formas/POA/POA.aspx") %>"><span class="glyphicon glyphicon-asterisk"></span>  Anteproyecto de POA</a></li>
+                                 <li><a href="<%=ResolveClientUrl("~/Formas/POA/POAFinanciamiento.aspx") %>"><span class="glyphicon glyphicon-asterisk"></span>  Asignar financiamiento</a></li>
+                                  <li><a href="<%=ResolveClientUrl("~/Formas/POA/frmPOAAjustado.aspx") %>"><span class="glyphicon glyphicon-asterisk"></span>  Proyecto de POA ajustado</a></li>
+                                 <li><a href="<%=ResolveClientUrl("~/Formas/POA/POAAjustadoFinanciamiento.aspx") %>"><span class="glyphicon glyphicon-asterisk"></span>  Asignar financiamiento en POA ajustado</a></li>
+                                 <li class="divider"></li>
+                                 <li><a href="<%=ResolveClientUrl("~/Formas/TechoFin/wfTechoFinanciero.aspx") %>"><span class="glyphicon glyphicon-asterisk"></span>Techo Financiero</a></li>                                  
+                             </ul>
+                          </li>
+                                                 
+                        <li><a href="<%=ResolveClientUrl("About.aspx") %>"><span class="glyphicon glyphicon-info-sign"></span> Acerca de</a></li>
+
+                    </ul>        
+        
+            
+                     <ul class="nav navbar-nav navbar-right">
+                         <asp:Label ID="lblEjercicio" class="navbar-brand" runat="server" Text=""></asp:Label> 
+                            <asp:Label ID="lblDependencia" class="navbar-brand" runat="server" Text=""></asp:Label> 
+                           <asp:Label ID="lblUsuario" class="navbar-brand" runat="server" Text=""></asp:Label> 
+                           <li>
+                           <asp:LinkButton ID="btnLogout" runat="server" CssClass="glyphicon glyphicon-off" style="border-style: none; background-color:transparent;font-size:1em;"  OnClick="btnLogout_Click"> <i aria-hidden="true"></i>
+                           </asp:LinkButton>                          
+                           </li>
+                     </ul>
+
+
+                </div><!-- /.navbar-collapse -->
+
+         </div><!-- /.container-fluid -->
+            </nav>
+
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        
+            </asp:ContentPlaceHolder>
+
+
+        </section>
+       
+    
+    </form>
+
+</body>
+</html>

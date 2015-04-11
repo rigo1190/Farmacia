@@ -1,0 +1,175 @@
+﻿
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="NavegadorPrincipal.master.cs" Inherits="SIP.NavegadorPrincipal" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+
+    <title>Farmacia x</title> 
+
+    <script src="<%= ResolveClientUrl("~/Scripts/WebForms/WebForms.js") %>"></script>
+    <script src="<%= ResolveClientUrl("~/Scripts/WebForms/WebUIValidation.js") %>"></script>
+    <script src="<%= ResolveClientUrl("~/Scripts/WebForms/MenuStandards.js") %>"></script>
+    <script src="<%= ResolveClientUrl("~/Scripts/WebForms/Focus.js") %>"></script>
+    <script src="<%= ResolveClientUrl("~/Scripts/WebForms/GridView.js") %>"></script>
+    <script src="<%= ResolveClientUrl("~/Scripts/WebForms/DetailsView.js") %>"></script>
+    <script src="<%= ResolveClientUrl("~/Scripts/WebForms/TreeView.js") %>"></script>
+    <script src="<%= ResolveClientUrl("~/Scripts/WebForms/WebParts.js") %>"></script>
+
+    <script src="<%= ResolveClientUrl("~/Scripts/WebForms/MsAjax/MicrosoftAjax.js") %>"></script>
+    <script src="<%= ResolveClientUrl("~/Scripts/WebForms/MsAjax/MicrosoftAjaxApplicationServices.js") %>"></script>
+    <script src="<%= ResolveClientUrl("~/Scripts/WebForms/MsAjax/MicrosoftAjaxTimer.js") %>"></script>
+    <script src="<%= ResolveClientUrl("~/Scripts/WebForms/MsAjax/MicrosoftAjaxWebForms.js") %>"></script>
+    
+    <script src="<%= ResolveClientUrl("~/Scripts/jquery-1.10.2.js") %>"></script> 
+    <%--<script src="<%= ResolveClientUrl("~/Scripts/jQuery.js") %>"></script>--%>
+    <%--<script src="<%= ResolveClientUrl("~/Scripts/jquery.ui.draggable.js") %>"></script>--%>
+    <%--<script src="<%= ResolveClientUrl("~/Scripts/jQuery.alert.js") %>"></script>--%> 
+    <script src="<%= ResolveClientUrl("~/Scripts/autoNumeric/autoNumeric-1.9.25.min.js") %>"></script>
+    <script src="<%= ResolveClientUrl("~/Scripts/bootstrap-datepicker.js") %>"></script>
+    <script src="<%= ResolveClientUrl("~/Scripts/bootstrap.min.js") %>"></script>
+
+    <script src="<%= ResolveClientUrl("~/Scripts/jquery.dataTables.min.js") %>"></script>
+    <script src="<%= ResolveClientUrl("~/Scripts/dataTables.bootstrap.js") %>"></script>
+
+   
+    
+
+
+    <%-- <%: Scripts.Render("~/bundles/jquery") %>
+    <%: Scripts.Render("~/bundles/bootstrap") %>
+    <%: Styles.Render("~/Content/css") %> 
+    <%: Styles.Render("~/Content/themes/base/css") %> --%>
+            
+    <%--<link href="<%= ResolveClientUrl("~/Content/JQuery.alert.css") %>" rel="stylesheet" />--%>
+    <link href="<%= ResolveClientUrl("~/Content/bootstrap-theme.css") %>" rel="stylesheet" />
+    <link href="<%= ResolveClientUrl("~/Content/datepicker.css") %>" rel="stylesheet" />
+    <link href="<%= ResolveClientUrl("~/Content/bootstrap.css")%>" rel="stylesheet" />
+    <link href="<%= ResolveClientUrl("~/Content/jquery.dataTables.min.css")%>" rel="stylesheet" /> 
+    <link href="<%= ResolveClientUrl("~/Content/dataTables.bootstrap.css")%>" rel="stylesheet" />     
+      
+
+    <script type="text/javascript">
+        $(function () {
+            // This will make every element with the class "date-picker" into a DatePicker element      
+            $('.date-picker').datepicker();
+        })
+    </script>         
+      
+  
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>   
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+
+</head>
+<body>
+   <form id="form1" runat="server" submitdisabledcontrols="true">
+     
+        <header>
+            <div id="encabezado" class="header"></div>
+        </header>    
+    
+        <section>    
+            
+            <nav class="navbar navbar-default" role="navigation">
+
+              <div class="container-fluid">
+
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="#">Sistema de Inventarios</a>                 
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+   
+        
+                      <ul class="nav navbar-nav nav-pills">
+                             
+                          
+
+                          <li runat="server" id="mnTechosFinancieros" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-random"></span> Compras<b class="caret"></b></a>
+                             <ul class="dropdown-menu">
+                                  <li><span class="glyphicon glyphicon-asterisk"></span>Cotizaciones</li>                                  
+                                 <li><span class="glyphicon glyphicon-asterisk"></span>Registro de Compras</li>                                  
+                             </ul>
+                          </li>
+
+                          <li runat="server" id="mnObras" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-fullscreen"></span> Ventas<b class="caret"></b></a>
+                             <ul class="dropdown-menu">
+                                  <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfRecetas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Recetas</a></li>
+                                  <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/VentasRecetas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Venta por Recetas</a></li>                                 
+                                  <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfSalidasGenericas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Salidas Genéricas</a></li>
+                                  <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfConsultarVentas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Consultar Ventas</a></li>
+                                 <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfConsultarSalidas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Consultar Salidas</a></li>
+                                  <li><span class="glyphicon glyphicon-asterisk"></span>Reportes</li>                                  
+                             </ul>
+                          </li>
+
+
+                          <li runat="server" id="mnProcesoAdjudicacion" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-sort-by-attributes"></span> Inventarios<b class="caret"></b></a>
+                             <ul class="dropdown-menu">
+                                 <li><span class="glyphicon glyphicon-minus"></span> opcion a</li>                                  
+                                 <li><span class="glyphicon glyphicon-minus"></span> opcion b</li>                                  
+                                 <li><span class="glyphicon glyphicon-minus"></span> opcion  c</li>                                 
+                             </ul>
+                          </li>
+
+
+ 
+ 
+
+                         <li runat="server" id="mnCatalogos" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Catálogos<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfGruposProductos.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Grupo de Artículos</a></li>                              
+                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfArticulos.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Artículos</a></li>                             
+                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfUnidadesDeMedida.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Unidades de Medida</a></li>                              
+                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfPresentaciones.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Presentaciones</a></li>                               
+                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfLaboratorios.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Laboratorios</a></li>                              
+                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfLineas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Lineas</a></li>       
+                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfFPSfactores.aspx") %>"><span class="glyphicon glyphicon-minus"></span> FPS</a></li>  
+                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfSexos.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Sexos</a></li>  
+                                <li>-_-</li>
+                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfProveedores.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Proveedores</a></li>  
+                                
+                                
+                            </ul>
+                        </li>                                                 
+                        
+
+                    </ul>        
+        
+            
+                     <ul class="nav navbar-nav navbar-right">
+                           <asp:Label ID="lblEjercicio" class="navbar-brand" runat="server" Text=""></asp:Label> 
+                            <asp:Label ID="lblDependencia" class="navbar-brand" runat="server" Text=""></asp:Label> 
+                           <asp:Label ID="lblUsuario" class="navbar-brand" runat="server" Text=""></asp:Label> 
+                           <li>
+                           <asp:LinkButton ID="btnLogout" runat="server" CssClass="glyphicon glyphicon-off" style="border-style: none; background-color:transparent;font-size:1em;"  OnClick="btnLogout_Click"> <i aria-hidden="true"></i>
+                           </asp:LinkButton>                          
+                           </li>
+                     </ul>
+
+
+                </div><!-- /.navbar-collapse -->
+
+         </div><!-- /.container-fluid -->
+            </nav>
+            
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+
+        </section>
+       
+  
+    </form>
+</body>
+</html>

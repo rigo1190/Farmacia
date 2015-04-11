@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7E28A2C0-5327-4F22-B012-76D81B9061DA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DataAccessLayer</RootNamespace>
+    <AssemblyName>DataAccessLayer</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AlmacenEntradasGenericas.cs" />
+    <Compile Include="Models\AlmacenEntradasGenericasArticulos.cs" />
+    <Compile Include="Models\AlmacenSalidasGenericas.cs" />
+    <Compile Include="Models\AlmacenSalidasGenericasArticulos.cs" />
+    <Compile Include="Models\Articulos.cs" />
+    <Compile Include="Models\ArticuloSalidaGenerica.cs" />
+    <Compile Include="Models\ArticulosMovimientos.cs" />
+    <Compile Include="Models\ArticulosMovimientosEntradas.cs" />
+    <Compile Include="Models\ArticulosMovimientosSalidas.cs" />
+    <Compile Include="Models\ArticuloVenta.cs" />
+    <Compile Include="Models\Clientes.cs" />
+    <Compile Include="Models\Contexto.cs" />
+    <Compile Include="Models\Ejercicio.cs" />
+    <Compile Include="Models\FacturasAlmacen.cs" />
+    <Compile Include="Models\FacturasAlmacenArticulos.cs" />
+    <Compile Include="Models\FPSfactores.cs" />
+    <Compile Include="Models\Generica.cs" />
+    <Compile Include="Models\GruposPS.cs" />
+    <Compile Include="Models\InventarioInicial.cs" />
+    <Compile Include="Models\InventarioInicialArticulos.cs" />
+    <Compile Include="Models\InventarioInicialArticulosCostos.cs" />
+    <Compile Include="Models\Laboratorios.cs" />
+    <Compile Include="Models\Lineas.cs" />
+    <Compile Include="Models\Marcas.cs" />
+    <Compile Include="Models\Municipio.cs" />
+    <Compile Include="Models\PartidasContables.cs" />
+    <Compile Include="Models\Pedidos.cs" />
+    <Compile Include="Models\PedidosArticulos.cs" />
+    <Compile Include="Models\PedidosServicios.cs" />
+    <Compile Include="Models\Presentaciones.cs" />
+    <Compile Include="Models\Proveedores.cs" />
+    <Compile Include="Models\RecetaArticulos.cs" />
+    <Compile Include="Models\Recetas.cs" />
+    <Compile Include="Models\Servicios.cs" />
+    <Compile Include="Models\Sexos.cs" />
+    <Compile Include="Models\TipoSalida.cs" />
+    <Compile Include="Models\UnidadesDeMedida.cs" />
+    <Compile Include="Models\Usuario.cs" />
+    <Compile Include="Models\Ventas.cs" />
+    <Compile Include="Models\VentasArticulos.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\GenericRepository.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
