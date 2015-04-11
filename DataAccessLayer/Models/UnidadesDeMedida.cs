@@ -11,13 +11,6 @@ namespace DataAccessLayer.Models
 {
     public class UnidadesDeMedida:Generica
     {
-        public UnidadesDeMedida()
-        {
-            this.UMcompras = new HashSet<Articulos>();
-
-            this.UMventas = new HashSet<Articulos>();
-
-        }
 
         [Index(IsUnique = true)]
         [StringLength(50, ErrorMessage = "El campo {0} debe contener un máximo de {1} caracteres")]
@@ -25,10 +18,7 @@ namespace DataAccessLayer.Models
 
         [StringLength(255, ErrorMessage = "El campo {0} debe contener un máximo de {1} caracteres")]
         public string Nombre { get; set; }
-
-        public virtual ICollection<Articulos> UMventas { get; set; }
-
-        public virtual ICollection<Articulos> UMcompras { get; set; }
+ 
 
     }
 }

@@ -20,40 +20,25 @@ namespace DataAccessLayer.Models
         public string Nombre { get; set; }
 
         
-
-       
-
-
         public int GruposPSId { get; set; }
 
         public int UnidadesDeMedidaId { get; set; }
         
-        public int CantidadUDM { get; set; }
-
         public int PresentacionId { get; set; }
 
-        
 
+        public int FPSfactorId { get; set; }
 
         public int esMedicamento { get; set; }
 
         public double Porcentaje { get; set; }
 
 
-
-
-        public int? LaboratorioId { get; set; }
-
-        public int? MarcaId { get; set; }
-
-        
-        public int FPSfactorId { get; set; }
-
         public string Observaciones { get; set; }
 
 
-        public int StockMinimo { get; set; }
-        public int StockMaximo { get; set; }
+        public double StockMinimo { get; set; }
+        public double StockMaximo { get; set; }
         public int CantidadEnAlmacen { get; set; }
         public int CantidadComprometida { get; set; }
         public int CantidadDisponible { get; set; }        
@@ -68,10 +53,6 @@ namespace DataAccessLayer.Models
 
         public virtual Presentaciones Presentacion { get; set; }       
 
-        public virtual Laboratorios Laboratorio { get; set; }
-
-        public virtual Marcas Marca { get; set; }
-      
         public virtual FPSfactores FPSfactor { get; set; }
 
 

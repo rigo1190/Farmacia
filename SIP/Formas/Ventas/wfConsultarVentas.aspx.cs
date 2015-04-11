@@ -44,7 +44,7 @@ namespace SIP.Formas.Ventas
                            on a.UnidadesDeMedidaId equals um.Id
                            join p in uow.PresentacionesBL.Get()
                            on a.PresentacionId equals p.Id
-                           select new { Id = a.Id, Nombre = a.Nombre + " " + um.Nombre + " " + a.CantidadUDM + " " + p.Nombre + " " + a.Porcentaje });
+                           select new { Id = a.Id, Nombre = a.Nombre + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje });
 
             ddlArticulos.DataSource = listArt;
             ddlArticulos.DataValueField = "Id";

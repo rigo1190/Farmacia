@@ -812,12 +812,8 @@
     <Content Include="Formas\Catalogos\wfArticulosAdd.aspx" />
     <Content Include="Formas\Catalogos\wfFPSfactores.aspx" />
     <Content Include="Formas\Catalogos\wfGruposProductos.aspx" />
-    <Content Include="Formas\Catalogos\wfLaboratorios.aspx" />
-    <Content Include="Formas\Catalogos\wfLineas.aspx" />
-    <Content Include="Formas\Catalogos\wfMarcas.aspx" />
     <Content Include="Formas\Catalogos\wfPresentaciones.aspx" />
     <Content Include="Formas\Catalogos\wfProveedores.aspx" />
-    <Content Include="Formas\Catalogos\wfSexos.aspx" />
     <Content Include="Formas\Catalogos\wfUnidadesDeMedida.aspx" />
     <Content Include="Formas\frmSelectorEjercicio.aspx" />
     <Content Include="Formas\TEST.aspx" />
@@ -978,27 +974,6 @@
     <Compile Include="Formas\Catalogos\wfGruposProductos.aspx.designer.cs">
       <DependentUpon>wfGruposProductos.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Formas\Catalogos\wfLaboratorios.aspx.cs">
-      <DependentUpon>wfLaboratorios.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Formas\Catalogos\wfLaboratorios.aspx.designer.cs">
-      <DependentUpon>wfLaboratorios.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Formas\Catalogos\wfLineas.aspx.cs">
-      <DependentUpon>wfLineas.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Formas\Catalogos\wfLineas.aspx.designer.cs">
-      <DependentUpon>wfLineas.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Formas\Catalogos\wfMarcas.aspx.cs">
-      <DependentUpon>wfMarcas.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Formas\Catalogos\wfMarcas.aspx.designer.cs">
-      <DependentUpon>wfMarcas.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Formas\Catalogos\wfPresentaciones.aspx.cs">
       <DependentUpon>wfPresentaciones.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1012,13 +987,6 @@
     </Compile>
     <Compile Include="Formas\Catalogos\wfProveedores.aspx.designer.cs">
       <DependentUpon>wfProveedores.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Formas\Catalogos\wfSexos.aspx.cs">
-      <DependentUpon>wfSexos.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Formas\Catalogos\wfSexos.aspx.designer.cs">
-      <DependentUpon>wfSexos.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formas\Catalogos\wfUnidadesDeMedida.aspx.cs">
       <DependentUpon>wfUnidadesDeMedida.aspx</DependentUpon>

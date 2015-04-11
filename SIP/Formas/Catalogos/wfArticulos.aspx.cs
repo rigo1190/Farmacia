@@ -171,7 +171,7 @@ namespace SIP.Formas.Catalogos
 
 
                 tdThree.InnerText = item.UnidadesDeMedida.Nombre;
-                tdFour.InnerText = item.CantidadUDM.ToString();
+                tdFour.InnerText = "";
                 tdFive.InnerText = item.Presentacion.Nombre;
 
                 tdFour.Attributes.Add("align", "right");

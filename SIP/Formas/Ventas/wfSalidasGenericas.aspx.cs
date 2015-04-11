@@ -44,7 +44,7 @@ namespace SIP.Formas.Ventas
                            select new
                            {
                                Id = a.Id,
-                               Nombre = a.Nombre + " " + um.Nombre + " " + a.CantidadUDM + " " + p.Nombre + " " + a.Porcentaje,
+                               Nombre = a.Nombre + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje,
                                EsMedicamento = a.esMedicamento,
                                PrecioVenta = a.PrecioVenta,
                                CantidadDisponible = a.CantidadDisponible
@@ -317,7 +317,7 @@ namespace SIP.Formas.Ventas
                        on a.PresentacionId equals p.Id
                        select new
                        {
-                           Nombre = a.Nombre + " " + um.Nombre + " " + a.CantidadUDM + " " + p.Nombre + " " + a.Porcentaje,
+                           Nombre = a.Nombre + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje,
                        }).FirstOrDefault();
 
             nombre = art.Nombre;
