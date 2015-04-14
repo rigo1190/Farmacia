@@ -52,7 +52,31 @@ namespace SIP.rpts
                 case 3: //VENTAS GENERALES
                     rdc.RecordSelectionFormula = "{pa_VentasGenerales;1.VentaId} in [" + primerArray[0] + "]";
                     break;
-                
+
+
+
+                case 101: //COTIZACIONES 
+                    rdc.SetParameterValue("proveedor", primerArray[0]);
+                    break;
+
+                case 102: //COTIZACIONES --> Precio
+                    rdc.SetParameterValue("proveedor", primerArray[0]);
+                    break;
+
+
+
+
+                case 111: //Facturas de Pedidos
+                    rdc.RecordSelectionFormula = "{FacturasAlmacen.Id} = " + primerArray[0] ;
+                    break;
+
+                case 121: //Existencias
+                    //rdc.RecordSelectionFormula = "{FacturasAlmacen.Id} = " + primerArray[0];
+                    break;
+                case 122: //Stocks Mínimos
+                    //rdc.RecordSelectionFormula = "{FacturasAlmacen.Id} = " + primerArray[0];
+                    break;
+
             }
         }
 
@@ -116,6 +140,28 @@ namespace SIP.rpts
 
                 case 3:
                     nombreReporte = "rptVentasTotales.rpt";
+                    break;
+
+
+                case 101:
+                    nombreReporte = "cotizaciones.rpt";
+                    break;
+
+                case 102:
+                    nombreReporte = "cotizacionesConPrecio.rpt";
+                    break;
+
+                case 111:
+                    nombreReporte = "FacturasCompras.rpt";
+                    break;
+
+
+                case 121:
+                    nombreReporte = "ProductosExistencias.rpt";
+                    break;
+
+                case 122:
+                    nombreReporte = "ProductosStocksMinimos.rpt";
                     break;
             }
 

@@ -32,7 +32,7 @@ namespace SIP.Formas.Catalogos
         {
             uow = new UnitOfWork(Session["IdUser"].ToString());
 
-            this.grid.DataSource = uow.ProveedoresBL.Get();
+            this.grid.DataSource = uow.ProveedoresBL.Get(p=>p.Status==1).ToList();
             this.grid.DataBind();
         }
 
@@ -72,6 +72,15 @@ namespace SIP.Formas.Catalogos
 
             txtClave.Value = string.Empty;
             txtNombre.Value = string.Empty;
+            txtRepresentante.Value = string.Empty;
+            txtCalle.Value = string.Empty;
+            txtColonia.Value = string.Empty;
+            txtCiudad.Value = string.Empty;
+            txtEstado.Value = string.Empty;
+            txtCP.Value = string.Empty;
+            txtTelefonos.Value = string.Empty;
+            txtCelular.Value = string.Empty;
+            txtEMail.Value = string.Empty;
         }
 
         protected void imgBtnEdit_Click(object sender, ImageClickEventArgs e)
@@ -82,7 +91,14 @@ namespace SIP.Formas.Catalogos
             Proveedores obj = uow.ProveedoresBL.GetByID(int.Parse(_ElId.Text));
             txtClave.Value = obj.RFC;
             txtNombre.Value = obj.RazonSocial;
-
+            txtRepresentante.Value = obj.RepresentanteLegal;
+            txtCalle.Value = obj.Calle;
+            txtColonia.Value = obj.Colonia;
+            txtCiudad.Value = obj.Ciudad;
+            txtCP.Value = obj.CodigoPostal.ToString();
+            txtTelefonos.Value = obj.Telefonos;
+            txtCelular.Value = obj.Celular;
+            txtEMail.Value = obj.EMail;
 
             _Accion.Text = "Modificar";
             ModoForma(true);
@@ -117,7 +133,9 @@ namespace SIP.Formas.Catalogos
             //Se elimina el objeto
             if (uow.Errors.Count == 0)
             {
-                uow.ProveedoresBL.Delete(obj);
+                //uow.ProveedoresBL.Delete(obj);
+                obj.Status = 3;
+                uow.ProveedoresBL.Update(obj);
                 uow.SaveChanges();
                 BindGrid();
             }
@@ -166,9 +184,16 @@ namespace SIP.Formas.Catalogos
 
             obj.RFC = txtClave.Value;
             obj.RazonSocial = txtNombre.Value;
-
-
-
+            obj.RepresentanteLegal = txtRepresentante.Value;
+            obj.Calle = txtCalle.Value;
+            obj.Colonia = txtColonia.Value;
+            obj.Ciudad = txtCiudad.Value;
+            obj.Estado = txtEstado.Value;
+            obj.CodigoPostal = int.Parse ( txtCP.Value);
+            obj.Telefonos = txtTelefonos.Value;
+            obj.Celular = txtCelular.Value;
+            obj.EMail = txtEMail.Value;
+            obj.Status = 1;
 
             //validaciones
             uow.Errors.Clear();
@@ -177,11 +202,11 @@ namespace SIP.Formas.Catalogos
             {
                 lista = uow.ProveedoresBL.Get(p => p.RFC == obj.RFC).ToList();
                 if (lista.Count > 0)
-                    uow.Errors.Add("La Clave que capturo ya ha sido registrada anteriormente, verifique su información");
+                    uow.Errors.Add("El RFC que capturo ya ha sido registrada anteriormente, verifique su información");
 
                 lista = uow.ProveedoresBL.Get(p => p.RazonSocial == obj.RazonSocial).ToList();
                 if (lista.Count > 0)
-                    uow.Errors.Add("La Descripción que capturo ya ha sido registrada anteriormente, verifique su información");
+                    uow.Errors.Add("La Razón Social que capturo ya ha sido registrada anteriormente, verifique su información");
 
                 uow.ProveedoresBL.Insert(obj);
                 mensaje = "El registro se ha  almacenado correctamente";
@@ -196,13 +221,13 @@ namespace SIP.Formas.Catalogos
 
                 lista = uow.ProveedoresBL.Get(p => p.RFC == obj.RFC && p.Id != xid).ToList();
                 if (lista.Count > 0)
-                    uow.Errors.Add("La Clave que capturo ya ha sido registrada anteriormente, verifique su información");
+                    uow.Errors.Add("El RFC que capturo ya ha sido registrada anteriormente, verifique su información");
 
 
 
                 lista = uow.ProveedoresBL.Get(p => p.RazonSocial == obj.RazonSocial && p.Id != xid).ToList();
                 if (lista.Count > 0)
-                    uow.Errors.Add("La Descripción que capturo ya ha sido registrada anteriormente, verifique su información");
+                    uow.Errors.Add("La Razón Social que capturo ya ha sido registrada anteriormente, verifique su información");
 
 
                 uow.ProveedoresBL.Update(obj);

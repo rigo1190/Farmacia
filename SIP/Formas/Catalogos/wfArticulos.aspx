@@ -19,7 +19,7 @@
 
                
         <div id="divArticulos" class="row" runat ="server">
-            <label>Artículos</label>
+            
 
 
 

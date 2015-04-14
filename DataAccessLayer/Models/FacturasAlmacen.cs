@@ -27,12 +27,14 @@ namespace DataAccessLayer.Models
         public string Observaciones { get; set; }
         public int Status { get; set; }
         public int Tipo { get; set; }
-        public int PedidoId { get; set; }
+        public int? PedidoId { get; set; }
+
+        public int ProveedorId { get; set; }
         
-        public int Consecutivo { get; set; }
 
         public virtual Pedidos Pedido { get; set; }
 
+        public virtual Proveedores Proveedor { get; set; }
         
 
         public virtual ICollection<FacturasAlmacenArticulos> detalleArticulos { get; set; }

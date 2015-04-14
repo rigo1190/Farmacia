@@ -49,6 +49,7 @@ namespace BusinessLogicLayer
 
         private IBusinessLogic<FacturasAlmacen> facturasalmacenBL;
         private IBusinessLogic<FacturasAlmacenArticulos> facturasalmacenarticulosBL;
+        private IBusinessLogic<FacturasAlmacenArticulosTMP> facturasalmacenarticulostmpBL;
 
         private IBusinessLogic<ArticulosMovimientos> articulosmovimientosBL;
         private IBusinessLogic<ArticulosMovimientosEntradas> articulosmovimientosentradasBL;
@@ -69,6 +70,8 @@ namespace BusinessLogicLayer
         private IBusinessLogic<ArticuloSalidaGenerica> articuloSalidaGenericaBL;
         private IBusinessLogic<TipoSalida> tipoSalidaBL;
 
+        private IBusinessLogic<Cotizaciones> cotizacionesBL;
+        private IBusinessLogic<CotizacionesProveedores> cotizacionesproveedoresBL;
 
 
         public UnitOfWork()
@@ -451,6 +454,16 @@ namespace BusinessLogicLayer
             }
         }
 
+        public IBusinessLogic<FacturasAlmacenArticulosTMP> FacturasAlmacenArticulosTMPBL
+        {
+            get
+            {
+                if(this.facturasalmacenarticulostmpBL==null){
+                    this.facturasalmacenarticulostmpBL = new GenericBusinessLogic<FacturasAlmacenArticulosTMP>(contexto);
+                }
+                return this.facturasalmacenarticulostmpBL;
+            }
+        }
 
 
         public IBusinessLogic<ArticulosMovimientos> ArticulosMovimientosBL
@@ -567,7 +580,35 @@ namespace BusinessLogicLayer
                 return this.sexosBL;
             }
         }
-     
+
+
+
+
+        public IBusinessLogic<Cotizaciones> CotizacionesBL
+        {
+            get
+            {
+                if (this.cotizacionesBL == null)
+                {
+                    this.cotizacionesBL = new GenericBusinessLogic<Cotizaciones>(contexto);
+                }
+                return this.cotizacionesBL;
+            }
+        }
+
+
+
+        public IBusinessLogic<CotizacionesProveedores> CotizacionesProveedoresBL
+        {
+            get
+            {
+                if (this.cotizacionesproveedoresBL == null)
+                {
+                    this.cotizacionesproveedoresBL = new GenericBusinessLogic<CotizacionesProveedores>(contexto);
+                }
+                return this.cotizacionesproveedoresBL;
+            }
+        }
 
         public void SaveChanges()
         {

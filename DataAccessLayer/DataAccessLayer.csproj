@@ -61,9 +61,12 @@
     <Compile Include="Models\ArticuloVenta.cs" />
     <Compile Include="Models\Clientes.cs" />
     <Compile Include="Models\Contexto.cs" />
+    <Compile Include="Models\Cotizaciones.cs" />
+    <Compile Include="Models\CotizacionesProveedores.cs" />
     <Compile Include="Models\Ejercicio.cs" />
     <Compile Include="Models\FacturasAlmacen.cs" />
     <Compile Include="Models\FacturasAlmacenArticulos.cs" />
+    <Compile Include="Models\FacturasAlmacenArticulosTMP.cs" />
     <Compile Include="Models\FPSfactores.cs" />
     <Compile Include="Models\Generica.cs" />
     <Compile Include="Models\GruposPS.cs" />

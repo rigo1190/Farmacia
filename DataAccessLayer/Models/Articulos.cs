@@ -33,9 +33,11 @@ namespace DataAccessLayer.Models
 
         public double Porcentaje { get; set; }
 
+        public string SustanciaActiva { get; set; }
 
         public string Observaciones { get; set; }
 
+        public int Status { get; set; }
 
         public double StockMinimo { get; set; }
         public double StockMaximo { get; set; }

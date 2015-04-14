@@ -98,28 +98,29 @@
 
                           <li runat="server" id="mnTechosFinancieros" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-random"></span> Compras<b class="caret"></b></a>
                              <ul class="dropdown-menu">
-                                  <li><span class="glyphicon glyphicon-asterisk"></span>Cotizaciones</li>                                  
-                                 <li><span class="glyphicon glyphicon-asterisk"></span>Registro de Compras</li>                                  
+                                  <li><a href="<%=ResolveClientUrl("~/Formas/Compras/wfCotizaciones.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Cotizaciones</a></li>                                                           
+                                  <li><a href="<%=ResolveClientUrl("~/Formas/Compras/wfFacturas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Registro de Facturas</a></li>                                                           
+                                 <li><span class="glyphicon glyphicon-minus"></span> Propuesta de Cambios de Precios</li>                                 
                              </ul>
                           </li>
 
                           <li runat="server" id="mnObras" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-fullscreen"></span> Ventas<b class="caret"></b></a>
                              <ul class="dropdown-menu">
                                   <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfRecetas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Recetas</a></li>
-                                  <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/VentasRecetas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Venta por Recetas</a></li>                                 
-                                  <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfSalidasGenericas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Salidas Genéricas</a></li>
-                                  <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfConsultarVentas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Consultar Ventas</a></li>
-                                 <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfConsultarSalidas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Consultar Salidas</a></li>
-                                  <li><span class="glyphicon glyphicon-asterisk"></span>Reportes</li>                                  
+                                  <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/VentasRecetas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Ventas</a></li>                                 
+                                  <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfSalidasGenericas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Otras Salidas</a></li>
+                                  
+                                                                  
                              </ul>
                           </li>
 
 
-                          <li runat="server" id="mnProcesoAdjudicacion" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-sort-by-attributes"></span> Inventarios<b class="caret"></b></a>
+                          <li runat="server" id="mnInventarios" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-sort-by-attributes"></span> Inventarios<b class="caret"></b></a>
                              <ul class="dropdown-menu">
-                                 <li><span class="glyphicon glyphicon-minus"></span> opcion a</li>                                  
-                                 <li><span class="glyphicon glyphicon-minus"></span> opcion b</li>                                  
-                                 <li><span class="glyphicon glyphicon-minus"></span> opcion  c</li>                                 
+                                 <li><a href="<%=ResolveClientUrl("~/Formas/Inventarios/wfExistencias.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Existencias</a></li>
+                                 <li><a href="<%=ResolveClientUrl("~/Formas/Inventarios/wfStocksMinimos.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Stocks Mínimos</a></li>
+                                 <li><a href="<%=ResolveClientUrl("~/Formas/Inventarios/wfKardex.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Kardex</a></li>
+                                 
                              </ul>
                           </li>
 
@@ -133,17 +134,23 @@
                                 <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfArticulos.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Artículos</a></li>                             
                                 <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfUnidadesDeMedida.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Unidades de Medida</a></li>                              
                                 <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfPresentaciones.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Presentaciones</a></li>                               
-                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfLaboratorios.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Laboratorios</a></li>                              
-                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfLineas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Lineas</a></li>       
-                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfFPSfactores.aspx") %>"><span class="glyphicon glyphicon-minus"></span> FPS</a></li>  
-                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfSexos.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Sexos</a></li>  
+                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfFPSfactores.aspx") %>"><span class="glyphicon glyphicon-minus"></span> FPS</a></li>                                  
                                 <li>-_-</li>
                                 <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfProveedores.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Proveedores</a></li>  
-                                
-                                
+                                                              
                             </ul>
                         </li>                                                 
                         
+                         <li runat="server" id="mnInformes" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-th-list"></span> Informes<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><span class="glyphicon glyphicon-minus"></span> Multicriterio de Compras</li>     
+                                <li>-_-</li>
+                                <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfConsultarVentas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Multicriterio de Ventas</a></li>
+                                <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfConsultarSalidas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Multicriterio de Salidas</a></li>
+                                                            
+                            </ul>
+                        </li> 
+
 
                     </ul>        
         

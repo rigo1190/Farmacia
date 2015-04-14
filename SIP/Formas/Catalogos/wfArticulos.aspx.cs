@@ -84,7 +84,7 @@ namespace SIP.Formas.Catalogos
 
 
                 addConcepto.Attributes.Add("href", ResolveClientUrl("~/Formas/Catalogos/wfArticulosAdd.aspx?grupo=" + padre.Id));
-                addConcepto.InnerText = "Agregar Articulo";
+                addConcepto.InnerText = "Actualizar...";
 
 
 
@@ -121,7 +121,7 @@ namespace SIP.Formas.Catalogos
         private void cargardetalle(int grupo, System.Web.UI.HtmlControls.HtmlGenericControl tabla)
         {
             
-            List<Articulos> detalle = uow.ArticulosBL.Get(q => q.GruposPSId == grupo).ToList();
+            List<Articulos> detalle = uow.ArticulosBL.Get(q => q.GruposPSId == grupo && q.Status == 1).ToList();
 
             if (detalle.Count == 0)
                 return;
@@ -135,7 +135,7 @@ namespace SIP.Formas.Catalogos
             System.Web.UI.HtmlControls.HtmlGenericControl thTwo = new System.Web.UI.HtmlControls.HtmlGenericControl("TH");
             System.Web.UI.HtmlControls.HtmlGenericControl thThree = new System.Web.UI.HtmlControls.HtmlGenericControl("TH");
             System.Web.UI.HtmlControls.HtmlGenericControl thFour = new System.Web.UI.HtmlControls.HtmlGenericControl("TH");
-            System.Web.UI.HtmlControls.HtmlGenericControl thFive = new System.Web.UI.HtmlControls.HtmlGenericControl("TH");
+            
 
             trHead.Attributes.Add("align", "center");
 
@@ -143,15 +143,13 @@ namespace SIP.Formas.Catalogos
             thOne.InnerText = "Clave";
             thTwo.InnerText = "Nombre";
             thThree.InnerText = "Unidad de Medida";
-            thFour.InnerText = "Cantidad (U.M.)";
-            thFive.InnerText = "Presentación";
+            thFour.InnerText = "Presentación";
 
             trHead.Controls.Add(thOne);
             trHead.Controls.Add(thTwo);
             trHead.Controls.Add(thThree);
             trHead.Controls.Add(thFour);
-            trHead.Controls.Add(thFive);
-
+            
             tabla.Controls.Add(trHead);
 
 
@@ -163,25 +161,21 @@ namespace SIP.Formas.Catalogos
                 System.Web.UI.HtmlControls.HtmlGenericControl tdTwo = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
                 System.Web.UI.HtmlControls.HtmlGenericControl tdThree = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
                 System.Web.UI.HtmlControls.HtmlGenericControl tdFour = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
-                System.Web.UI.HtmlControls.HtmlGenericControl tdFive = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
+                
 
                 tdOne.Attributes.Add("align", "left");
                 tdOne.InnerText = item.Clave;
                 tdTwo.InnerText = item.Nombre;
-
-
                 tdThree.InnerText = item.UnidadesDeMedida.Nombre;
-                tdFour.InnerText = "";
-                tdFive.InnerText = item.Presentacion.Nombre;
+                tdFour.InnerText = item.Presentacion.Nombre;
 
-                tdFour.Attributes.Add("align", "right");
-                tdFour.Attributes.Add("align", "right");
+                
 
                 tr.Controls.Add(tdOne);
                 tr.Controls.Add(tdTwo);
                 tr.Controls.Add(tdThree);
                 tr.Controls.Add(tdFour);
-                tr.Controls.Add(tdFive);
+                 
 
                 tabla.Controls.Add(tr);
             }

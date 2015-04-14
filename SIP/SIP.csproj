@@ -815,7 +815,13 @@
     <Content Include="Formas\Catalogos\wfPresentaciones.aspx" />
     <Content Include="Formas\Catalogos\wfProveedores.aspx" />
     <Content Include="Formas\Catalogos\wfUnidadesDeMedida.aspx" />
+    <Content Include="Formas\Compras\wfCotizaciones.aspx" />
+    <Content Include="Formas\Compras\wfFacturas.aspx" />
+    <Content Include="Formas\Compras\wfFacturasAdd.aspx" />
     <Content Include="Formas\frmSelectorEjercicio.aspx" />
+    <Content Include="Formas\Inventarios\wfExistencias.aspx" />
+    <Content Include="Formas\Inventarios\wfKardex.aspx" />
+    <Content Include="Formas\Inventarios\wfStocksMinimos.aspx" />
     <Content Include="Formas\TEST.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
@@ -995,12 +1001,54 @@
     <Compile Include="Formas\Catalogos\wfUnidadesDeMedida.aspx.designer.cs">
       <DependentUpon>wfUnidadesDeMedida.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Formas\Compras\wfCotizaciones.aspx.cs">
+      <DependentUpon>wfCotizaciones.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formas\Compras\wfCotizaciones.aspx.designer.cs">
+      <DependentUpon>wfCotizaciones.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Compras\wfFacturas.aspx.cs">
+      <DependentUpon>wfFacturas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formas\Compras\wfFacturas.aspx.designer.cs">
+      <DependentUpon>wfFacturas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Compras\wfFacturasAdd.aspx.cs">
+      <DependentUpon>wfFacturasAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formas\Compras\wfFacturasAdd.aspx.designer.cs">
+      <DependentUpon>wfFacturasAdd.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Formas\frmSelectorEjercicio.aspx.cs">
       <DependentUpon>frmSelectorEjercicio.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Formas\frmSelectorEjercicio.aspx.designer.cs">
       <DependentUpon>frmSelectorEjercicio.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Inventarios\wfExistencias.aspx.cs">
+      <DependentUpon>wfExistencias.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formas\Inventarios\wfExistencias.aspx.designer.cs">
+      <DependentUpon>wfExistencias.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Inventarios\wfKardex.aspx.cs">
+      <DependentUpon>wfKardex.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formas\Inventarios\wfKardex.aspx.designer.cs">
+      <DependentUpon>wfKardex.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Inventarios\wfStocksMinimos.aspx.cs">
+      <DependentUpon>wfStocksMinimos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formas\Inventarios\wfStocksMinimos.aspx.designer.cs">
+      <DependentUpon>wfStocksMinimos.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formas\TEST.aspx.cs">
       <DependentUpon>TEST.aspx</DependentUpon>
@@ -1271,7 +1319,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>7918</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:7920/</IISUrl>
+          <IISUrl>http://localhost:7921/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
