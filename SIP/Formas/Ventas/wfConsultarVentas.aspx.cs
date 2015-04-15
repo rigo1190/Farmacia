@@ -22,11 +22,15 @@ namespace SIP.Formas.Ventas
             {
                 txtFechaI.Value = DateTime.Now.ToShortDateString();
                 txtFechaT.Value = DateTime.Now.ToShortDateString();
+                chkRango.Checked = true;
 
                 BindDropDowns();
                 string filtro = ArmarFiltro();
                 List<DataAccessLayer.Models.Ventas> list = ObtenerVentasFiltro(filtro);
                 BindGridVentas(list);
+
+                divFechaI.Style.Add("display", "block");
+                divFechaT.Style.Add("display", "block");
 
             }
         }
@@ -44,7 +48,7 @@ namespace SIP.Formas.Ventas
                            on a.UnidadesDeMedidaId equals um.Id
                            join p in uow.PresentacionesBL.Get()
                            on a.PresentacionId equals p.Id
-                           select new { Id = a.Id, Nombre = a.Nombre + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje });
+                           select new { Id = a.Id, Nombre = a.Nombre + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje }).OrderBy(e=>e.Nombre);
 
             ddlArticulos.DataSource = listArt;
             ddlArticulos.DataValueField = "Id";
@@ -172,7 +176,8 @@ namespace SIP.Formas.Ventas
         private List<DataAccessLayer.Models.Ventas> ObtenerVentasFiltro(string filtro)
         {
             List<DataAccessLayer.Models.Ventas> list= new List<DataAccessLayer.Models.Ventas>();
-            string connString = @"data source=RIGO-PC\SQLEXPRESS;user id=sa;password=081995;initial catalog=BD3SoftInventarios;Persist Security Info=true";//System.Configuration.ConfigurationManager.ConnectionStrings[0].ConnectionString;
+            //string connString = @"data source=RIGO-PC\SQLEXPRESS;user id=sa;password=081995;initial catalog=BD3SoftInventarios;Persist Security Info=true";//System.Configuration.ConfigurationManager.ConnectionStrings[0].ConnectionString;
+            string connString = System.Configuration.ConfigurationManager.ConnectionStrings["BD3SoftInventarios"].ConnectionString;
             DataAccessLayer.Models.Ventas venta;
             SqlConnection conn=null;
             string ids = string.Empty; ;

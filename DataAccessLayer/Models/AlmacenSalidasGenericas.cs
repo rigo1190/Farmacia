@@ -22,6 +22,8 @@ namespace DataAccessLayer.Models
         public int TipoSalidaId { get; set; } 
         public string Observaciones { get; set; }
 
+        public string FolioCadena { get; set; }
+
 
         public virtual ICollection<AlmacenSalidasGenericasArticulos> detalleArticulos { get; set; }
         public virtual TipoSalida TipoSalida { get; set; } 

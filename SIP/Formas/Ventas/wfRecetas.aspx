@@ -3,11 +3,41 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-
             $('.datepicker').datepicker(
             {
                 format: "dd/mm/yyyy"
             });
+
+            $("#<%= ddlPaciente.ClientID %>").change(function () {
+                var value = $(this).val();
+
+                if (value!="0"){
+                    $("#<%= txtNombre.ClientID %>").val($(this).find('option:selected').text());
+                    $("#<%= txtNombre.ClientID %>").prop("disabled", true);
+                }
+                    
+                else{
+                    $("#<%= txtNombre.ClientID %>").val("");
+                    $("#<%= txtNombre.ClientID %>").prop("disabled", false);
+                }
+                    
+            });
+
+
+            $("#<%= ddlMedicamentos.ClientID %>").change(function(){
+                var value = $(this).val();
+
+                if (value!="0"){
+                    $("#<%= txtNombreMedicamento.ClientID %>").val($(this).find('option:selected').text());
+                    $("#<%= txtNombreMedicamento.ClientID %>").prop("disabled", true);
+                }
+                else {
+                    $("#<%= txtNombreMedicamento.ClientID %>").val("");
+                    $("#<%= txtNombreMedicamento.ClientID %>").prop("disabled", false);
+                }
+                    
+            });
+
 
         });
 
@@ -57,13 +87,18 @@
             $("#<%= divDetalleReceta.ClientID %>").css("display", "none");
             $("#<%= divEncabezado.ClientID %>").css("display", "none");
             $("#<%= txtObservaciones.ClientID %>").val("");
+            $("#<%= txtObsParticulares.ClientID %>").val("");
             $("#<%= txtNombre.ClientID %>").val("");
             $("#<%= txtFolio.ClientID %>").val("");
-            $("#<%= txtFecha.ClientID %>").val("");
             $("#<%= _Accion.ClientID %>").val("N");
             $("#<%= _IDReceta.ClientID %>").val("");
             $("#<%= divMsgError.ClientID %>").css("display", "none");
             $("#<%= divMsgSuccess.ClientID %>").css("display", "none");
+            $("#<%= divBtnImagen.ClientID %>").css("display", "none");
+            
+
+            var date = new Date();
+            $("#<%= txtFecha.ClientID %>").val(date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear());
         }
 
 
@@ -80,13 +115,10 @@
         function fnc_Validar() {
 
             var error = false;
-            var folio = $("#<%= txtFolio.ClientID %>").val();
             var fecha = $("#<%= txtFecha.ClientID %>").val();
             var paciente = $("#<%= txtNombre.ClientID %>").val();
 
-            if (folio == "" || folio == null || folio == undefined)
-                error = true;
-            else if (fecha == "" || fecha == null || fecha == undefined)
+            if (fecha == "" || fecha == null || fecha == undefined)
                 error = true;
             else if (paciente == "" || paciente == null || paciente == undefined)
                 error = true;
@@ -96,7 +128,7 @@
                 var accion = $("#<%= _Accion.ClientID %>").val();
 
                 if (accion == "N") {
-                    alert("Los datos de la venta Número de Folio, Fecha y Nombre del Paciente son obligatorios.");
+                    alert("Los datos de la receta Fecha y Nombre del Paciente son obligatorios.");
                 }
 
                 return false;
@@ -123,7 +155,7 @@
                 
                 if (!resultado) {
 
-                    mensaje = "Los datos de la venta Número de Folio, Fecha y Nombre del Paciente son obligatorios."
+                    mensaje = "Los datos de la receta Fecha y Nombre del Paciente son obligatorios."
                     alert(mensaje);
 
                     return false;
@@ -173,10 +205,36 @@
                                 Listado de Recetas
                             </div>
                             <div class="panel-body">
-                                
-                                <asp:GridView Width="1250px" AllowPaging="true" OnPageIndexChanging="gridRecetas_PageIndexChanging" OnRowDataBound="gridRecetas_RowDataBound" PageSize="10" Height="25px" EnablePersistedSelection="true" ShowHeaderWhenEmpty="true" ID="gridRecetas" DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
-                                     <Columns>
-                                            <asp:TemplateField HeaderText="Acciones">
+                                <div class="row">  
+                                    <div class="form-group">  
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>Fecha recetas:</label>
+                                                </td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <input  class="form-control datepicker" runat="server" id="txtFechaFiltro"/>
+                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                     <div>
+                                                        <asp:Button ID="btnConsultar" runat="server" Text="Consultar" OnClick="btnConsultar_Click" CssClass="btn btn-default" />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        
+                                        </table>
+                                    </div>
+                                </div>
+
+
+
+                                <div style="height:330px; overflow:scroll">
+                                     <asp:GridView Width="1250px" OnPageIndexChanging="gridRecetas_PageIndexChanging" OnRowDataBound="gridRecetas_RowDataBound" PageSize="10" Height="25px" EnablePersistedSelection="true" ShowHeaderWhenEmpty="true" ID="gridRecetas" DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
+                                        <Columns>
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderText="Acciones">
                                                 <ItemTemplate>
                                                     <asp:ImageButton OnClick="imgBtnEdit_Click" ID="imgBtnEdit" ToolTip="Editar" runat="server" ImageUrl="~/img/Edit1.png" />
                                                     <asp:ImageButton OnClick="imgBtnEliminarReceta_Click"  ID="imgBtnEliminarReceta" ToolTip="Eliminar" runat="server" ImageUrl="~/img/close.png" OnClientClick="return fnc_Mensaje();"/>
@@ -185,34 +243,43 @@
                                                 <ItemStyle HorizontalAlign="right" VerticalAlign="Middle" Width="50px" BackColor="#EEEEEE" />
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderStyle-Width="120px" HeaderText="Número de Folio" SortExpression="Orden">
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderStyle-Width="120px" HeaderText="Número de Folio" SortExpression="Orden">
                                                 <ItemTemplate>
                                                     <%# DataBinder.Eval(Container.DataItem, "Folio") %>
                                                     <%--<input type="hidden" value='<%# DataBinder.Eval(Container.DataItem, "Id") %>' runat="server" id="idPregunta" />--%>
                                                 </ItemTemplate>
+                                                <ItemStyle HorizontalAlign="Center" />
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderText="Fecha" SortExpression="Orden">
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderText="Status" SortExpression="Orden">
+                                                <ItemTemplate>
+                                                    <asp:label runat="server" ID="lblStatus" Text='<%# Convert.ToInt16(Eval("Status")) == 1 ? "NO SURTIDA":"SURTIDA" %>'></asp:label>
+                                                </ItemTemplate>
+                                                 <ItemStyle HorizontalAlign="Center" />
+                                            </asp:TemplateField>
+
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderText="Fecha" SortExpression="Orden">
                                                 <ItemTemplate>
                                                     <%#Convert.ToDateTime(DataBinder.Eval(Container.DataItem, "Fecha")).ToString("d")%>
                                                 </ItemTemplate>
+                                                 <ItemStyle HorizontalAlign="Center" />
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Nombre Paciente" SortExpression="NOAplica">
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Nombre Paciente" SortExpression="NOAplica">
                                                 <ItemTemplate>
                                                     <%# DataBinder.Eval(Container.DataItem, "NombrePaciente") %>
                                                 </ItemTemplate>
                                                 <ItemStyle HorizontalAlign="Center" />
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Observaciones" SortExpression="NOAplica">
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Observaciones" SortExpression="NOAplica">
                                                 <ItemTemplate>
                                                     <%# DataBinder.Eval(Container.DataItem, "Observaciones") %>
                                                 </ItemTemplate>
                                                 <ItemStyle HorizontalAlign="Center" />
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Imprimir" SortExpression="NOAplica">
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Imprimir" SortExpression="NOAplica">
                                                 <ItemTemplate>
                                                     <button type="button" runat="server" id="btnVer"><span class="glyphicon glyphicon-print"></span></button>
                                                 </ItemTemplate>
@@ -220,8 +287,9 @@
                                             </asp:TemplateField>
 
                                         </Columns>
-                                     <PagerSettings FirstPageText="Primera" LastPageText="Ultima" Mode="NextPreviousFirstLast" NextPageText="Siguiente" PreviousPageText="Anterior" />
-                                </asp:GridView>
+                                        <PagerSettings FirstPageText="Primera" LastPageText="Ultima" Mode="NextPreviousFirstLast" NextPageText="Siguiente" PreviousPageText="Anterior" />
+                                    </asp:GridView>
+                                </div>
 
                                 <div id="divBtnNuevo" runat="server">
                                     <button type="button" onclick="fnc_Nuevo();" id="btnNuevo" class="btn btn-primary" value="Nuevo">Nuevo</button>
@@ -247,13 +315,16 @@
                             </div>
                         </div>
                         <div class="panel-body">
-                            <div>
-                                <div class="col-md-6">
+                            <div class="row">
+
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Número de Folio:</label>
-                                        <input type="text" name="prueba" runat="server" class="form-control" id="txtFolio" />
+                                        <input type="text" name="prueba" runat="server" disabled="disabled" class="form-control" id="txtFolio" />
                                     </div>
+                                </div>
 
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Fecha:</label>
                                         <div class="input-group">
@@ -261,30 +332,65 @@
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                         </div>
                                     </div>
-
-                                    
-
                                 </div>
 
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Paciente:</label>
+                                        <asp:DropDownList ID="ddlPaciente" runat="server" CssClass="form-control" AutoPostBack="false"></asp:DropDownList>
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+
+                            <div class="row">
+
                                 <div class="col-md-6">
-                                     <div class="form-group">
+                                     
+                                    <div class="form-group">
                                         <label>Nombre del Paciente:</label>
                                         <input type="text" name="prueba" runat="server" class="form-control" id="txtNombre" />
                                     </div>
 
                                     <div class="form-group">
                                         <label>Observaciones:</label>
-                                        <textarea type="text" name="prueba" style="height:100px" runat="server" class="form-control" id="txtObservaciones" />
+                                        <textarea type="text" name="prueba" style="height:70px" runat="server" class="form-control" id="txtObservaciones" />
                                     </div>
                                 </div>
 
-                                
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Adjuntar Imagen:</label>
+                                        <asp:FileUpload ID="fileUpload" runat="server" />
+                                    </div>
 
-                                <div id="divGuardarReceta" runat="server" class="form-group">
-                                    <asp:Button OnClick="btnGuardar_Click" ID="btnGuardar" OnClientClick="return fnc_Validar();" runat="server" Text="Guardar" CssClass="btn btn-primary" ></asp:Button>
-                                    <button type="button" onclick="fnc_Cancelar();" class="btn btn-default">Cancelar</button> 
+                                    <div class="form-group" id="divBtnImagen" runat="server">
+                                        <asp:Button runat="server" ID="btnGuardarImagen" OnClick="btnGuardarImagen_Click" Text="Guardar Imagen" CssClass="btn btn-primary" />
+                                    </div>
+
                                 </div>
+
                             </div>
+
+                            <div class="row">
+
+                                <div class="col-md-9">
+
+                                </div>
+                                <div class="col-md-3">
+                                     <div id="divGuardarReceta" runat="server" class="form-group">
+                                        <div class="form-group">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+                                            <asp:Button OnClick="btnGuardar_Click" ID="btnGuardar" OnClientClick="return fnc_Validar();" runat="server" Text="Guardar" CssClass="btn btn-primary" ></asp:Button>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                                            <button type="button" onclick="fnc_Cancelar();" class="btn btn-default">Cancelar</button> 
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
                         </div>
                     </div>
 
@@ -302,9 +408,11 @@
                             
                         </div>
                         <div class="panel-body">
-                            <asp:GridView AllowPaging="true" OnPageIndexChanging="gridDetalleRecetas_PageIndexChanging" OnRowDataBound="gridDetalleRecetas_RowDataBound" PageSize="10" Height="25px" EnablePersistedSelection="true" Width="1250px" ShowHeaderWhenEmpty="true" ID="gridDetalleRecetas" DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
-                                    <Columns>
-                                        <asp:TemplateField HeaderText="Eliminar">
+
+                            <div style="height:170px; overflow:scroll">
+                                <asp:GridView AllowPaging="true" OnPageIndexChanging="gridDetalleRecetas_PageIndexChanging" OnRowDataBound="gridDetalleRecetas_RowDataBound" PageSize="10" Height="25px" EnablePersistedSelection="true" Width="1250px" ShowHeaderWhenEmpty="true" ID="gridDetalleRecetas" DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
+                                        <Columns>
+                                        <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderText="Eliminar">
                                             <ItemTemplate>
                                                 <asp:ImageButton  ID="imgBtnEliminarDetalle" ToolTip="Eliminar" runat="server" ImageUrl="~/img/close.png" OnClick="imgBtnEliminarDetalle_Click" OnClientClick="return fnc_MensajeDetalle();"/>
                                             </ItemTemplate>
@@ -312,73 +420,103 @@
                                             <ItemStyle HorizontalAlign="right" VerticalAlign="Middle" Width="50px" BackColor="#EEEEEE" />
                                         </asp:TemplateField>
 
-                                        <asp:TemplateField HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderText="Nombre" SortExpression="Orden">
+                                        <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderText="Nombre" SortExpression="Orden">
                                             <ItemTemplate>
                                                 <%# DataBinder.Eval(Container.DataItem, "NombreMedicamento") %>
                                             </ItemTemplate>
                                         </asp:TemplateField>
 
-                                        <asp:TemplateField HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderText="Cantidad" SortExpression="Orden">
+                                        <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderText="Cantidad" SortExpression="Orden">
                                             <ItemTemplate>
                                                 <%# DataBinder.Eval(Container.DataItem, "CantidadATomar") %>
                                             </ItemTemplate>
                                         </asp:TemplateField>
 
-                                        <asp:TemplateField HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Frecuencia" SortExpression="NOAplica">
+                                        <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Frecuencia" SortExpression="NOAplica">
                                             <ItemTemplate>
                                                 <%# DataBinder.Eval(Container.DataItem, "Frecuenca") %>
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" />
                                         </asp:TemplateField>
 
-                                        <asp:TemplateField HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Durante" SortExpression="NOAplica">
+                                        <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Durante" SortExpression="NOAplica">
                                             <ItemTemplate>
                                                 <%# DataBinder.Eval(Container.DataItem, "Durante") %>
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" />
                                         </asp:TemplateField>
                                     </Columns>
-                                    <PagerSettings FirstPageText="Primera" LastPageText="Ultima" Mode="NextPreviousFirstLast" NextPageText="Siguiente" PreviousPageText="Anterior" />
+                                        <PagerSettings FirstPageText="Primera" LastPageText="Ultima" Mode="NextPreviousFirstLast" NextPageText="Siguiente" PreviousPageText="Anterior" />
                                 </asp:GridView>
+                            </div>
+
+                            
 
                             <div class="row">
+                                <div class="col-md-6">
+                                    <label>Lista de Productos:</label>
+                                    <asp:DropDownList ID="ddlMedicamentos" runat="server" CssClass="form-control" AutoPostBack="False"></asp:DropDownList>                                         
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Nombre Producto:</label>
                                         <textarea type="text" name="prueba" style="height:50px" runat="server" class="form-control" id="txtNombreMedicamento" />
                                     </div>
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label>Lista de Productos:</label>
-                                    <asp:DropDownList ID="ddlMedicamentos" OnSelectedIndexChanged="ddlMedicamentos_SelectedIndexChanged" runat="server" CssClass="form-control" AutoPostBack="True"></asp:DropDownList>                                         
-                                </div>
-
                             </div>
                             
-                            <div>
-                                <div class="form-group">
-                                    <label>Cantidad a tomar:</label>
-                                    <input type="text" name="prueba" runat="server" class="form-control" id="txtCandidad" />
+                            <div class="row">
+
+                                <div class="col-md-3">
+                                     <div class="form-group">
+                                        <label>Cantidad a tomar:</label>
+                                        <input type="text" name="prueba" runat="server" class="form-control" id="txtCandidad" />
+                                    </div>
+                                </div>
+                               
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Frecuencia:</label>
+                                        <input type="text" name="prueba" runat="server" class="form-control" id="txtFrecuencia" />
+                                    </div>
                                 </div>
                                 
-                                <div class="form-group">
-                                    <label>Frecuencia:</label>
-                                    <input type="text" name="prueba" runat="server" class="form-control" id="txtFrecuencia" />
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Durante:</label>
+                                        <input type="text" name="prueba" runat="server" class="form-control" id="txtDurante" />
+                                    </div>
                                 </div>
+                                
+                               
 
-                                <div class="form-group">
-                                    <label>Durante:</label>
-                                    <input type="text" name="prueba" runat="server" class="form-control" id="txtDurante" />
+                            </div>
+                                 
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <label>Observaciones particulares:</label>
+                                        <textarea type="text" name="prueba" style="height:50px" runat="server" class="form-control" id="txtObsParticulares" />
+                                    </div>
                                 </div>
+                                
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <asp:Button OnClick="btnGuardarDetalle_Click" ID="btnGuardarDetalle" OnClientClick="return fnc_ValidarDetalle();" runat="server" Text="Agregar/Guardar" CssClass="btn btn-primary" ></asp:Button>
+                                        <button type="button" onclick="fnc_Cancelar();" class="btn btn-default">Cancelar</button> 
+                                    </div>
+                                </div>
+                                
 
+                            </div>
+                               
+                                
                             </div>
 
 
-                            <div class="form-group">
-                                <asp:Button OnClick="btnGuardarDetalle_Click" ID="btnGuardarDetalle" OnClientClick="return fnc_ValidarDetalle();" runat="server" Text="Agregar/Guardar" CssClass="btn btn-primary" ></asp:Button>
-                                <button type="button" onclick="fnc_Cancelar();" class="btn btn-default">Cancelar</button> 
-                            </div>
+                            <%--<div class="form-group">
+                               
+                            </div>--%>
 
                         </div>
 
@@ -409,8 +547,10 @@
         
 
 
-    </div>
 
+
+    
+    
     <div runat="server" style="display:none">
         <input type="hidden" runat="server" id="_IDReceta" />
         <input type="hidden" runat="server" id="_Accion" />

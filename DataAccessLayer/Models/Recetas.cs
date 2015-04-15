@@ -21,7 +21,8 @@ namespace DataAccessLayer.Models
         public string NombrePaciente { get; set; }
         public int Status { get; set; }
         public string Observaciones { get; set; }
-
+        public string FolioCadena { get; set; }
+        public int? PacienteId { get; set; }
         //dejar estos campos en blanco
         public string Sintomas { get; set; }
         public string Diagnostico { get; set; }        
@@ -30,9 +31,10 @@ namespace DataAccessLayer.Models
         public string Altura { get; set; }
         //dejar estos campos en blanco
 
-
         public virtual ICollection<RecetaArticulos> detalleReceta { get; set; }
 
+        public virtual ICollection<RecetasImagenes> detalleImagenes { get; set; }
 
+        public virtual Paciente Paciente { get; set; }
     }
 }

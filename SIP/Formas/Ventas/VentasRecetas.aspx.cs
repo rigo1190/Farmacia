@@ -20,12 +20,19 @@ namespace SIP.Formas.Ventas
             if (!IsPostBack)
             {
                 ResetearVenta();
+                txtFechaFiltro.Value = DateTime.Now.ToShortDateString();
                 BindGridRecetas();
                 BindGridProductosCatalago();
                 BindDropDownClientes();
             }
         }
 
+        private void OcultarError()
+        {
+            divMsgError.Style.Add("display", "none");
+            divMsgSuccess.Style.Add("display", "none");
+            lblMsgError.Text = "";
+        }
 
         private void BindDropDownClientes()
         {
@@ -37,7 +44,7 @@ namespace SIP.Formas.Ventas
         }
 
 
-        private void EliminarArticuloVenta()
+        private string EliminarArticuloVenta()
         {
             int idUser=Utilerias.StrToInt(Session["IdUser"].ToString());
 
@@ -54,11 +61,11 @@ namespace SIP.Formas.Ventas
                     foreach (string m in uow.Errors)
                         M += m;
 
-                    //return M;
+                    return M;
                 }
             }
 
-
+            return M;
         }
 
         private void BindGridProductosCatalago()
@@ -72,7 +79,7 @@ namespace SIP.Formas.Ventas
                                         EsMedicamento = a.esMedicamento,
                                         PrecioVenta = a.PrecioVenta,
                                         CantidadDisponible=a.CantidadDisponible
-                           });
+                           }).OrderBy(e=>e.Nombre);
 
 
             gridProductosCatalogo.DataSource = listArt.ToList();// uow.ArticulosBL.Get().ToList();
@@ -81,14 +88,18 @@ namespace SIP.Formas.Ventas
 
         private void BindGridRecetas()
         {
-            gridRecetas.DataSource = uow.RecetasBusinessLogic.Get(e => e.Status == 1).ToList();
+            DateTime fechaFiltro = DateTime.Now;
+            if (!txtFechaFiltro.Value.Equals(string.Empty))
+                fechaFiltro = Convert.ToDateTime(txtFechaFiltro.Value);
+
+            gridRecetas.DataSource = uow.RecetasBusinessLogic.Get(e => e.Status == 1 && e.Fecha==fechaFiltro).ToList();
             gridRecetas.DataBind();
         }
 
         private void BindGridProductosVenta()
         {
             int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
-            List<ArticuloVenta> listArticulos = uow.ArticuloVentaBusinessLogic.Get(e => e.UsuarioId == idUser).ToList();
+            List<ArticuloVenta> listArticulos = uow.ArticuloVentaBusinessLogic.Get(e => e.UsuarioId == idUser).OrderBy(e => e.Nombre).ToList();
 
 
             //Llenar los campos de totales
@@ -106,10 +117,14 @@ namespace SIP.Formas.Ventas
         }
 
 
-        private void ResetearVenta()
+        private string ResetearVenta()
         {
+            string M = string.Empty;
             //Se eliminan los articulos de la tabla temporal
-            EliminarArticuloVenta();
+            M=EliminarArticuloVenta();
+
+            if (!M.Equals(string.Empty))
+                return M;
 
             //Se bindea el grid
             BindGridProductosVenta();
@@ -123,20 +138,22 @@ namespace SIP.Formas.Ventas
 
             //Se limpian los campos de DAtos de la Venta
             txtFolio.Value = string.Empty;
-            txtFecha.Value = string.Empty;
+            txtFecha.Value = DateTime.Now.ToShortDateString();
             txtTotalR.Value = "0.00";
             txtIVAR.Value = "0.00";
             txtCobrar.Value = "0.00";
 
+            return M;
         }
 
 
-        private void ActualizarReceta()
+        private string ActualizarReceta()
         {
-           if (!_IDReceta.Value.Equals(string.Empty))
-           {
+            string M = string.Empty;
+            if (!_IDReceta.Value.Equals(string.Empty))
+            {
                 int idReceta=Utilerias.StrToInt(_IDReceta.Value);
-                string M = string.Empty;
+                
                 
                 Recetas receta = uow.RecetasBusinessLogic.GetByID(idReceta);
                 
@@ -151,15 +168,17 @@ namespace SIP.Formas.Ventas
                     foreach (string m in uow.Errors)
                         M += m;
 
-                    //return M;
+                    return M;
                 }
 
                 BindGridRecetas();
                 
             }
+
+            return M;
         }
 
-        private void ActualizarProductosCatalogo(List<ArticuloVenta> listArticulos)
+        private string ActualizarProductosCatalogo(List<ArticuloVenta> listArticulos)
         {
             //Actualizar los articulos del catalalogo
 
@@ -184,16 +203,18 @@ namespace SIP.Formas.Ventas
                     foreach (string m in uow.Errors)
                         M += m;
 
-                    //return M;
+                    return M;
                 }
 
             }
 
             BindGridProductosCatalago();
+
+            return M;
         }
 
 
-        private void CrearArticulosMovimientos(int ventaId, List<ArticuloVenta> listArticulos)
+        private string CrearArticulosMovimientos(int ventaId, List<ArticuloVenta> listArticulos)
         {
             //Crear registros para la tabla de ArticulosMovimientos y sus detalles ArticulosMovimientosSalidas
             string M = string.Empty;
@@ -220,7 +241,7 @@ namespace SIP.Formas.Ventas
                 foreach (string m in uow.Errors)
                     M += m;
 
-                //return M;
+                return M;
             }
 
             //Se prosigue a llenar el detalle en ArticulosMovimientosSalidas
@@ -242,22 +263,33 @@ namespace SIP.Formas.Ventas
                     foreach (string m in uow.Errors)
                         M += m;
 
-                    //return M;
+                    return M;
                 }
 
             }
 
+            return M;
+        }
+
+        private int ObtenerMaxFolio()
+        {
+            int max = 1;
+
+            if (uow.VentasBL.Get().Count() > 0)
+                max = uow.VentasBL.Get().Max(e => e.Folio) + 1;
+
+            return max;
 
         }
 
 
-        private void CrearVenta()
+        private string CrearVenta()
         {
             string M = string.Empty;
             int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
 
             DataAccessLayer.Models.Ventas venta = new DataAccessLayer.Models.Ventas();
-            venta.Folio = Utilerias.StrToInt(txtFolio.Value);
+            venta.Folio = ObtenerMaxFolio();//Utilerias.StrToInt(txtFolio.Value);
             venta.Ejercicio = 2015; //???????
 
             if (!_IDReceta.Value.Equals(string.Empty))
@@ -277,7 +309,7 @@ namespace SIP.Formas.Ventas
                 foreach (string m in uow.Errors)
                     M += m;
 
-                //return M;
+                return M;
             }
 
 
@@ -310,7 +342,7 @@ namespace SIP.Formas.Ventas
                     foreach (string m in uow.Errors)
                         M += m;
 
-                    //return M;
+                    return M;
                 }
 
             }
@@ -329,19 +361,33 @@ namespace SIP.Formas.Ventas
                 foreach (string m in uow.Errors)
                     M += m;
 
-                //return M;
+                return M;
             }
 
-            ActualizarProductosCatalogo(listArticulos); //Se actualizan cantidades del articulo en el catalogo
+            M=ActualizarProductosCatalogo(listArticulos); //Se actualizan cantidades del articulo en el catalogo
 
-            CrearArticulosMovimientos(venta.Id, listArticulos); //Se generan registros en ArticulosMovimientos y sus detalles
+            if (!M.Equals(string.Empty))
+                return M;
 
-            ActualizarReceta(); //Se cambia el estatus a la receta que se vio involucrada en la venta
+            M=CrearArticulosMovimientos(venta.Id, listArticulos); //Se generan registros en ArticulosMovimientos y sus detalles
 
-            ResetearVenta(); //Se limpian los campos para una nueva venta
+            if (!M.Equals(string.Empty))
+                return M;
+
+            M=ActualizarReceta(); //Se cambia el estatus a la receta que se vio involucrada en la venta
+
+            if (!M.Equals(string.Empty))
+                return M;
+
+            M=ResetearVenta(); //Se limpian los campos para una nueva venta
+
+            if (!M.Equals(string.Empty))
+                return M;
 
             //Se muestra la venta
             ClientScript.RegisterStartupScript(this.GetType(), "script", "fnc_MostrarVenta(" + venta.Id + ")", true);
+
+            return M;
         }
 
 
@@ -358,12 +404,11 @@ namespace SIP.Formas.Ventas
             checkProductos.DataTextField = "NombreMedicamento";
             checkProductos.DataBind();
 
+            OcultarError();
+
             ClientScript.RegisterStartupScript(this.GetType(), "script", "fnc_MostrarModal()", true);
 
         }
-
-
-        
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
@@ -416,7 +461,12 @@ namespace SIP.Formas.Ventas
                         foreach (string m in uow.Errors)
                             M += m;
 
-                        //return M;
+                        //Se muestra el mensaje de error
+                        divMsgError.Style.Add("display", "block");
+                        divMsgSuccess.Style.Add("display", "none");
+                        lblMsgError.Text = M;
+
+                        return;
                     }
                    
 
@@ -426,7 +476,8 @@ namespace SIP.Formas.Ventas
             if (checkProductos.Items.Count == 0)
                 _IDReceta.Value = string.Empty;
 
-            
+            OcultarError();
+
             BindGridProductosVenta();
 
         }
@@ -453,14 +504,16 @@ namespace SIP.Formas.Ventas
 
         protected void gridRecetas_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            gridRecetas.PageIndex = e.NewPageIndex;
-            BindGridRecetas();
+            //gridRecetas.PageIndex = e.NewPageIndex;
+            //BindGridRecetas();
         }
 
         protected void gridProductos_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             gridProductos.EditIndex = -1;
             BindGridProductosVenta();
+
+            OcultarError();
         }
 
         protected void gridProductos_RowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -491,19 +544,26 @@ namespace SIP.Formas.Ventas
             uow.ArticuloVentaBusinessLogic.Update(objArticulo);
             uow.SaveChanges();
 
-            //SI HUBO ERORRES AL ELIMINAR REGISTROS PREVIOS
+            //SI HUBO ERORRES 
             if (uow.Errors.Count > 0)
             {
                 foreach (string m in uow.Errors)
                     M += m;
 
-                //return M;
+                //Se muestra el error 
+                divMsgError.Style.Add("display", "block");
+                divMsgSuccess.Style.Add("display", "none");
+                lblMsgError.Text = M;
+
+                return;
             }
 
             // Cancelamos la edicion del grid
             gridProductos.EditIndex = -1;
 
             BindGridProductosVenta();
+
+            OcultarError();
 
         }
 
@@ -512,6 +572,8 @@ namespace SIP.Formas.Ventas
         {
             gridProductos.EditIndex = e.NewEditIndex;
             BindGridProductosVenta();
+
+            OcultarError();
         }
 
         protected void gridProductos_RowDeleting(object sender, GridViewDeleteEventArgs e)
@@ -529,10 +591,17 @@ namespace SIP.Formas.Ventas
                 foreach (string m in uow.Errors)
                     M += m;
 
-                //return M;
+                //Se muestra el error
+                divMsgError.Style.Add("display", "block");
+                divMsgSuccess.Style.Add("display", "none");
+                lblMsgError.Text = M;
+
+                return;
             }
 
             BindGridProductosVenta();
+
+            OcultarError();
         }
 
         protected void gridProductosCatalogo_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -594,7 +663,12 @@ namespace SIP.Formas.Ventas
                     foreach (string m in uow.Errors)
                         M += m;
 
-                    //return M;
+                    //Se muestra el error 
+
+                    divMsgError.Style.Add("display", "block");
+                    divMsgSuccess.Style.Add("display", "none");
+                    lblMsgError.Text = M;
+                    return;
                 }
 
             }
@@ -602,18 +676,57 @@ namespace SIP.Formas.Ventas
             _CadValoresSeleccionados.Value = string.Empty;
 
             BindGridProductosVenta();
+
+            OcultarError();
         }
 
         protected void btnAceptarVenta_Click(object sender, EventArgs e)
         {
-            CrearVenta();
+            string M = string.Empty;
+
+            M=CrearVenta();
+
+            //Se muestra el mensaje de error, si es que existe
+            if (!M.Equals(string.Empty))
+            {
+                divMsgError.Style.Add("display", "block");
+                divMsgSuccess.Style.Add("display", "none");
+                lblMsgError.Text = M;
+
+                return;
+            }
+
+            OcultarError();
         }
 
         protected void btnCancelarVenta_Click(object sender, EventArgs e)
         {
-            ResetearVenta();
+            string M = string.Empty;
+
+            M=ResetearVenta();
+
+            //Se muestra el mensaje de error
+            if (!M.Equals(string.Empty))
+            {
+                divMsgError.Style.Add("display", "block");
+                divMsgSuccess.Style.Add("display", "none");
+                lblMsgError.Text = M;
+
+                return;
+            }
+
+            OcultarError();
         }
-        
+
+        protected void btnConsultar_Click(object sender, EventArgs e)
+        {
+            OcultarError();
+
+            BindGridRecetas();
+
+        }
+
+       
 
     }
 

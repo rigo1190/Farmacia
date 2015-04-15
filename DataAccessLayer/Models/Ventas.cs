@@ -29,8 +29,8 @@ namespace DataAccessLayer.Models
         public int ClienteId { get; set; }
 
         public int? RecetaId { get; set; }
-                
 
+        public string FolioCadena { get; set; }
 
         public virtual Clientes Cliente { get; set; }
         public virtual Recetas Receta { get; set; }

@@ -249,53 +249,58 @@
 
                     </div>
                     <div class="panel-body">
-                        <asp:GridView AllowPaging="true" Width="1250px" OnPageIndexChanging="gridVentas_PageIndexChanging" OnRowDataBound="gridVentas_RowDataBound" PageSize="10" Height="25px" EnablePersistedSelection="true" ShowHeaderWhenEmpty="true" ID="gridVentas" DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
-                            <Columns>
-                                <asp:TemplateField HeaderText="Acciones">
-                                    <ItemTemplate>
-                                        <%--<asp:ImageButton OnClick="imgBtnEdit_Click" ID="imgBtnEdit" ToolTip="Editar" runat="server" ImageUrl="~/img/Edit1.png" />
-                                        <asp:ImageButton OnClick="imgBtnEliminarReceta_Click"  ID="imgBtnEliminar" ToolTip="Eliminar" runat="server" ImageUrl="~/img/close.png" OnClientClick="return fnc_Mensaje();"/>--%>
-                                    </ItemTemplate>
-                                    <HeaderStyle BackColor="#EEEEEE" />
-                                    <ItemStyle HorizontalAlign="right" VerticalAlign="Middle" Width="50px" BackColor="#EEEEEE" />
-                                </asp:TemplateField>
+                        <div style="height:330px; overflow:scroll">
+                             <asp:GridView Width="1250px" OnPageIndexChanging="gridVentas_PageIndexChanging" OnRowDataBound="gridVentas_RowDataBound" PageSize="10" Height="25px" EnablePersistedSelection="true" ShowHeaderWhenEmpty="true" ID="gridVentas" DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
+                                <Columns>
+                                    <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer"  HeaderText="Acciones">
+                                        <ItemTemplate>
+                                            <%--<asp:ImageButton OnClick="imgBtnEdit_Click" ID="imgBtnEdit" ToolTip="Editar" runat="server" ImageUrl="~/img/Edit1.png" />
+                                            <asp:ImageButton OnClick="imgBtnEliminarReceta_Click"  ID="imgBtnEliminar" ToolTip="Eliminar" runat="server" ImageUrl="~/img/close.png" OnClientClick="return fnc_Mensaje();"/>--%>
+                                        </ItemTemplate>
+                                        <HeaderStyle BackColor="#EEEEEE" />
+                                        <ItemStyle HorizontalAlign="right" VerticalAlign="Middle" Width="50px" BackColor="#EEEEEE" />
+                                    </asp:TemplateField>
 
-                                <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-Font-Size="Small" HeaderStyle-Width="120px" HeaderText="Número de Folio" SortExpression="Orden">
-                                    <ItemTemplate>
-                                        <%# DataBinder.Eval(Container.DataItem, "Folio") %>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
+                                    <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Center" ItemStyle-Font-Size="Small" HeaderStyle-Width="150px" HeaderText="Número de Folio" SortExpression="Orden">
+                                        <ItemTemplate>
+                                            <%# DataBinder.Eval(Container.DataItem, "Folio") %>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" />
+                                    </asp:TemplateField>
 
-                                <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-Font-Size="Smaller" HeaderText="Fecha" SortExpression="Orden">
-                                    <ItemTemplate>
-                                        <%#Convert.ToDateTime(DataBinder.Eval(Container.DataItem, "Fecha")).ToString("d")%>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
+                                    <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Center" ItemStyle-Font-Size="Smaller" HeaderText="Fecha" SortExpression="Orden">
+                                        <ItemTemplate>
+                                            <%#Convert.ToDateTime(DataBinder.Eval(Container.DataItem, "Fecha")).ToString("d")%>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" />
+                                    </asp:TemplateField>
 
-                                 <asp:TemplateField HeaderStyle-HorizontalAlign="Center" ItemStyle-Font-Size="Smaller"  HeaderText="Cliente" SortExpression="NOAplica">
-                                    <ItemTemplate>
-                                        <%# DataBinder.Eval(Container.DataItem, "Cliente.RazonSocial") %>
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Center" />
-                                </asp:TemplateField>
+                                    <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Center" ItemStyle-Font-Size="Smaller"  HeaderText="Cliente" SortExpression="NOAplica">
+                                        <ItemTemplate>
+                                            <%# DataBinder.Eval(Container.DataItem, "Cliente.RazonSocial") %>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" />
+                                    </asp:TemplateField>
 
-                                <asp:TemplateField ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Importe Total" SortExpression="NOAplica">
-                                    <ItemTemplate>
-                                        <%# DataBinder.Eval(Container.DataItem, "Importe") %>
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Center" />
-                                </asp:TemplateField>
+                                    <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Importe Total" SortExpression="NOAplica">
+                                        <ItemTemplate>
+                                            <%# DataBinder.Eval(Container.DataItem, "Importe") %>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" />
+                                    </asp:TemplateField>
 
-                                <asp:TemplateField HeaderStyle-HorizontalAlign="Justify" HeaderText="Imprimir" SortExpression="NOAplica">
+                                    <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Justify" HeaderText="Imprimir" SortExpression="NOAplica">
                                     <ItemTemplate>
                                         <button type="button" runat="server" id="btnVer"><span class="glyphicon glyphicon-print"></span></button>
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" />
                                 </asp:TemplateField>
 
-                            </Columns>
-                            <PagerSettings FirstPageText="Primera" LastPageText="Ultima" Mode="NextPreviousFirstLast" NextPageText="Siguiente" PreviousPageText="Anterior" />
-                        </asp:GridView>
+                                </Columns>
+                                <PagerSettings FirstPageText="Primera" LastPageText="Ultima" Mode="NextPreviousFirstLast" NextPageText="Siguiente" PreviousPageText="Anterior" />
+                             </asp:GridView>
+                        </div>
+                       
                     </div>
                 </div>
                 

@@ -79,6 +79,7 @@
     <Compile Include="Models\InventarioInicial.cs" />
     <Compile Include="Models\InventarioInicialArticulos.cs" />
     <Compile Include="Models\InventarioInicialArticulosCostos.cs" />
+    <Compile Include="Models\Paciente.cs" />
     <Compile Include="Models\PorcentajeIVA.cs" />
     <Compile Include="Models\Laboratorios.cs" />
     <Compile Include="Models\Lineas.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Models\Proveedores.cs" />
     <Compile Include="Models\RecetaArticulos.cs" />
     <Compile Include="Models\Recetas.cs" />
+    <Compile Include="Models\RecetasImagenes.cs" />
     <Compile Include="Models\Servicios.cs" />
     <Compile Include="Models\Sexos.cs" />
     <Compile Include="Models\TipoSalida.cs" />

@@ -22,6 +22,7 @@ namespace SIP.Formas.Ventas
             {
                 txtFechaI.Value = DateTime.Now.ToShortDateString();
                 txtFechaT.Value = DateTime.Now.ToShortDateString();
+                chkRango.Checked = true;
 
                 BindDropDowns();
 
@@ -29,6 +30,9 @@ namespace SIP.Formas.Ventas
                 List<DataAccessLayer.Models.AlmacenSalidasGenericas> list = ObtenerSalidasFiltro(filtro);
 
                 BindGridSalidas(list);
+
+                divFechaI.Style.Add("display", "block");
+                divFechaT.Style.Add("display", "block");
             }
 
         }
@@ -47,7 +51,7 @@ namespace SIP.Formas.Ventas
                            on a.UnidadesDeMedidaId equals um.Id
                            join p in uow.PresentacionesBL.Get()
                            on a.PresentacionId equals p.Id
-                           select new { Id = a.Id, Nombre = a.Nombre + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje });
+                           select new { Id = a.Id, Nombre = a.Nombre + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje }).OrderBy(e=>e.Nombre);
 
             ddlArticulos.DataSource = listArt;
             ddlArticulos.DataValueField = "Id";
@@ -62,7 +66,6 @@ namespace SIP.Formas.Ventas
             
 
         }
-
 
         private string ArmarFiltro()
         {
@@ -159,7 +162,10 @@ namespace SIP.Formas.Ventas
         private List<DataAccessLayer.Models.AlmacenSalidasGenericas> ObtenerSalidasFiltro(string filtro)
         {
             List<DataAccessLayer.Models.AlmacenSalidasGenericas> list = new List<DataAccessLayer.Models.AlmacenSalidasGenericas>();
-            string connString = @"data source=RIGO-PC\SQLEXPRESS;user id=sa;password=081995;initial catalog=BD3SoftInventarios;Persist Security Info=true";
+            //string connString = @"data source=RIGO-PC\SQLEXPRESS;user id=sa;password=081995;initial catalog=BD3SoftInventarios;Persist Security Info=true";
+            string connString = System.Configuration.ConfigurationManager.ConnectionStrings["BD3SoftInventarios"].ConnectionString;
+
+
             DataAccessLayer.Models.AlmacenSalidasGenericas salida;
             SqlConnection conn = null;
             string ids = string.Empty; ;
@@ -227,7 +233,7 @@ namespace SIP.Formas.Ventas
                 HtmlButton btnVer = (HtmlButton)e.Row.FindControl("btnVer");
 
                 if (btnVer != null)
-                    btnVer.Attributes["onclick"] = "fnc_MostrarVenta(" + id + ")";
+                    btnVer.Attributes["onclick"] = "fnc_MostrarSalida(" + id + ")";
 
             }
         }

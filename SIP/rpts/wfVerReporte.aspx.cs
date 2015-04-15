@@ -53,7 +53,13 @@ namespace SIP.rpts
                     rdc.RecordSelectionFormula = "{pa_VentasGenerales;1.VentaId} in [" + primerArray[0] + "]";
                     break;
 
+				case 4: //SALIDA
+                    rdc.SetParameterValue("@SalidaID", primerArray[0]);
+                    break;
 
+                case 5: //SALIDAS GENERALES
+                    rdc.RecordSelectionFormula = "{pa_SalidasGenerales;1.SalidaId} in [" + primerArray[0] + "]";
+                    break;
 
                 case 101: //COTIZACIONES TMP
                     rdc.SetParameterValue("proveedor", primerArray[0]);
@@ -143,7 +149,14 @@ namespace SIP.rpts
                 case 3:
                     nombreReporte = "rptVentasTotales.rpt";
                     break;
+					
+				case 4:
+                    nombreReporte = "rptSalida.rpt";
+                    break;
 
+                case 5:
+                    nombreReporte = "rptSalidasTotales.rpt";
+                    break;
 
                 case 101:
                     nombreReporte = "cotizacionesTMP.rpt";

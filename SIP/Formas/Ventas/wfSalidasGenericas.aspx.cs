@@ -48,7 +48,7 @@ namespace SIP.Formas.Ventas
                                EsMedicamento = a.esMedicamento,
                                PrecioVenta = a.PrecioVenta,
                                CantidadDisponible = a.CantidadDisponible
-                           });
+                           }).OrderBy(e=>e.Nombre);
 
             gridProductosCatalogo.DataSource = listArt.ToList();//uow.ArticulosBL.Get().ToList();
             gridProductosCatalogo.DataBind();
@@ -63,10 +63,15 @@ namespace SIP.Formas.Ventas
             gridProductos.DataBind();
         }
 
-        private void ResetearSalida()
+        private string ResetearSalida()
         {
+            string M = string.Empty;
+
             //Se eliminan los articulos de la tabla temporal
-            EliminarArticuloSalida();
+            M=EliminarArticuloSalida();
+
+            if (!M.Equals(string.Empty))
+                return M;
 
             //Se bindea el grid
             BindGridProductosSalidas();
@@ -76,13 +81,31 @@ namespace SIP.Formas.Ventas
 
             //Se limpian los campos de DAtos de la Salida
             txtFolio.Value = string.Empty;
-            txtFecha.Value = string.Empty;
+            txtFecha.Value = DateTime.Now.ToShortDateString();
             txtObservaciones.Value = string.Empty;
+
+            return M;
+        }
+
+        private int ObtenerMaxFolio()
+        {
+            int max = 1;
+
+            if (uow.AlmacenSalidasGenericasBL.Get().Count() > 0)
+                max = uow.AlmacenSalidasGenericasBL.Get().Max(e => e.Folio) + 1;
+
+            return max;
 
         }
 
+        private void OcultarError()
+        {
+            divMsgError.Style.Add("display", "none");
+            divMsgSuccess.Style.Add("display", "none");
+            lblMsgError.Text = "";
+        }
 
-        private void ActualizarProductosCatalogo(List<ArticuloSalidaGenerica> listArticulos)
+        private string ActualizarProductosCatalogo(List<ArticuloSalidaGenerica> listArticulos)
         {
             //Actualizar los articulos del catalalogo
 
@@ -107,15 +130,17 @@ namespace SIP.Formas.Ventas
                     foreach (string m in uow.Errors)
                         M += m;
 
-                    //return M;
+                    return M;
                 }
 
             }
 
             BindGridProductosCatalago();
+
+            return M;
         }
 
-        private void CrearArticulosMovimientos(int salidaId, List<ArticuloSalidaGenerica> listArticulos)
+        private string CrearArticulosMovimientos(int salidaId, List<ArticuloSalidaGenerica> listArticulos)
         {
             //Crear registros para la tabla de ArticulosMovimientos y sus detalles ArticulosMovimientosSalidas
             string M = string.Empty;
@@ -142,7 +167,7 @@ namespace SIP.Formas.Ventas
                 foreach (string m in uow.Errors)
                     M += m;
 
-                //return M;
+                return M;
             }
 
             //Se prosigue a llenar el detalle en ArticulosMovimientosSalidas
@@ -164,15 +189,17 @@ namespace SIP.Formas.Ventas
                     foreach (string m in uow.Errors)
                         M += m;
 
-                    //return M;
+                    return M;
                 }
 
             }
 
+            return M;
+
 
         }
 
-        private void EliminarArticuloSalida()
+        private string EliminarArticuloSalida()
         {
             int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
 
@@ -189,21 +216,21 @@ namespace SIP.Formas.Ventas
                     foreach (string m in uow.Errors)
                         M += m;
 
-                    //return M;
+                    return M;
                 }
             }
 
-
+            return M;
         }
 
-        private void CrearSalida()
+        private string CrearSalida()
         {
             string M = string.Empty;
             int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
 
             AlmacenSalidasGenericas salida = new AlmacenSalidasGenericas();
 
-            salida.Folio = Utilerias.StrToInt(txtFolio.Value);
+            salida.Folio = ObtenerMaxFolio();
             salida.Ejercicio = 2015; //???????
             salida.Fecha = Convert.ToDateTime(txtFecha.Value);
             salida.TipoSalidaId = Utilerias.StrToInt(ddlTipos.SelectedValue);
@@ -218,7 +245,7 @@ namespace SIP.Formas.Ventas
                 foreach (string m in uow.Errors)
                     M += m;
 
-                //return M;
+                return M;
             }
 
             //Se prosigue a llenar el detalle en AlmacenSalidasGenericasArticulos
@@ -244,18 +271,32 @@ namespace SIP.Formas.Ventas
                     foreach (string m in uow.Errors)
                         M += m;
 
-                    //return M;
+                    return M;
                 }
 
             }
 
 
-            ActualizarProductosCatalogo(listArticulos);  //Se actualizan cantidades del articulo en el catalogo
+            M=ActualizarProductosCatalogo(listArticulos);  //Se actualizan cantidades del articulo en el catalogo
 
-            CrearArticulosMovimientos(salida.Id, listArticulos);  //Se generan registros en ArticulosMovimientos y sus detalles
+            if (!M.Equals(string.Empty))
+                return M;
 
-            ResetearSalida();  //Se limpian los campos para una nueva salida
+            M=CrearArticulosMovimientos(salida.Id, listArticulos);  //Se generan registros en ArticulosMovimientos y sus detalles
 
+            if (!M.Equals(string.Empty))
+                return M;
+
+            M=ResetearSalida();  //Se limpian los campos para una nueva salida
+
+
+            if (!M.Equals(string.Empty))
+                return M;
+
+            //Se muestra la Salida
+            ClientScript.RegisterStartupScript(this.GetType(), "script", "fnc_MostrarSalida(" + salida.Id + ")", true);
+
+            return M;
         }
 
 
@@ -295,7 +336,11 @@ namespace SIP.Formas.Ventas
                     foreach (string m in uow.Errors)
                         M += m;
 
-                    //return M;
+                    divMsgError.Style.Add("display", "block");
+                    divMsgSuccess.Style.Add("display", "none");
+                    lblMsgError.Text = M;
+
+                    return;
                 }
 
             }
@@ -303,6 +348,8 @@ namespace SIP.Formas.Ventas
             _CadValoresSeleccionados.Value = string.Empty;
 
             BindGridProductosSalidas();
+
+            OcultarError();
         }
 
 
@@ -331,18 +378,21 @@ namespace SIP.Formas.Ventas
         {
             gridProductosCatalogo.PageIndex = e.NewPageIndex;
             BindGridProductosCatalago();
+            OcultarError();
         }
 
         protected void gridProductos_RowEditing(object sender, GridViewEditEventArgs e)
         {
             gridProductos.EditIndex = e.NewEditIndex;
             BindGridProductosSalidas();
+            OcultarError();
         }
 
         protected void gridProductos_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             gridProductos.EditIndex = -1;
             BindGridProductosSalidas();
+            OcultarError();
         }
 
         protected void gridProductos_RowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -364,13 +414,19 @@ namespace SIP.Formas.Ventas
                 foreach (string m in uow.Errors)
                     M += m;
 
-                //return M;
+                divMsgError.Style.Add("display", "block");
+                divMsgSuccess.Style.Add("display", "none");
+                lblMsgError.Text = M;
+
+                return;
             }
 
             // Cancelamos la edicion del grid
             gridProductos.EditIndex = -1;
 
             BindGridProductosSalidas();
+
+            OcultarError();
         }
 
         protected void gridProductos_RowDeleting(object sender, GridViewDeleteEventArgs e)
@@ -388,20 +444,54 @@ namespace SIP.Formas.Ventas
                 foreach (string m in uow.Errors)
                     M += m;
 
-                //return M;
+                divMsgError.Style.Add("display", "block");
+                divMsgSuccess.Style.Add("display", "none");
+                lblMsgError.Text = M;
+
+                return;
             }
 
             BindGridProductosSalidas();
+
+            OcultarError();
         }
 
         protected void btnGenerarSalida_Click(object sender, EventArgs e)
         {
-            CrearSalida();
+            string M = string.Empty;
+
+            M=CrearSalida();
+
+            //Se muestra el mensaje de error, si es que existe
+            if (!M.Equals(string.Empty))
+            {
+                divMsgError.Style.Add("display", "block");
+                divMsgSuccess.Style.Add("display", "none");
+                lblMsgError.Text = M;
+
+                return;
+            }
+
+            OcultarError();
         }
 
         protected void btnCancelarSalida_Click(object sender, EventArgs e)
         {
-            ResetearSalida();
+            string M = string.Empty;
+
+            M=ResetearSalida();
+
+            //Se muestra el mensaje de error
+            if (!M.Equals(string.Empty))
+            {
+                divMsgError.Style.Add("display", "block");
+                divMsgSuccess.Style.Add("display", "none");
+                lblMsgError.Text = M;
+
+                return;
+            }
+
+            OcultarError();
         }
     }
 }

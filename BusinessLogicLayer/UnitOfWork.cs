@@ -79,7 +79,8 @@ namespace BusinessLogicLayer
         private IBusinessLogic<CotizacionesTMP> cotizacionestmpBL;
         private IBusinessLogic<CotizacionesTMPproveedores> cotizacionestmpproveedoresBL;
         private IBusinessLogic<CotizacionesTMPasignaciones> cotizacionestmpasignacionesBL;
-
+		private IBusinessLogic<RecetasImagenes> recetasImagenesBL;
+        private IBusinessLogic<Paciente> pacientesBL;
 
         public UnitOfWork()
         {
@@ -91,6 +92,34 @@ namespace BusinessLogicLayer
             this.usuarioId = Utilerias.StrToInt(usuarioId);
             this.contexto = new Contexto();
         }
+
+
+ 		public IBusinessLogic<Paciente> PacienteBusinessLogic
+        {
+            get
+            {
+                if (this.pacientesBL == null)
+                {
+                    this.pacientesBL = new GenericBusinessLogic<Paciente>(contexto);
+                }
+
+                return pacientesBL;
+            }
+        }
+
+        public IBusinessLogic<RecetasImagenes> RecetasImagenesBusinessLogic
+        {
+            get
+            {
+                if (this.recetasImagenesBL == null)
+                {
+                    this.recetasImagenesBL = new GenericBusinessLogic<RecetasImagenes>(contexto);
+                }
+
+                return recetasImagenesBL;
+            }
+        }
+
 
         public IBusinessLogic<TipoSalida> TipoSalidaBusinessLogic
         {

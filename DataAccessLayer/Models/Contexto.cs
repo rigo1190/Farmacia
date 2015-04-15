@@ -126,6 +126,9 @@ namespace DataAccessLayer.Models
         public virtual DbSet<CotizacionesTMPasignaciones> DBScotizacionestmpasignaciones { get; set; }
 
         public virtual DbSet<PorcentajeIVA> DBSiva { get; set; }
+		
+		public virtual DbSet<RecetasImagenes> DBSRecetasImagenes { get; set; }
+        public virtual DbSet<Paciente> DBSPaciente { get; set; }
 
 
         }

@@ -1196,6 +1196,16 @@
       <DependentUpon>rptReceta.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="rpts\rptSalida.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptSalida.rpt</DependentUpon>
+    </Compile>
+    <Compile Include="rpts\rptSalidasTotales.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptSalidasTotales.rpt</DependentUpon>
+    </Compile>
     <Compile Include="rpts\rptVentasTotales.cs">
       <DependentUpon>rptVentasTotales.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1303,6 +1313,14 @@
     <EmbeddedResource Include="rpts\rptReceta.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptReceta.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rpts\rptSalida.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptSalida.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rpts\rptSalidasTotales.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptSalidasTotales.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="rpts\rptVentasTotales.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
