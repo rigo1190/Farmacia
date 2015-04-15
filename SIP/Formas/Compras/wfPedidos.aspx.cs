@@ -66,6 +66,8 @@ namespace SIP.Formas.Compras
             {
                 divAsignar.Style.Add("display", "none");
                 divPedidos.Style.Add("display", "block");
+
+                cargarPedidos();
             }
 
 
@@ -250,24 +252,183 @@ namespace SIP.Formas.Compras
             uow.CotizacionesBL.Update(cotizacion);
             uow.SaveChanges();
 
-            Response.Redirect("wfCotizaciones.aspx");
 
-            //List<CotizacionesTMPasignaciones> listaProveedores = uow.CotizacionesTMPAsignacionesBL.Get(p => p.CotizacionId == idCotizacion).Select(q => q.ProveedorId).Distinct().ToList();
+            divAsignar.Style.Add("display", "none");
+            divPedidos.Style.Add("display", "block");
 
-
-
-
+            cargarPedidos();
 
 
-
+          }
 
 
 
 
+        private void cargarPedidos()
+        {
 
+            int idCotizacion = int.Parse(Session["XCotizacionId"].ToString());
+
+
+            List<Pedidos> listaPedidos = uow.PedidosBL.Get(p => p.CotizacionId == idCotizacion).ToList();
+            
+
+            int i = 0;
+            foreach (Pedidos padre in listaPedidos)
+            {
+                i++;
+
+
+                System.Web.UI.HtmlControls.HtmlGenericControl divPanel = new System.Web.UI.HtmlControls.HtmlGenericControl("DIV");
+                System.Web.UI.HtmlControls.HtmlGenericControl divPanelHeading = new System.Web.UI.HtmlControls.HtmlGenericControl("DIV");
+                System.Web.UI.HtmlControls.HtmlGenericControl divPanelCollapse = new System.Web.UI.HtmlControls.HtmlGenericControl("DIV");
+                System.Web.UI.HtmlControls.HtmlGenericControl divPanelBody = new System.Web.UI.HtmlControls.HtmlGenericControl("DIV");
+
+                System.Web.UI.HtmlControls.HtmlGenericControl h4 = new System.Web.UI.HtmlControls.HtmlGenericControl("H4");
+                System.Web.UI.HtmlControls.HtmlGenericControl a = new System.Web.UI.HtmlControls.HtmlGenericControl("A");
+
+                System.Web.UI.HtmlControls.HtmlGenericControl p = new System.Web.UI.HtmlControls.HtmlGenericControl("P");
+
+                System.Web.UI.HtmlControls.HtmlGenericControl addConcepto = new System.Web.UI.HtmlControls.HtmlGenericControl("A");
+
+                //para el detalle
+                System.Web.UI.HtmlControls.HtmlGenericControl tabla = new System.Web.UI.HtmlControls.HtmlGenericControl("TABLE");
+
+                //para el subacordeon
+                System.Web.UI.HtmlControls.HtmlGenericControl subAcordeon = new System.Web.UI.HtmlControls.HtmlGenericControl("DIV");
+
+
+
+                //heading
+                divPanelHeading.Attributes.Add("class", "panel-heading");
+
+                h4.Attributes.Add("class", "panel-title");
+
+                a.Attributes.Add("data-toggle", "collapse");
+                a.Attributes.Add("data-parent", "#accordion");
+                a.Attributes.Add("href", "#collapse" + i.ToString());
+                a.InnerText = padre.Folio + " : " + padre.Proveedor.RazonSocial;
+
+                h4.Controls.Add(a);
+                divPanelHeading.Controls.Add(h4);
+
+
+
+
+
+
+                //Collapse
+                divPanelCollapse.Attributes.Add("id", "collapse" + i.ToString());
+                divPanelCollapse.Attributes.Add("class", "panel-collapse collapse");
+
+
+                divPanelBody.Attributes.Add("class", "panel-body");
+
+
+                addConcepto.Attributes.Add("href", ResolveClientUrl("~/Formas/Catalogos/wfArticulosAdd.aspx?grupo=" + padre.Id));
+                addConcepto.InnerText = "Ver Reporte";
+
+
+
+                divPanelBody.Controls.Add(addConcepto);
+                cargardetalle(padre.Id, tabla);
+                divPanelBody.Controls.Add(tabla);
+
+
+
+
+
+
+                divPanelCollapse.Controls.Add(divPanelBody);
+
+
+                //Agregar Elemento
+                divPanel.Attributes.Add("class", "panel panel-default");
+                divPanel.Controls.Add(divPanelHeading);
+                divPanel.Controls.Add(divPanelCollapse);
+
+                this.accordion.Controls.Add(divPanel);
+
+
+
+            }
 
 
         }
+
+
+
+
+
+        private void cargardetalle(int grupo, System.Web.UI.HtmlControls.HtmlGenericControl tabla)
+        {
+
+            List<PedidosArticulos> detalle = uow.PedidosArticulosBL.Get(q => q.PedidoId == grupo ).ToList();
+
+            if (detalle.Count == 0)
+                return;
+
+
+            tabla.Attributes.Add("class", "table");
+            tabla.Attributes.Add("cellspacing", "0");
+
+            System.Web.UI.HtmlControls.HtmlGenericControl trHead = new System.Web.UI.HtmlControls.HtmlGenericControl("TR");
+            System.Web.UI.HtmlControls.HtmlGenericControl thOne = new System.Web.UI.HtmlControls.HtmlGenericControl("TH");
+            System.Web.UI.HtmlControls.HtmlGenericControl thTwo = new System.Web.UI.HtmlControls.HtmlGenericControl("TH");
+            System.Web.UI.HtmlControls.HtmlGenericControl thThree = new System.Web.UI.HtmlControls.HtmlGenericControl("TH");
+            System.Web.UI.HtmlControls.HtmlGenericControl thFour = new System.Web.UI.HtmlControls.HtmlGenericControl("TH");
+            System.Web.UI.HtmlControls.HtmlGenericControl thFive = new System.Web.UI.HtmlControls.HtmlGenericControl("TH");
+
+
+            trHead.Attributes.Add("align", "center");
+
+
+            thOne.InnerText = "Codigo";
+            thTwo.InnerText = "Nombre";
+            thThree.InnerText = "Unidad de Medida";
+            thFour.InnerText = "Presentación";
+            thFive.InnerText = "Cantidad";
+
+            trHead.Controls.Add(thOne);
+            trHead.Controls.Add(thTwo);
+            trHead.Controls.Add(thThree);
+            trHead.Controls.Add(thFour);
+            trHead.Controls.Add(thFive);
+
+            tabla.Controls.Add(trHead);
+
+
+            foreach (PedidosArticulos item in detalle)
+            {
+
+                System.Web.UI.HtmlControls.HtmlGenericControl tr = new System.Web.UI.HtmlControls.HtmlGenericControl("TR");
+                System.Web.UI.HtmlControls.HtmlGenericControl tdOne = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
+                System.Web.UI.HtmlControls.HtmlGenericControl tdTwo = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
+                System.Web.UI.HtmlControls.HtmlGenericControl tdThree = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
+                System.Web.UI.HtmlControls.HtmlGenericControl tdFour = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
+
+
+                tdOne.Attributes.Add("align", "left");
+                tdOne.InnerText = item.Clave;
+                tdTwo.InnerText = item.Nombre;
+                tdThree.InnerText = item.UnidadesDeMedida.Nombre;
+                tdFour.InnerText = item.Presentacion.Nombre;
+
+
+
+                tr.Controls.Add(tdOne);
+                tr.Controls.Add(tdTwo);
+                tr.Controls.Add(tdThree);
+                tr.Controls.Add(tdFour);
+
+
+                tabla.Controls.Add(tr);
+            }
+        }
+
+
+
+
 
     }
 }

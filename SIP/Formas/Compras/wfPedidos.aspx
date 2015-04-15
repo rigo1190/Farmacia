@@ -120,6 +120,13 @@
 
     <div id="divPedidos" runat="server" class="panel panel-success">
 
+        <div class="bs-example">
+            <div class="panel-group" id="accordion" runat="server">
+
+                
+
+            </div>
+            </div>
 
     </div>
 
