@@ -70,8 +70,15 @@ namespace BusinessLogicLayer
         private IBusinessLogic<ArticuloSalidaGenerica> articuloSalidaGenericaBL;
         private IBusinessLogic<TipoSalida> tipoSalidaBL;
 
+        private IBusinessLogic<PorcentajeIVA> porcentajeivaBL;
+
         private IBusinessLogic<Cotizaciones> cotizacionesBL;
+        private IBusinessLogic<CotizacionesArticulos> cotizacionesarticulosBL;
         private IBusinessLogic<CotizacionesProveedores> cotizacionesproveedoresBL;
+
+        private IBusinessLogic<CotizacionesTMP> cotizacionestmpBL;
+        private IBusinessLogic<CotizacionesTMPproveedores> cotizacionestmpproveedoresBL;
+        private IBusinessLogic<CotizacionesTMPasignaciones> cotizacionestmpasignacionesBL;
 
 
         public UnitOfWork()
@@ -582,6 +589,20 @@ namespace BusinessLogicLayer
         }
 
 
+        public IBusinessLogic<PorcentajeIVA> PorcentajeIVABL
+        {
+
+            get
+            {
+                if (this.porcentajeivaBL == null)
+                {
+
+                    this.porcentajeivaBL = new GenericBusinessLogic<PorcentajeIVA>(contexto);
+                }
+                return this.porcentajeivaBL;
+            }
+        }
+
 
 
         public IBusinessLogic<Cotizaciones> CotizacionesBL
@@ -596,7 +617,19 @@ namespace BusinessLogicLayer
             }
         }
 
+        
 
+
+        public IBusinessLogic <CotizacionesArticulos> CotizacionesArticulosBL{
+            get
+            {
+                if(this.cotizacionesarticulosBL == null)
+                {
+                    this.cotizacionesarticulosBL = new GenericBusinessLogic<CotizacionesArticulos>(contexto);
+                }
+                return this.cotizacionesarticulosBL;
+            }
+        }
 
         public IBusinessLogic<CotizacionesProveedores> CotizacionesProveedoresBL
         {
@@ -609,6 +642,52 @@ namespace BusinessLogicLayer
                 return this.cotizacionesproveedoresBL;
             }
         }
+
+        public IBusinessLogic<CotizacionesTMP> CotizacionesTMPBL
+        {
+            get
+            {
+                if (this.cotizacionestmpBL == null)
+                {
+                    this.cotizacionestmpBL = new GenericBusinessLogic<CotizacionesTMP>(contexto);
+                }
+                return this.cotizacionestmpBL;
+            }
+        }
+        public IBusinessLogic<CotizacionesTMPproveedores> CotizacionesTMPproveedoresBL
+        {
+            get
+            {
+                if (this.cotizacionestmpproveedoresBL == null)
+                {
+                    this.cotizacionestmpproveedoresBL = new GenericBusinessLogic<CotizacionesTMPproveedores>(contexto);
+                }
+                return this.cotizacionestmpproveedoresBL;
+            }
+        }
+
+
+        public IBusinessLogic<CotizacionesTMPasignaciones> CotizacionesTMPAsignacionesBL
+        {
+            get
+            {
+                if (this.cotizacionestmpasignacionesBL == null)
+                {
+                    this.cotizacionestmpasignacionesBL = new GenericBusinessLogic<CotizacionesTMPasignaciones>(contexto);
+                }
+                return this.cotizacionestmpasignacionesBL;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
 
         public void SaveChanges()
         {

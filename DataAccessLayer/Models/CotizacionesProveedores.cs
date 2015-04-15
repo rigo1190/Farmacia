@@ -10,13 +10,13 @@ namespace DataAccessLayer.Models
 {
     public class CotizacionesProveedores:Generica
     {
-        public int UsuarioId { get; set; }
+        public int CotizacionId { get; set; }
         public int ProveedorId { get; set; }
 
-        public int Cantidad { get; set; }
+        
 
         public virtual Proveedores Proveedor { get; set; }
 
-        public virtual Usuario Usuario { get; set; }
+        public virtual Cotizaciones Cotizacion { get; set; }
     }
 }

@@ -55,7 +55,7 @@ namespace SIP.rpts
 
 
 
-                case 101: //COTIZACIONES 
+                case 101: //COTIZACIONES TMP
                     rdc.SetParameterValue("proveedor", primerArray[0]);
                     break;
 
@@ -63,7 +63,9 @@ namespace SIP.rpts
                     rdc.SetParameterValue("proveedor", primerArray[0]);
                     break;
 
-
+                case 103: //COTIZACIONES 
+                    rdc.SetParameterValue("cotizacion", primerArray[0]);
+                    break;
 
 
                 case 111: //Facturas de Pedidos
@@ -144,16 +146,21 @@ namespace SIP.rpts
 
 
                 case 101:
-                    nombreReporte = "cotizaciones.rpt";
+                    nombreReporte = "cotizacionesTMP.rpt";
                     break;
 
                 case 102:
                     nombreReporte = "cotizacionesConPrecio.rpt";
                     break;
 
+                case 103:
+                    nombreReporte = "Cotizaciones.rpt";
+                    break;
+
                 case 111:
                     nombreReporte = "FacturasCompras.rpt";
                     break;
+
 
 
                 case 121:

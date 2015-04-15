@@ -8,18 +8,15 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Models
 {
-    public class PedidosArticulos:Generica
+    public class CotizacionesTMPproveedores:Generica
     {
-
-        public int PedidoId { get; set; }
-        public int ArticuloId { get; set; }
+        public int UsuarioId { get; set; }
+        public int ProveedorId { get; set; }
 
         public int Cantidad { get; set; }
-        
 
-        public virtual Pedidos Pedido { get; set; }
-        public virtual Articulos Articulo { get; set; }
+        public virtual Proveedores Proveedor { get; set; }
 
-
+        public virtual Usuario Usuario { get; set; }
     }
 }

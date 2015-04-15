@@ -17,21 +17,22 @@ namespace DataAccessLayer.Models
         }
 
         public int Ejercicio { get; set; }
- 
-        
+        public int IdFolio { get; set; }
+        public string Folio { get; set; }
+
+        public int CotizacionId { get; set; }         
 
         public int ProveedorId { get; set; }
-        public int Folio { get; set; }
+ 
         public DateTime Fecha { get; set; }
-        public decimal Importe { get; set; }
         public int Status { get; set; }
 
-        public int StatusAlmacen { get; set; }
-
+        
         [StringLength(255, ErrorMessage = "El campo {0} debe contener un máximo de {1} caracteres")]
         public string Observaciones { get; set; }
 
 
+        public virtual Cotizaciones Cotizacion { get; set; }
         public virtual Proveedores Proveedor { get; set; }
 
         public virtual ICollection<PedidosArticulos> detallePedidosArticulos { get; set; }

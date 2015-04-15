@@ -17,7 +17,7 @@ namespace SIP
         private UnitOfWork uow;
         public string clave = "3ncript4d4"; // Clave de cifrado. ///
         private int ejercicioActivoId;
-
+        
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -25,6 +25,11 @@ namespace SIP
 
             ejercicioActivoId = uow.EjercicioBusinessLogic.Get(ej => ej.Estatus == enumEstatusEjercicio.Activo).FirstOrDefault().Id;
             Session["EjercicioId"] = ejercicioActivoId;
+
+            PorcentajeIVA iva = uow.PorcentajeIVABL.Get().FirstOrDefault();
+            Session["IVA"] = iva.Porcentaje.ToString();
+
+
 
         }
 

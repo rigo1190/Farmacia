@@ -37,6 +37,7 @@ namespace DataAccessLayer.Models
 
         public string Observaciones { get; set; }
 
+        public int? LaboratorioId { get; set; }
         public int Status { get; set; }
 
         public double StockMinimo { get; set; }
@@ -57,7 +58,7 @@ namespace DataAccessLayer.Models
 
         public virtual FPSfactores FPSfactor { get; set; }
 
-
+        public virtual Laboratorios Laboratorio { get; set; }
 
 
     }

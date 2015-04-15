@@ -10,13 +10,15 @@ namespace DataAccessLayer.Models
 {
     public class Cotizaciones:Generica
     {
-        public int UsuarioId { get; set; }
-        public int ArticuloId { get; set; }
 
-        public int Cantidad { get; set; }
+        public int Ejercicio { get; set; }
+        public int IdFolio { get; set; }
+        public string Folio { get; set; }
 
-        public virtual Articulos Articulo { get; set; }
+        public DateTime Fecha { get; set; }
 
-        public virtual Usuario Usuario { get; set; }
+        public decimal CostoAproximado { get; set; }
+        public int Status { get; set; }
+
     }
 }

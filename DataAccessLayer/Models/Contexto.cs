@@ -118,8 +118,14 @@ namespace DataAccessLayer.Models
         public virtual DbSet<TipoSalida> DBSTipoSalida { get; set; }
 
         public virtual DbSet<Cotizaciones> DBScotizaciones { get; set; }
+        public virtual DbSet<CotizacionesArticulos> CBScotizacionesarticulos { get; set; }
         public virtual DbSet<CotizacionesProveedores> DBScotizacionesproveedores { get; set; }
+        public virtual DbSet<CotizacionesTMP> DBScotizacionestmp { get; set; }
+        public virtual DbSet<CotizacionesTMPproveedores> DBScotizacionestmpproveedores { get; set; }
 
+        public virtual DbSet<CotizacionesTMPasignaciones> DBScotizacionestmpasignaciones { get; set; }
+
+        public virtual DbSet<PorcentajeIVA> DBSiva { get; set; }
 
 
         }

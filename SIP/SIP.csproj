@@ -816,8 +816,10 @@
     <Content Include="Formas\Catalogos\wfProveedores.aspx" />
     <Content Include="Formas\Catalogos\wfUnidadesDeMedida.aspx" />
     <Content Include="Formas\Compras\wfCotizaciones.aspx" />
+    <Content Include="Formas\Compras\wfCotizacionesAdd.aspx" />
     <Content Include="Formas\Compras\wfFacturas.aspx" />
     <Content Include="Formas\Compras\wfFacturasAdd.aspx" />
+    <Content Include="Formas\Compras\wfPedidos.aspx" />
     <Content Include="Formas\frmSelectorEjercicio.aspx" />
     <Content Include="Formas\Inventarios\wfExistencias.aspx" />
     <Content Include="Formas\Inventarios\wfKardex.aspx" />
@@ -1008,6 +1010,13 @@
     <Compile Include="Formas\Compras\wfCotizaciones.aspx.designer.cs">
       <DependentUpon>wfCotizaciones.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Formas\Compras\wfCotizacionesAdd.aspx.cs">
+      <DependentUpon>wfCotizacionesAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formas\Compras\wfCotizacionesAdd.aspx.designer.cs">
+      <DependentUpon>wfCotizacionesAdd.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Formas\Compras\wfFacturas.aspx.cs">
       <DependentUpon>wfFacturas.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1021,6 +1030,13 @@
     </Compile>
     <Compile Include="Formas\Compras\wfFacturasAdd.aspx.designer.cs">
       <DependentUpon>wfFacturasAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Compras\wfPedidos.aspx.cs">
+      <DependentUpon>wfPedidos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formas\Compras\wfPedidos.aspx.designer.cs">
+      <DependentUpon>wfPedidos.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formas\frmSelectorEjercicio.aspx.cs">
       <DependentUpon>frmSelectorEjercicio.aspx</DependentUpon>
