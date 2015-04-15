@@ -406,13 +406,15 @@ namespace SIP.Formas.Compras
                 System.Web.UI.HtmlControls.HtmlGenericControl tdTwo = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
                 System.Web.UI.HtmlControls.HtmlGenericControl tdThree = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
                 System.Web.UI.HtmlControls.HtmlGenericControl tdFour = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
+                System.Web.UI.HtmlControls.HtmlGenericControl tdFive = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
 
 
                 tdOne.Attributes.Add("align", "left");
-                tdOne.InnerText = item.Clave;
-                tdTwo.InnerText = item.Nombre;
-                tdThree.InnerText = item.UnidadesDeMedida.Nombre;
-                tdFour.InnerText = item.Presentacion.Nombre;
+                tdOne.InnerText = item.Articulo.Clave;
+                tdTwo.InnerText = item.Articulo.Nombre;
+                tdThree.InnerText = item.Articulo.UnidadesDeMedida.Nombre;
+                tdFour.InnerText = item.Articulo.Presentacion.Nombre;
+                tdFive.InnerText = item.Cantidad.ToString();
 
 
 
@@ -420,6 +422,7 @@ namespace SIP.Formas.Compras
                 tr.Controls.Add(tdTwo);
                 tr.Controls.Add(tdThree);
                 tr.Controls.Add(tdFour);
+                tr.Controls.Add(tdFive);
 
 
                 tabla.Controls.Add(tr);

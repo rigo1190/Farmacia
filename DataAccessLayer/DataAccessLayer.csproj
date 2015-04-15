@@ -64,7 +64,9 @@
     <Compile Include="Models\Cotizaciones.cs" />
     <Compile Include="Models\CotizacionesArticulos.cs" />
     <Compile Include="Models\CotizacionesProveedores.cs" />
-    <Compile Include="Models\CotizacionesTMP.cs" />
+    <Compile Include="Models\CotizacionesTMP.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Models\CotizacionesTMPasignaciones.cs" />
     <Compile Include="Models\CotizacionesTMPproveedores.cs" />
     <Compile Include="Models\Ejercicio.cs" />
