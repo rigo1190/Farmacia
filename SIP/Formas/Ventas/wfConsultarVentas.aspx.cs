@@ -177,7 +177,7 @@ namespace SIP.Formas.Ventas
         {
             List<DataAccessLayer.Models.Ventas> list= new List<DataAccessLayer.Models.Ventas>();
             //string connString = @"data source=RIGO-PC\SQLEXPRESS;user id=sa;password=081995;initial catalog=BD3SoftInventarios;Persist Security Info=true";//System.Configuration.ConfigurationManager.ConnectionStrings[0].ConnectionString;
-            string connString = System.Configuration.ConfigurationManager.ConnectionStrings["BD3SoftInventarios"].ConnectionString;
+            string connString = System.Configuration.ConfigurationManager.ConnectionStrings[2].ConnectionString;
             DataAccessLayer.Models.Ventas venta;
             SqlConnection conn=null;
             string ids = string.Empty; ;

@@ -163,7 +163,7 @@ namespace SIP.Formas.Ventas
         {
             List<DataAccessLayer.Models.AlmacenSalidasGenericas> list = new List<DataAccessLayer.Models.AlmacenSalidasGenericas>();
             //string connString = @"data source=RIGO-PC\SQLEXPRESS;user id=sa;password=081995;initial catalog=BD3SoftInventarios;Persist Security Info=true";
-            string connString = System.Configuration.ConfigurationManager.ConnectionStrings["BD3SoftInventarios"].ConnectionString;
+            string connString = System.Configuration.ConfigurationManager.ConnectionStrings[2].ConnectionString;
 
 
             DataAccessLayer.Models.AlmacenSalidasGenericas salida;
