@@ -74,6 +74,11 @@ namespace SIP.rpts
                     break;
 
 
+                case 104: //Pedidos
+                    rdc.SetParameterValue("cotizacion", primerArray[0]);
+                    break;
+
+
                 case 111: //Facturas de Pedidos
                     rdc.RecordSelectionFormula = "{FacturasAlmacen.Id} = " + primerArray[0] ;
                     break;
@@ -168,6 +173,10 @@ namespace SIP.rpts
 
                 case 103:
                     nombreReporte = "Cotizaciones.rpt";
+                    break;
+
+                case 104:
+                    nombreReporte = "Pedidos.rpt";
                     break;
 
                 case 111:

@@ -28,7 +28,7 @@ namespace SIP.Formas.Compras
         {
             uow = new UnitOfWork(Session["IdUser"].ToString());
 
-            this.grid.DataSource = uow.FacturasAlmacenBL.Get();
+            this.grid.DataSource = uow.FacturasAlmacenBL.Get().OrderByDescending(p=>p.Id).ToList();
             this.grid.DataBind();
         }
 
@@ -39,17 +39,10 @@ namespace SIP.Formas.Compras
 
         protected void btnNuevo_Click(object sender, EventArgs e)
         {
-            int idUsuario = int.Parse(Session["IdUser"].ToString());
-            List<FacturasAlmacenArticulosTMP> lista;
-            lista = uow.FacturasAlmacenArticulosTMPBL.Get(p => p.UsuarioId == idUsuario).ToList();
-
-            foreach (FacturasAlmacenArticulosTMP item in lista)
-                uow.FacturasAlmacenArticulosTMPBL.Delete(item);
-
             
-            uow.SaveChanges();
 
-            Response.Redirect("wfFacturasAdd.aspx");
+            //Response.Redirect("wfFacturasAdd.aspx");
+            Response.Redirect("wfFacturasNueva.aspx");
         }
 
         protected void grid_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -68,10 +61,29 @@ namespace SIP.Formas.Compras
                     imgBut.Attributes["onclick"] = "fnc_AbrirReporte(" + id + ");return false;";
 
 
+
+
+
+
+                 
+
+
+
+
+
                
 
 
             }
+        }
+
+        protected void linkPrecios_Click(object sender, EventArgs e)
+        {
+            GridViewRow row = (GridViewRow)((LinkButton)sender).NamingContainer;
+
+            Session["XFacturaId"] = grid.DataKeys[row.RowIndex].Values["Id"].ToString();
+
+            Response.Redirect("wfFacturaCompararPreciosCatalogo.aspx");
         }
     }
 }

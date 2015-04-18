@@ -19,8 +19,22 @@ namespace DataAccessLayer.Models
         public decimal IVA { get; set; }
         public decimal Total { get; set; }
 
+        public int Adicional { get; set; }
+        public decimal PrecioDeCompraAnterior { get; set; }
+
+        public decimal Diferencia { get; set; }
+        public decimal PrecioVenta { get; set; }
+        public int Status { get; set; }
+        public string StatusNombre { get; set; }
+
         public virtual FacturasAlmacen FacturaAlmacen { get; set; }
         public virtual Articulos Articulo { get; set; }
+
+
+
+        
+
+
 
     }
 }

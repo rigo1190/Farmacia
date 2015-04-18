@@ -1,5 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/NavegadorPrincipal.Master" AutoEventWireup="true" CodeBehind="wfPedidos.aspx.cs" Inherits="SIP.Formas.Compras.wfPedidos" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+
+ 
+
+
 </asp:Content>
 
 
@@ -7,7 +11,7 @@
  
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-
+    <div class="container">
     
     <div class="panel-heading">
             <h3 class="panel-title">Generación de Pedidos</h3>
@@ -119,7 +123,7 @@
 
 
     <div id="divPedidos" runat="server" class="panel panel-success">
-
+        
         <div class="bs-example">
             <div class="panel-group" id="accordion" runat="server">
 
@@ -136,8 +140,10 @@
      
 
 <div style="display:none" runat="server">
-    <input type="hidden" runat="server" id="_URLVisor" />
+    <input type="hidden" runat="server" id="_URLVisor" />    
     </div>
 
 
+
+        </div>
 </asp:Content>

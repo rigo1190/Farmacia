@@ -18,6 +18,21 @@
  
 
 
+        function fnc_VerPedidos(id) {
+
+            var izq = (screen.width - 1000) / 2
+            var sup = (screen.height - 600) / 2
+            var param = id;
+                var argumentos = "?c=" + 104 + "&p=" + param;
+
+                url = $("#<%= _URLVisor.ClientID %>").val();
+
+                url += argumentos;
+                window.open(url, 'pmgw', 'toolbar=no,status=no,scrollbars=yes,resizable=yes,directories=no,location=no,menubar=no,width=1000,height=500,top=' + sup + ',left=' + izq);
+            }
+
+
+
     </script>
 </asp:Content>
 
@@ -73,9 +88,10 @@
                         <asp:TemplateField HeaderText="Acciones" ItemStyle-CssClass="col-md-1">
                         <ItemTemplate>
                             
-                            <asp:ImageButton ID="imgRPT" ToolTip="Editar" runat="server" ImageUrl="~/img/Sub.png" OnClick="imgRPT_Click"/>
+                            <asp:ImageButton ID="imgRPT" ToolTip="Ver Cotizaciones" runat="server" ImageUrl="~/img/Sub.png" OnClick="imgRPT_Click"/>
                             
-                            
+                            <asp:ImageButton ID="imgRptPedidos" ToolTip="Ver Pedidos" runat="server" ImageUrl="~/img/Sub.png" OnClick="imgRptPedidos_Click"/>
+
                         </ItemTemplate>
                         <HeaderStyle BackColor="#EEEEEE" />
                         <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" BackColor="#EEEEEE" />

@@ -20,8 +20,8 @@ namespace SIP.Formas.Compras
 
             if (!IsPostBack)
             {
-                _URLVisor.Value = ResolveClientUrl("~/rpts/wfVerReporte.aspx");
-
+                int idCotizacion = int.Parse(Session["XCotizacionId"].ToString());
+                
                 cargarForma();
                 BindGrid();
                 BindComboProveedores();
@@ -269,7 +269,7 @@ namespace SIP.Formas.Compras
 
             int idCotizacion = int.Parse(Session["XCotizacionId"].ToString());
 
-
+            uow = new UnitOfWork(Session["IdUser"].ToString());
             List<Pedidos> listaPedidos = uow.PedidosBL.Get(p => p.CotizacionId == idCotizacion).ToList();
             
 
@@ -319,18 +319,18 @@ namespace SIP.Formas.Compras
 
                 //Collapse
                 divPanelCollapse.Attributes.Add("id", "collapse" + i.ToString());
-                divPanelCollapse.Attributes.Add("class", "panel-collapse collapse");
+                divPanelCollapse.Attributes.Add("class", "panel-collapse collapse in");
 
 
                 divPanelBody.Attributes.Add("class", "panel-body");
 
 
-                addConcepto.Attributes.Add("href", ResolveClientUrl("~/Formas/Catalogos/wfArticulosAdd.aspx?grupo=" + padre.Id));
-                addConcepto.InnerText = "Ver Reporte";
+                //addConcepto.Attributes.Add("href", ResolveClientUrl("~/Formas/Catalogos/wfArticulosAdd.aspx?grupo=" + padre.Id));
+                //addConcepto.InnerText = "Ver Reporte";
+                //divPanelBody.Controls.Add(addConcepto);
 
 
-
-                divPanelBody.Controls.Add(addConcepto);
+                
                 cargardetalle(padre.Id, tabla);
                 divPanelBody.Controls.Add(tabla);
 
@@ -429,6 +429,7 @@ namespace SIP.Formas.Compras
             }
         }
 
+     
 
 
 

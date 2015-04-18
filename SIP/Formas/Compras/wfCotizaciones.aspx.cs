@@ -65,6 +65,12 @@ namespace SIP.Formas.Compras
                     imgBut.Attributes["onclick"] = "fnc_AbrirReporte(" + id + ");return false;";
 
 
+                ImageButton imgButPedido = (ImageButton)e.Row.FindControl("imgRptPedidos");
+                if (imgButPedido != null)
+                    imgButPedido.Attributes["onclick"] = "fnc_VerPedidos(" + id + ");return false;";
+
+
+                
 
 
                 LinkButton linkPedido = (LinkButton)e.Row.FindControl("linkPedidos");
@@ -108,6 +114,11 @@ namespace SIP.Formas.Compras
             Session["XCotizacionId"] = grid.DataKeys[row.RowIndex].Values["Id"].ToString();
 
             Response.Redirect("wfPedidos.aspx");
+        }
+
+        protected void imgRptPedidos_Click(object sender, ImageClickEventArgs e)
+        {
+
         }
 
 

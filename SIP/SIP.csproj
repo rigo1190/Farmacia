@@ -812,13 +812,16 @@
     <Content Include="Formas\Catalogos\wfArticulosAdd.aspx" />
     <Content Include="Formas\Catalogos\wfFPSfactores.aspx" />
     <Content Include="Formas\Catalogos\wfGruposProductos.aspx" />
+    <Content Include="Formas\Catalogos\wfLaboratorios.aspx" />
     <Content Include="Formas\Catalogos\wfPresentaciones.aspx" />
     <Content Include="Formas\Catalogos\wfProveedores.aspx" />
     <Content Include="Formas\Catalogos\wfUnidadesDeMedida.aspx" />
     <Content Include="Formas\Compras\wfCotizaciones.aspx" />
     <Content Include="Formas\Compras\wfCotizacionesAdd.aspx" />
+    <Content Include="Formas\Compras\wfFacturaCompararPreciosCatalogo.aspx" />
     <Content Include="Formas\Compras\wfFacturas.aspx" />
     <Content Include="Formas\Compras\wfFacturasAdd.aspx" />
+    <Content Include="Formas\Compras\wfFacturasNueva.aspx" />
     <Content Include="Formas\Compras\wfPedidos.aspx" />
     <Content Include="Formas\frmSelectorEjercicio.aspx" />
     <Content Include="Formas\Inventarios\wfExistencias.aspx" />
@@ -982,6 +985,13 @@
     <Compile Include="Formas\Catalogos\wfGruposProductos.aspx.designer.cs">
       <DependentUpon>wfGruposProductos.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Formas\Catalogos\wfLaboratorios.aspx.cs">
+      <DependentUpon>wfLaboratorios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\wfLaboratorios.aspx.designer.cs">
+      <DependentUpon>wfLaboratorios.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Formas\Catalogos\wfPresentaciones.aspx.cs">
       <DependentUpon>wfPresentaciones.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1017,6 +1027,13 @@
     <Compile Include="Formas\Compras\wfCotizacionesAdd.aspx.designer.cs">
       <DependentUpon>wfCotizacionesAdd.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Formas\Compras\wfFacturaCompararPreciosCatalogo.aspx.cs">
+      <DependentUpon>wfFacturaCompararPreciosCatalogo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formas\Compras\wfFacturaCompararPreciosCatalogo.aspx.designer.cs">
+      <DependentUpon>wfFacturaCompararPreciosCatalogo.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Formas\Compras\wfFacturas.aspx.cs">
       <DependentUpon>wfFacturas.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1030,6 +1047,13 @@
     </Compile>
     <Compile Include="Formas\Compras\wfFacturasAdd.aspx.designer.cs">
       <DependentUpon>wfFacturasAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Compras\wfFacturasNueva.aspx.cs">
+      <DependentUpon>wfFacturasNueva.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formas\Compras\wfFacturasNueva.aspx.designer.cs">
+      <DependentUpon>wfFacturasNueva.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formas\Compras\wfPedidos.aspx.cs">
       <DependentUpon>wfPedidos.aspx</DependentUpon>
@@ -1200,11 +1224,13 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>rptSalida.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="rpts\rptSalidasTotales.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>rptSalidasTotales.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="rpts\rptVentasTotales.cs">
       <DependentUpon>rptVentasTotales.rpt</DependentUpon>

@@ -10,7 +10,7 @@ namespace DataAccessLayer.Models
 {
     public class FacturasAlmacenArticulosTMP:Generica
     {
-        public int UsuarioId { get; set; }
+        public int PedidoId { get; set; }
         public int ArticuloId { get; set; }
         public int Cantidad { get; set; }
         public decimal Precio { get; set; }
@@ -18,8 +18,9 @@ namespace DataAccessLayer.Models
         public decimal IVA { get; set; }
         public decimal Total { get; set; }
 
+        public int CantidadExtra { get; set; }
 
-        public virtual Usuario Usuario { get; set; }
+        public virtual Pedidos Pedido { get; set; }
         public virtual Articulos Articulo { get; set; }
     }
 }

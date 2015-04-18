@@ -35,26 +35,32 @@
     
     <div id="divDatos" runat="server" class="panel panel-success">
         <div class="panel-heading">
-            <h3 class="panel-title">Facturas de Pedidos de Compras</h3>
+            <h3 class="panel-title">Facturas</h3>
         </div>
 
 
         <asp:GridView Height="25px" ShowHeaderWhenEmpty="true" CssClass="table" ID="grid" DataKeyNames="Id" AutoGenerateColumns="False" runat="server" OnRowDataBound="grid_RowDataBound">
                 <Columns>
 
+                    <asp:TemplateField HeaderText="Pedido" ItemStyle-CssClass="col-md-1">
+                        <ItemTemplate>
+                            <asp:Label ID="Label4" runat="server" Text='<%# Bind("Pedido.Folio") %>'></asp:Label>
+                        </ItemTemplate>                        
+                    </asp:TemplateField>
 
+                    <asp:TemplateField HeaderText="Proveedor" ItemStyle-CssClass="col-md-4">
+                        <ItemTemplate>
+                            <asp:Label ID="Label2Prov" runat="server" Text='<%# Bind("Proveedor.RazonSocial") %>'></asp:Label>
+                        </ItemTemplate>                        
+                    </asp:TemplateField>
 
-                    <asp:TemplateField HeaderText="Folio" ItemStyle-CssClass="col-md-1">
+                    <asp:TemplateField HeaderText="Factura" ItemStyle-CssClass="col-md-1">
                         <ItemTemplate>
                             <asp:Label ID="Label1" runat="server" Text='<%# Bind("FolioFactura") %>'></asp:Label>
                         </ItemTemplate>                        
                     </asp:TemplateField>
 
-                    <asp:TemplateField HeaderText="Proveedor" ItemStyle-CssClass="col-md-3">
-                        <ItemTemplate>
-                            <asp:Label ID="Label2Prov" runat="server" Text='<%# Bind("Proveedor.RazonSocial") %>'></asp:Label>
-                        </ItemTemplate>                        
-                    </asp:TemplateField>
+                    
 
                     <asp:TemplateField HeaderText="Fecha" ItemStyle-CssClass="col-md-2">
                         <ItemTemplate>
@@ -69,12 +75,14 @@
                         </ItemTemplate>                        
                     </asp:TemplateField>
 
-
-                    <asp:TemplateField HeaderText="Observaciones" ItemStyle-CssClass="col-md-3">
-                        <ItemTemplate>
-                            <asp:Label ID="Label4" runat="server" Text='<%# Bind("Observaciones") %>'></asp:Label>
-                        </ItemTemplate>                        
+                    <asp:TemplateField HeaderText="Comparar Precios" ItemStyle-CssClass="col-md-1">
+                        <ItemTemplate>                           
+                            <div id = "DIVPrecios" runat="server">
+                                <asp:LinkButton ID="linkPrecios" runat="server" PostBackUrl="#"  OnClick ="linkPrecios_Click">Comparar</asp:LinkButton>  
+                            </div>
+                        </ItemTemplate>
                     </asp:TemplateField>
+                    
 
 
                         <asp:TemplateField HeaderText="Acciones" ItemStyle-CssClass="col-md-1">
@@ -85,7 +93,7 @@
                             
                         </ItemTemplate>
                         <HeaderStyle BackColor="#EEEEEE" />
-                        <ItemStyle HorizontalAlign="right" VerticalAlign="Middle" BackColor="#EEEEEE" />
+                        <ItemStyle HorizontalAlign="center" VerticalAlign="Middle" BackColor="#EEEEEE" />
                     </asp:TemplateField>                                  
 
 

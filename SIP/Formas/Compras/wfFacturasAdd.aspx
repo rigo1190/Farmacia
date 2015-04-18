@@ -20,7 +20,7 @@
 
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="container">
+    <%--<div class="container">
 
             <div class="panel-footer alert alert-danger" id="divMsg" style="display:none" runat="server">
                 <asp:Label ID="lblMensajes" runat="server" Text=""></asp:Label>
@@ -221,6 +221,6 @@
                 </div>
         </div>   
 
-    </div>
+    </div>--%>
 
 </asp:Content>

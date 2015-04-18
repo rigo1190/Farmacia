@@ -98,9 +98,8 @@
 
                           <li runat="server" id="mnTechosFinancieros" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-random"></span> Compras<b class="caret"></b></a>
                              <ul class="dropdown-menu">
-                                  <li><a href="<%=ResolveClientUrl("~/Formas/Compras/wfCotizaciones.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Cotizaciones</a></li>                                                           
-                                  <li><a href="<%=ResolveClientUrl("~/Formas/Compras/wfFacturas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Registro de Facturas</a></li>                                                           
-                                 <li><span class="glyphicon glyphicon-minus"></span> Propuesta de Cambios de Precios</li>                                 
+                                  <li><a href="<%=ResolveClientUrl("~/Formas/Compras/wfCotizaciones.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Cotizaciones -->  Pedidos</a></li>                                                           
+                                  <li><a href="<%=ResolveClientUrl("~/Formas/Compras/wfFacturas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Facturas</a></li>                                                                                                                       
                              </ul>
                           </li>
 
@@ -130,11 +129,12 @@
 
                          <li runat="server" id="mnCatalogos" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Catálogos<b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfGruposProductos.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Grupo de Artículos</a></li>                              
+                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfGruposProductos.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Grupo de Productos</a></li>                              
                                 <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfArticulos.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Artículos</a></li>                             
                                 <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfUnidadesDeMedida.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Unidades de Medida</a></li>                              
                                 <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfPresentaciones.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Presentaciones</a></li>                               
                                 <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfFPSfactores.aspx") %>"><span class="glyphicon glyphicon-minus"></span> FPS</a></li>                                  
+                                <li><a href="<%=ResolveClientUrl( "~/Formas/Catalogos/wfLaboratorios.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Laboratorios</a></li>                                  
                                 <li>-_-</li>
                                 <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfProveedores.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Proveedores</a></li>  
                                                               

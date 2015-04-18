@@ -30,6 +30,10 @@
 
     <div id="divDatos" runat="server" class="panel panel-success">
 
+    <div id="divBtnNuevo" runat="server">
+        <asp:Button ID="btnNuevo" runat="server" Text="Agregar nuevo producto" CssClass="btn btn-primary" OnClick="btnNuevo_Click" AutoPostBack="false" />
+    </div>
+
         <div class="panel-heading">
              <div class="row">
                 <div class="col-md-8"><h3 class="panel-title"> <asp:Label ID="txtTitulo" runat="server" Text="Subprograma"></asp:Label>   </h3></div>
@@ -96,9 +100,7 @@
 
 
 
-    <div id="divBtnNuevo" runat="server">
-        <asp:Button ID="btnNuevo" runat="server" Text="Nuevo" CssClass="btn btn-primary" OnClick="btnNuevo_Click" AutoPostBack="false" />
-    </div>
+    
     
     
        <div class="row"> 
@@ -181,6 +183,17 @@
                     <label for="Observaciones">Observaciones</label>
                     <textarea id="txtObservaciones" class="input-sm required form-control" runat="server" style="text-align: left; align-items:flex-start" rows="2" ></textarea>
                 </div>
+
+
+
+                <div class="form-group">
+                    <label for="Laboratorio">Laboratorio</label>
+                    <div>
+                        <asp:DropDownList ID="ddlLaboratorio" CssClass="form-control" runat="server"></asp:DropDownList>
+                </div>
+                </div>
+
+
 
                 <div class="form-group">
                     <label for="esMedicamento">Es Medicamento?</label>
