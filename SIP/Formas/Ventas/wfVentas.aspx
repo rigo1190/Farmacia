@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/NavegadorPrincipal.Master" AutoEventWireup="true" CodeBehind="VentasRecetas.aspx.cs" Inherits="SIP.Formas.Ventas.VentasRecetas" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/NavegadorPrincipal.Master" AutoEventWireup="true" CodeBehind="wfVentas.aspx.cs" Inherits="SIP.Formas.Ventas.wfVentas" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
     <script type="text/javascript">
@@ -76,8 +76,7 @@
 
                 if (idProducto != null && idProducto != "" && idProducto != undefined) {
 
-                    if ($("input#ContentPlaceHolder1_gridProductosCatalogo" + "_chkSeleccionar_" + index).is(':checked'))
-                    {
+                    if ($("input#ContentPlaceHolder1_gridProductosCatalogo" + "_chkSeleccionar_" + index).is(':checked')) {
                         if (primera) {
                             cadena += idProducto;
                             primera = false;
@@ -101,7 +100,7 @@
 
 
             $("#<%= _CadValoresSeleccionados.ClientID %>").val(cadena);
-           
+
         }
 
 
@@ -109,108 +108,23 @@
     </script>
 
 </asp:Content>
-
-
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-     <div class="container">
+    <div class="container">
         <div class="page-header"">
-            <h3>Surtir Recetas</h3>
+             <h3>Ventas</h3>
         </div>
 
          <div class="panel panel-success">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    Ventas a través de Recetas
+                    Ventas de Articulos
                 </h3>
-
             </div>
 
              <div class="panel-body">
 
-                 <div class="row">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse0">Recetas del día</a>
-                            </h4>
-                        </div>
-                        <div id="collapse0" class="panel-collapse">
-
-                            <div class="panel-body">
-                                
-                                <div class="row">  
-                                    <div class="form-group">  
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <label>Fecha recetas:</label>
-                                                </td>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <input  class="form-control datepicker" runat="server" id="txtFechaFiltro"/>
-                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                     <div>
-                                                        <asp:Button ID="btnConsultar" runat="server" Text="Consultar" CssClass="btn btn-default" OnClick="btnConsultar_Click" />
-                                                    </div>
-                                                    
-                                                </td>
-                                            </tr>
-                                        
-                                        </table>
-                                    </div>
-                                </div>
-                                
-                                <div class="row" style="height:170px; overflow:scroll">
-                                    <asp:GridView OnPageIndexChanging="gridRecetas_PageIndexChanging"  PageSize="10" Height="15px" Width="1250px" EnablePersistedSelection="true" ShowHeaderWhenEmpty="true" ID="gridRecetas" DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
-                                        <Columns>
-                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-HorizontalAlign="Center" ItemStyle-Font-Size="Smaller" ItemStyle-Width="180px" HeaderText="Número de Folio" HeaderStyle-CssClass="panel-footer" SortExpression="Orden">
-                                                <ItemTemplate>
-                                                    <%# DataBinder.Eval(Container.DataItem, "Folio") %>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-
-                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Center" ItemStyle-Font-Size="Smaller" HeaderText="Fecha" SortExpression="Orden">
-                                                <ItemTemplate>
-                                                    <%#Convert.ToDateTime(DataBinder.Eval(Container.DataItem, "Fecha")).ToString("d")%>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-
-                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Nombre Paciente" HeaderStyle-CssClass="panel-footer" SortExpression="NOAplica">
-                                                <ItemTemplate>
-                                                    <%# DataBinder.Eval(Container.DataItem, "NombrePaciente") %>
-                                                </ItemTemplate>
-                                                <ItemStyle HorizontalAlign="Center" />
-                                            </asp:TemplateField>
-
-                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Observaciones" HeaderStyle-CssClass="panel-footer" SortExpression="NOAplica">
-                                                <ItemTemplate>
-                                                    <%# DataBinder.Eval(Container.DataItem, "Observaciones") %>
-                                                </ItemTemplate>
-                                                <ItemStyle HorizontalAlign="Center" />
-                                            </asp:TemplateField>
-
-                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-Width="180px" ItemStyle-Font-Size="Smaller" HeaderText="Detalle Productos" ItemStyle-CssClass="col-md-2" HeaderStyle-CssClass="panel-footer">
-                                                <ItemTemplate>
-                                                        <button type="button" onserverclick="btnProductos_ServerClick" id="btnProductos" runat="server"> <span class="glyphicon glyphicon-list-alt"></span></button> 
-                                                </ItemTemplate>                          
-                                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="50px" />                                            
-                                            </asp:TemplateField>
-                                        </Columns>
-                                        <%--<PagerSettings FirstPageText="Primera" LastPageText="Ultima" Mode="NextPreviousFirstLast" NextPageText="Siguiente" PreviousPageText="Anterior" />--%>
-                                    </asp:GridView>
-                                </div>
-                            </div>
-
-                        </div>
-                        
-                    </div>
-                </div>
-
-                <div class="row" style="display:none">
+                  <div class="row" style="display:none">
                      <div class="panel panel-default">
                         <div class="panel-heading">
                             Datos de la Venta
@@ -439,40 +353,16 @@
                     </div>
                 </div>
 
-
-             </div>
-
-         </div>
-
-     </div>
-
-
-     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Seleccionar Productos</h4>
-              </div>
-              <div class="modal-body">
-                  <asp:CheckBoxList Width="650px" ID="checkProductos" runat="server">
-                      
-                  </asp:CheckBoxList> 
-              </div>
-              <div class="modal-footer">
-                <asp:Button runat="server" OnClick="btnAgregar_Click" ID="btnAgregar" Text="Agregar a Venta" CssClass="btn btn-primary" />
-                <button type="button" onclick="fnc_LimpiarIdReceta();" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-              </div>
-        
             </div>
+
+
         </div>
     </div>
-
-     <div runat="server" style="display:none">
+     
+    <div runat="server" style="display:none">
         <input type="hidden" runat="server" id="_IDReceta" />
         <input type="hidden" runat="server" id="_Accion" />
         <input type="hidden" runat="server" id="_CadValoresSeleccionados" />
     </div>
-
 
 </asp:Content>

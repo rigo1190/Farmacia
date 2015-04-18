@@ -44,12 +44,13 @@ namespace SIP.Formas.Ventas
 
         private void BindDropDownMedicamentos()
         {
-            var listArt = (from a in uow.ArticulosBL.Get()
+            var listArt = (from a in uow.ArticulosBL.Get(e=>e.CantidadDisponible > 0)
                            join um in uow.UnidadesDeMedidaBL.Get()
                            on a.UnidadesDeMedidaId equals um.Id
                            join p in uow.PresentacionesBL.Get()
                            on a.PresentacionId equals p.Id
-                           select new { Id = a.Id, Nombre = a.Nombre + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje }).OrderBy(e=>e.Nombre);
+                           select new { Id = a.Id, Nombre = a.Nombre + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje
+                           }).OrderBy(e=>e.Nombre);
 
             ddlMedicamentos.DataSource = listArt;
             ddlMedicamentos.DataValueField = "Id";

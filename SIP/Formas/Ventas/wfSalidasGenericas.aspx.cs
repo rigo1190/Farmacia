@@ -150,8 +150,8 @@ namespace SIP.Formas.Ventas
 
             ArticulosMovimientos artMovimiento = new ArticulosMovimientos();
 
-            artMovimiento.Ejercicio = 2015; //Preguntar que se debe de poner aqui????
-            artMovimiento.Tipo = 1; //preguntar cual tipo es????
+            artMovimiento.Ejercicio = DateTime.Now.Year; //Preguntar que se debe de poner aqui????
+            artMovimiento.Tipo = 2; //preguntar cual tipo es????
             artMovimiento.AlmacenSalidaGenericaId = salidaId;
             artMovimiento.Fecha = DateTime.Now; //Preguntar cual es la fecha que se debe de colocar???
             artMovimiento.Status = 1; //Preguntar cual es la Status que se debe de colocar???
@@ -231,7 +231,7 @@ namespace SIP.Formas.Ventas
             AlmacenSalidasGenericas salida = new AlmacenSalidasGenericas();
 
             salida.Folio = ObtenerMaxFolio();
-            salida.Ejercicio = 2015; //???????
+            salida.Ejercicio = DateTime.Now.Year; //???????
             salida.Fecha = Convert.ToDateTime(txtFecha.Value);
             salida.TipoSalidaId = Utilerias.StrToInt(ddlTipos.SelectedValue);
             salida.Observaciones = txtObservaciones.Value;
@@ -403,6 +403,12 @@ namespace SIP.Formas.Ventas
 
             int cantidad = Utilerias.StrToInt(((HtmlInputGenericControl)gridProductos.Rows[e.RowIndex].FindControl("txtCantidad")).Value);
 
+            Articulos artCat = uow.ArticulosBL.GetByID(objArticulo.ArticuloId);
+
+            if (artCat.CantidadDisponible - cantidad < 0)
+                cantidad = (artCat.CantidadDisponible - cantidad) + cantidad;
+            
+            
             objArticulo.Cantidad = cantidad;
 
             uow.ArticuloSalidaGenericaBusinessLogic.Update(objArticulo);
@@ -492,6 +498,30 @@ namespace SIP.Formas.Ventas
             }
 
             OcultarError();
+        }
+
+        protected void gridProductosCatalogo_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                int id = Utilerias.StrToInt(gridProductosCatalogo.DataKeys[e.Row.RowIndex].Values["Id"].ToString());
+                HtmlControl chk = (HtmlControl)e.Row.FindControl("chkSeleccionar");
+                Articulos art = uow.ArticulosBL.GetByID(id);
+
+                if (art.CantidadDisponible <= 0)
+                {
+                    if (chk != null)
+                    {
+                        chk.Disabled = true;
+                    }
+                }
+
+                
+
+                //if (btnVer != null)
+                //    btnVer.Attributes["onclick"] = "fnc_MostrarReceta(" + idReceta + ")";
+
+            }
         }
     }
 }

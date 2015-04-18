@@ -10,7 +10,7 @@
 namespace SIP.Formas.Ventas {
     
     
-    public partial class wfSalidasGenericas {
+    public partial class wfVentas {
         
         /// <summary>
         /// Control txtFolio.
@@ -31,40 +31,13 @@ namespace SIP.Formas.Ventas {
         protected global::System.Web.UI.HtmlControls.HtmlInputText txtFecha;
         
         /// <summary>
-        /// Control ddlTipos.
+        /// Control ddlClientes.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlTipos;
-        
-        /// <summary>
-        /// Control txtObservaciones.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTextArea txtObservaciones;
-        
-        /// <summary>
-        /// Control btnGenerarSalida.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnGenerarSalida;
-        
-        /// <summary>
-        /// Control btnCancelarSalida.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCancelarSalida;
+        protected global::System.Web.UI.WebControls.DropDownList ddlClientes;
         
         /// <summary>
         /// Control gridProductos.
@@ -85,13 +58,58 @@ namespace SIP.Formas.Ventas {
         protected global::System.Web.UI.WebControls.GridView gridProductosCatalogo;
         
         /// <summary>
-        /// Control btnAgregar.
+        /// Control btnAgregarDeCat.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAgregar;
+        protected global::System.Web.UI.WebControls.Button btnAgregarDeCat;
+        
+        /// <summary>
+        /// Control txtTotalR.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtTotalR;
+        
+        /// <summary>
+        /// Control txtIVAR.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtIVAR;
+        
+        /// <summary>
+        /// Control txtCobrar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtCobrar;
+        
+        /// <summary>
+        /// Control btnAceptarVenta.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAceptarVenta;
+        
+        /// <summary>
+        /// Control btnCancelarVenta.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCancelarVenta;
         
         /// <summary>
         /// Control divMsgError.
@@ -128,6 +146,15 @@ namespace SIP.Formas.Ventas {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblMsgSuccess;
+        
+        /// <summary>
+        /// Control _IDReceta.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden _IDReceta;
         
         /// <summary>
         /// Control _Accion.

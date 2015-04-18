@@ -106,8 +106,10 @@
                           <li runat="server" id="mnObras" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-fullscreen"></span> Ventas<b class="caret"></b></a>
                              <ul class="dropdown-menu">
                                   <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfRecetas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Recetas</a></li>
-                                  <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/VentasRecetas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Ventas</a></li>                                 
+                                  <%--<li><a href="<%=ResolveClientUrl("~/Formas/Ventas/VentasRecetas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Ventas por Recetas</a></li> 
+                                 <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfVentas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Ventas</a></li>                                --%>
                                   <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfSalidasGenericas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Otras Salidas</a></li>
+                                 <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfVentasDia.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Ventas Día</a></li>
                                   
                                                                   
                              </ul>

@@ -469,7 +469,7 @@
 
                                 <div class="col-md-3">
                                      <div class="form-group">
-                                        <label>Cantidad a tomar:</label>
+                                        <label>Aplicar:</label>
                                         <input type="text" name="prueba" runat="server" class="form-control" id="txtCandidad" />
                                     </div>
                                 </div>

@@ -26,7 +26,7 @@ namespace DataAccessLayer.Models
 
         public int Status { get; set; }
 
-        public int ClienteId { get; set; }
+        public int? ClienteId { get; set; }
 
         public int? RecetaId { get; set; }
 

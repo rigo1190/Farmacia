@@ -835,6 +835,8 @@
     <Content Include="Formas\Ventas\wfConsultarVentas.aspx" />
     <Content Include="Formas\Ventas\wfRecetas.aspx" />
     <Content Include="Formas\Ventas\wfSalidasGenericas.aspx" />
+    <Content Include="Formas\Ventas\wfVentas.aspx" />
+    <Content Include="Formas\Ventas\wfVentasDia.aspx" />
     <Content Include="Global.asax" />
     <Content Include="img\cge.jpg" />
     <Content Include="img\close.png" />
@@ -1132,6 +1134,18 @@
     <Compile Include="Formas\Ventas\wfSalidasGenericas.aspx.designer.cs">
       <DependentUpon>wfSalidasGenericas.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Formas\Ventas\wfVentas.aspx.cs">
+      <DependentUpon>wfVentas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\wfVentas.aspx.designer.cs">
+      <DependentUpon>wfVentas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\wfVentasDia.aspx.cs">
+      <DependentUpon>wfVentasDia.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\wfVentasDia.aspx.designer.cs">
+      <DependentUpon>wfVentasDia.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1231,6 +1245,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>rptSalidasTotales.rpt</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="rpts\rptVentasAgrupadas.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptVentasAgrupadas.rpt</DependentUpon>
     </Compile>
     <Compile Include="rpts\rptVentasTotales.cs">
       <DependentUpon>rptVentasTotales.rpt</DependentUpon>
@@ -1347,6 +1366,10 @@
     <EmbeddedResource Include="rpts\rptSalidasTotales.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptSalidasTotales.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rpts\rptVentasAgrupadas.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptVentasAgrupadas.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="rpts\rptVentasTotales.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

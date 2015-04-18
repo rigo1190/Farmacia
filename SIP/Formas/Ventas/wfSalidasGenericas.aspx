@@ -153,15 +153,34 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Observaciones:</label>
-                                    <textarea type="text" name="prueba" style="height:100px" runat="server" class="form-control" id="txtObservaciones" />
+                                    <textarea type="text" name="prueba" style="height:50px" runat="server" class="form-control" id="txtObservaciones" />
                                 </div>
 
                             </div>
+
+                            <div class="row">
+                                 <div class="col-md-8">
+                         
+                                 </div>
+
+                                 <div class="col-md-2">
+                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                     <asp:Button runat="server" Text="Generar Salida" OnClick="btnGenerarSalida_Click" OnClientClick="return fnc_Validar(); " ID="btnGenerarSalida" CssClass="btn btn-primary" />
+                                 </div>
+
+                                 <div class="col-md-2">
+                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                     <asp:Button runat="server" Text="Cancelar Salida" OnClick="btnCancelarSalida_Click" ID="btnCancelarSalida" CssClass="btn btn-default" />
+                                 </div>
+
+                             </div>
 
                         </div>
                     </div>
 
                  </div>
+
+                 
 
                  <div class="row">
                      <div class="panel panel-default">
@@ -169,7 +188,7 @@
                             Productos agregados a la salida
                         </div>
                         <div class="panel-body">
-                            <div style="height:330px; overflow:scroll">
+                            <div style="height:170px; overflow:scroll">
                                 <asp:GridView AllowPaging="true" OnRowDeleting="gridProductos_RowDeleting" OnRowUpdating="gridProductos_RowUpdating" OnRowCancelingEdit="gridProductos_RowCancelingEdit" OnRowEditing="gridProductos_RowEditing" PageSize="10" Height="25px" EnablePersistedSelection="true" Width="1250px"  ShowHeaderWhenEmpty="true" ID="gridProductos" DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
                                     <Columns>
                                         <asp:CommandField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ShowDeleteButton="true" HeaderText="Eliminar" />
@@ -214,7 +233,7 @@
                             <div class="panel-body">
 
                                 <div class="row" style="height:330px; overflow:scroll">
-                                    <asp:GridView OnPageIndexChanging="gridProductosCatalogo_PageIndexChanging"  PageSize="10" Height="15px" Width="1250px" EnablePersistedSelection="true" ShowHeaderWhenEmpty="true" ID="gridProductosCatalogo" DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
+                                    <asp:GridView OnRowDataBound="gridProductosCatalogo_RowDataBound" OnPageIndexChanging="gridProductosCatalogo_PageIndexChanging"  PageSize="10" Height="15px" Width="1250px" EnablePersistedSelection="true" ShowHeaderWhenEmpty="true" ID="gridProductosCatalogo" DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
                                     <Columns>
                                         <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-Width="90px" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Center" HeaderText="Seleccionar" SortExpression="SI">
                                             <ItemTemplate>
@@ -246,7 +265,10 @@
 
                                         <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-Font-Size="Smaller"  HeaderStyle-HorizontalAlign="Center" HeaderText="Precio Venta" HeaderStyle-CssClass="panel-footer" SortExpression="NOAplica">
                                             <ItemTemplate>
-                                                <%# DataBinder.Eval(Container.DataItem, "PrecioVenta") %>
+                                                
+                                                <asp:Label ID="lblPrecio" Text='<%# Bind("PrecioVenta","{0:C2}") %>' runat="server"></asp:Label>
+                                                
+                                                <%--<%# DataBinder.Eval(Container.DataItem, "PrecioVenta") %>--%>
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" />
                                         </asp:TemplateField>
@@ -271,23 +293,6 @@
                         </div>
                     </div>
                 </div>
-
-                 <div class="row">
-                     <div class="col-md-8">
-                         
-                     </div>
-
-                     <div class="col-md-2">
-                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                         <asp:Button runat="server" Text="Generar Salida" OnClick="btnGenerarSalida_Click" OnClientClick="return fnc_Validar(); " ID="btnGenerarSalida" CssClass="btn btn-primary" />
-                     </div>
-
-                     <div class="col-md-2">
-                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                         <asp:Button runat="server" Text="Cancelar Salida" OnClick="btnCancelarSalida_Click" ID="btnCancelarSalida" CssClass="btn btn-default" />
-                     </div>
-
-                 </div>
 
                  <div class="row">
                     <div class="col-lg-12">

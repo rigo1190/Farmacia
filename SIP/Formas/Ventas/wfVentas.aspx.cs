@@ -10,7 +10,7 @@ using System.Web.UI.WebControls;
 
 namespace SIP.Formas.Ventas
 {
-    public partial class VentasRecetas : System.Web.UI.Page
+    public partial class wfVentas : System.Web.UI.Page
     {
         private UnitOfWork uow;
         protected void Page_Load(object sender, EventArgs e)
@@ -20,108 +20,17 @@ namespace SIP.Formas.Ventas
             if (!IsPostBack)
             {
                 ResetearVenta();
-                txtFechaFiltro.Value = DateTime.Now.ToShortDateString();
-                BindGridRecetas();
+                txtFecha.Value = DateTime.Now.ToShortDateString();
                 BindGridProductosCatalago();
-                BindDropDownClientes();
-            }
-        }
-
-        private void OcultarError()
-        {
-            divMsgError.Style.Add("display", "none");
-            divMsgSuccess.Style.Add("display", "none");
-            lblMsgError.Text = "";
-        }
-
-        private void BindDropDownClientes()
-        {
-            ddlClientes.DataSource = uow.ClientesBL.Get().ToList();
-            ddlClientes.DataValueField = "Id";
-            ddlClientes.DataTextField = "RazonSocial";
-
-            ddlClientes.DataBind();
-        }
-
-
-        private string EliminarArticuloVenta()
-        {
-            int idUser=Utilerias.StrToInt(Session["IdUser"].ToString());
-
-            bool eliminados=uow.ArticuloVentaBusinessLogic.DeleteAll(e=>e.UsuarioId==idUser);
-            string M=string.Empty;
-
-            if (eliminados)
-            {
-                uow.SaveChanges();
-
-                //SI HUBO ERORRES AL ELIMINAR REGISTROS PREVIOS
-                if (uow.Errors.Count > 0)
-                {
-                    foreach (string m in uow.Errors)
-                        M += m;
-
-                    return M;
-                }
             }
 
-            return M;
         }
-
-        private void BindGridProductosCatalago()
-        {
-            var listArt = (from a in uow.ArticulosBL.Get()
-                           join um in uow.UnidadesDeMedidaBL.Get()
-                           on a.UnidadesDeMedidaId equals um.Id
-                           join p in uow.PresentacionesBL.Get()
-                           on a.PresentacionId equals p.Id
-                           select new { Id = a.Id, Nombre = a.Nombre + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje,
-                                        EsMedicamento = a.esMedicamento,
-                                        PrecioVenta = a.PrecioVenta,
-                                        CantidadDisponible=a.CantidadDisponible
-                           }).OrderBy(e=>e.Nombre);
-
-
-            gridProductosCatalogo.DataSource = listArt.ToList();// uow.ArticulosBL.Get().ToList();
-            gridProductosCatalogo.DataBind();
-        }
-
-        private void BindGridRecetas()
-        {
-            DateTime fechaFiltro = DateTime.Now;
-            if (!txtFechaFiltro.Value.Equals(string.Empty))
-                fechaFiltro = Convert.ToDateTime(txtFechaFiltro.Value);
-
-            gridRecetas.DataSource = uow.RecetasBusinessLogic.Get(e => e.Status == 1 && e.Fecha==fechaFiltro).ToList();
-            gridRecetas.DataBind();
-        }
-
-        private void BindGridProductosVenta()
-        {
-            int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
-            List<ArticuloVenta> listArticulos = uow.ArticuloVentaBusinessLogic.Get(e => e.UsuarioId == idUser).OrderBy(e => e.Nombre).ToList();
-
-
-            //Llenar los campos de totales
-            decimal total = listArticulos.Sum(e => e.Total);
-            decimal iva = listArticulos.Sum(e => e.IVA);
-            decimal cobrar = total + iva;
-
-            txtTotalR.Value =total.ToString("c");
-            txtIVAR.Value = iva.ToString("c");
-            txtCobrar.Value = cobrar.ToString("c");
-
-
-            gridProductos.DataSource = listArticulos;
-            gridProductos.DataBind();
-        }
-
 
         private string ResetearVenta()
         {
             string M = string.Empty;
             //Se eliminan los articulos de la tabla temporal
-            M=EliminarArticuloVenta();
+            M = EliminarArticuloVenta();
 
             if (!M.Equals(string.Empty))
                 return M;
@@ -132,48 +41,10 @@ namespace SIP.Formas.Ventas
             //Se limpia la cadena de valores de la lista de productos del catalogo
             _CadValoresSeleccionados.Value = string.Empty;
 
-            //Se limpia el ID de la receta
-            _IDReceta.Value = string.Empty;
-
-
             //Se limpian los campos de DAtos de la Venta
-            txtFolio.Value = string.Empty;
-            txtFecha.Value = DateTime.Now.ToShortDateString();
             txtTotalR.Value = "0.00";
             txtIVAR.Value = "0.00";
             txtCobrar.Value = "0.00";
-
-            return M;
-        }
-
-
-        private string ActualizarReceta()
-        {
-            string M = string.Empty;
-            if (!_IDReceta.Value.Equals(string.Empty))
-            {
-                int idReceta=Utilerias.StrToInt(_IDReceta.Value);
-                
-                
-                Recetas receta = uow.RecetasBusinessLogic.GetByID(idReceta);
-                
-                receta.Status = 2; //Se pone como surtida 
-                
-                uow.RecetasBusinessLogic.Update(receta);
-                uow.SaveChanges();
-                
-                //SI HUBO ERORRES
-                if (uow.Errors.Count > 0)
-                {
-                    foreach (string m in uow.Errors)
-                        M += m;
-
-                    return M;
-                }
-
-                BindGridRecetas();
-                
-            }
 
             return M;
         }
@@ -219,7 +90,7 @@ namespace SIP.Formas.Ventas
             //Crear registros para la tabla de ArticulosMovimientos y sus detalles ArticulosMovimientosSalidas
             string M = string.Empty;
             int movimiento = uow.ArticulosMovimientosBL.Get().Count() > 0 ? uow.ArticulosMovimientosBL.Get().Max(e => e.Movimiento) + 1 : 1;
-           
+
             ArticulosMovimientosSalidas artMovSalida;
 
             ArticulosMovimientos artMovimiento = new ArticulosMovimientos();
@@ -294,11 +165,12 @@ namespace SIP.Formas.Ventas
 
             if (!_IDReceta.Value.Equals(string.Empty))
                 venta.RecetaId = Utilerias.StrToInt(_IDReceta.Value);
+            
 
             venta.Status = 1;
             //venta.ClienteId = Utilerias.StrToInt(ddlClientes.SelectedValue);
             venta.Fecha = Convert.ToDateTime(txtFecha.Value);
-            
+
             //Se almacena el encabezado de venta
             uow.VentasBL.Insert(venta);
             uow.SaveChanges();
@@ -349,7 +221,7 @@ namespace SIP.Formas.Ventas
 
             //Se actualiza el IMPORTE del objeto VENTA, a partir de la sumatoria de la Lista, Preguntar?????
             DataAccessLayer.Models.Ventas objVenta = uow.VentasBL.GetByID(venta.Id);
-            objVenta.Importe = listArticulos.Sum(e => e.Total) + listArticulos.Sum(e=>e.IVA);
+            objVenta.Importe = listArticulos.Sum(e => e.Total) + listArticulos.Sum(e => e.IVA);
 
             uow.VentasBL.Update(objVenta);
             uow.SaveChanges();
@@ -364,148 +236,115 @@ namespace SIP.Formas.Ventas
                 return M;
             }
 
-            M=ActualizarProductosCatalogo(listArticulos); //Se actualizan cantidades del articulo en el catalogo
+            M = ActualizarProductosCatalogo(listArticulos); //Se actualizan cantidades del articulo en el catalogo
 
             if (!M.Equals(string.Empty))
                 return M;
 
-            M=CrearArticulosMovimientos(venta.Id, listArticulos); //Se generan registros en ArticulosMovimientos y sus detalles
+            M = CrearArticulosMovimientos(venta.Id, listArticulos); //Se generan registros en ArticulosMovimientos y sus detalles
 
             if (!M.Equals(string.Empty))
                 return M;
 
-            M=ActualizarReceta(); //Se cambia el estatus a la receta que se vio involucrada en la venta
-
-            if (!M.Equals(string.Empty))
-                return M;
-
-            M=ResetearVenta(); //Se limpian los campos para una nueva venta
+            M = ResetearVenta(); //Se limpian los campos para una nueva venta
 
             if (!M.Equals(string.Empty))
                 return M;
 
             //Se muestra la venta
-            ClientScript.RegisterStartupScript(this.GetType(), "script", "fnc_MostrarVenta(" + venta.Id + ")", true);
+            //ClientScript.RegisterStartupScript(this.GetType(), "script", "fnc_MostrarVenta(" + venta.Id + ")", true);
 
             return M;
         }
 
-
-        protected void btnProductos_ServerClick(object sender, EventArgs e)
+        private void BindGridProductosVenta()
         {
-            GridViewRow row = (GridViewRow)((HtmlButton)sender).NamingContainer;
-            int idReceta = Utilerias.StrToInt(gridRecetas.DataKeys[row.RowIndex].Value.ToString());
-            _IDReceta.Value = idReceta.ToString();
-
-            Recetas objReceta = uow.RecetasBusinessLogic.GetByID(idReceta);
-            
-            checkProductos.DataSource = objReceta.detalleReceta.Where(a=>a.ArticuloId != null).ToList();
-            checkProductos.DataValueField = "ArticuloId";
-            checkProductos.DataTextField = "NombreMedicamento";
-            checkProductos.DataBind();
-
-            OcultarError();
-
-            ClientScript.RegisterStartupScript(this.GetType(), "script", "fnc_MostrarModal()", true);
-
-        }
-
-        protected void btnAgregar_Click(object sender, EventArgs e)
-        {
-            Articulos articulo;
-            string M = string.Empty;
-            int idArticulo;
             int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
-            decimal subtotal;
-            decimal iva = 0;
-            decimal total;
-            int idReceta = Utilerias.StrToInt(_IDReceta.Value);
+            List<ArticuloVenta> listArticulos = uow.ArticuloVentaBusinessLogic.Get(e => e.UsuarioId == idUser).OrderBy(e => e.Nombre).ToList();
 
-            foreach (ListItem item in checkProductos.Items)
-            {
-                if (item.Selected)
-                {
-                    //ddlProductosVenta.Items.Add(new ListItem("Descripcion", item.Value));
 
-                    idArticulo = Utilerias.StrToInt(item.Value);
-                    articulo = uow.ArticulosBL.GetByID(idArticulo);
+            //Llenar los campos de totales
+            decimal total = listArticulos.Sum(e => e.Total);
+            decimal iva = listArticulos.Sum(e => e.IVA);
+            decimal cobrar = total + iva;
 
-                    ArticuloVenta artVenta = new ArticuloVenta();
-                    artVenta.ArticuloId = idArticulo;
-                    artVenta.Cantidad = 1;
-                    artVenta.Nombre = ConcatenarNombreArticulo(idArticulo);//articulo.Nombre;
-                    artVenta.PrecioCompra = articulo.PrecioCompra;
-                    artVenta.PrecioVenta = articulo.PrecioVenta;
-                    artVenta.EsMedicamento = articulo.esMedicamento; //Verificar tipo de campo
-                    artVenta.RecetaId = idReceta;
-                    artVenta.UsuarioId = idUser;
+            txtTotalR.Value = total.ToString("c");
+            txtIVAR.Value = iva.ToString("c");
+            txtCobrar.Value = cobrar.ToString("c");
 
-                    subtotal = articulo.PrecioVenta;
 
-                    //Preguntar como obtener el IVA ?????
-                    if (articulo.esMedicamento == 0)
-                    {
-                        iva = Convert.ToDecimal(subtotal * decimal.Parse(Session["IVA"].ToString()));
-                    }
-                    artVenta.IVA = iva;
-                    artVenta.SubTotal = subtotal;
-                    artVenta.Total = subtotal + iva;
-                    
-
-                    uow.ArticuloVentaBusinessLogic.Insert(artVenta);
-                    uow.SaveChanges();
-
-                    //SI HUBO ERORRES AL ELIMINAR REGISTROS PREVIOS
-                    if (uow.Errors.Count > 0)
-                    {
-                        foreach (string m in uow.Errors)
-                            M += m;
-
-                        //Se muestra el mensaje de error
-                        divMsgError.Style.Add("display", "block");
-                        divMsgSuccess.Style.Add("display", "none");
-                        lblMsgError.Text = M;
-
-                        return;
-                    }
-                   
-
-                }
-            }
-
-            if (checkProductos.Items.Count == 0)
-                _IDReceta.Value = string.Empty;
-
-            OcultarError();
-
-            BindGridProductosVenta();
-
+            gridProductos.DataSource = listArticulos;
+            gridProductos.DataBind();
         }
-
-        private string ConcatenarNombreArticulo(int idArticulo)
+        private void BindGridProductosCatalago()
         {
-            string nombre = string.Empty;
-
-            var art = (from a in uow.ArticulosBL.Get(e=>e.Id==idArticulo)
+            var listArt = (from a in uow.ArticulosBL.Get()
                            join um in uow.UnidadesDeMedidaBL.Get()
                            on a.UnidadesDeMedidaId equals um.Id
                            join p in uow.PresentacionesBL.Get()
                            on a.PresentacionId equals p.Id
                            select new
                            {
+                               Id = a.Id,
                                Nombre = a.Nombre + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje,
-                           }).FirstOrDefault();
+                               EsMedicamento = a.esMedicamento,
+                               PrecioVenta = a.PrecioVenta,
+                               CantidadDisponible = a.CantidadDisponible
+                           }).OrderBy(e => e.Nombre);
+
+
+            gridProductosCatalogo.DataSource = listArt.ToList();// uow.ArticulosBL.Get().ToList();
+            gridProductosCatalogo.DataBind();
+        }
+
+        private string ConcatenarNombreArticulo(int idArticulo)
+        {
+            string nombre = string.Empty;
+
+            var art = (from a in uow.ArticulosBL.Get(e => e.Id == idArticulo)
+                       join um in uow.UnidadesDeMedidaBL.Get()
+                       on a.UnidadesDeMedidaId equals um.Id
+                       join p in uow.PresentacionesBL.Get()
+                       on a.PresentacionId equals p.Id
+                       select new
+                       {
+                           Nombre = a.Nombre + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje,
+                       }).FirstOrDefault();
 
             nombre = art.Nombre;
 
             return nombre;
 
         }
-
-        protected void gridRecetas_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        private void OcultarError()
         {
-            //gridRecetas.PageIndex = e.NewPageIndex;
-            //BindGridRecetas();
+            divMsgError.Style.Add("display", "none");
+            divMsgSuccess.Style.Add("display", "none");
+            lblMsgError.Text = "";
+        }
+
+        private string EliminarArticuloVenta()
+        {
+            int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
+
+            bool eliminados = uow.ArticuloVentaBusinessLogic.DeleteAll(e => e.UsuarioId == idUser);
+            string M = string.Empty;
+
+            if (eliminados)
+            {
+                uow.SaveChanges();
+
+                //SI HUBO ERORRES AL ELIMINAR REGISTROS PREVIOS
+                if (uow.Errors.Count > 0)
+                {
+                    foreach (string m in uow.Errors)
+                        M += m;
+
+                    return M;
+                }
+            }
+
+            return M;
         }
 
         protected void gridProductos_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
@@ -522,7 +361,7 @@ namespace SIP.Formas.Ventas
             int idArticulo = Utilerias.StrToInt(gridProductos.DataKeys[e.RowIndex].Value.ToString());
             ArticuloVenta objArticulo = uow.ArticuloVentaBusinessLogic.GetByID(idArticulo);
             decimal subtotal;
-            decimal iva=0;
+            decimal iva = 0;
             decimal total;
 
             int cantidad = Utilerias.StrToInt(((HtmlInputGenericControl)gridProductos.Rows[e.RowIndex].FindControl("txtCantidad")).Value);
@@ -571,7 +410,6 @@ namespace SIP.Formas.Ventas
 
         }
 
-
         protected void gridProductos_RowEditing(object sender, GridViewEditEventArgs e)
         {
             gridProductos.EditIndex = e.NewEditIndex;
@@ -579,6 +417,7 @@ namespace SIP.Formas.Ventas
 
             OcultarError();
         }
+
 
         protected void gridProductos_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
@@ -617,10 +456,10 @@ namespace SIP.Formas.Ventas
         protected void btnAgregarDeCat_Click(object sender, EventArgs e)
         {
             string cadenaValores = _CadValoresSeleccionados.Value;
-            
+
             if (cadenaValores.Equals(string.Empty))
                 return;
-            
+
             string[] ids = cadenaValores.Split('|');
             int idProducto;
             Articulos articulo;
@@ -656,7 +495,7 @@ namespace SIP.Formas.Ventas
                 artVenta.IVA = iva;
                 artVenta.SubTotal = subtotal;
                 artVenta.Total = subtotal + iva;
-                
+
 
                 uow.ArticuloVentaBusinessLogic.Insert(artVenta);
                 uow.SaveChanges();
@@ -684,11 +523,12 @@ namespace SIP.Formas.Ventas
             OcultarError();
         }
 
+
         protected void btnAceptarVenta_Click(object sender, EventArgs e)
         {
             string M = string.Empty;
 
-            M=CrearVenta();
+            M = CrearVenta();
 
             //Se muestra el mensaje de error, si es que existe
             if (!M.Equals(string.Empty))
@@ -707,7 +547,7 @@ namespace SIP.Formas.Ventas
         {
             string M = string.Empty;
 
-            M=ResetearVenta();
+            M = ResetearVenta();
 
             //Se muestra el mensaje de error
             if (!M.Equals(string.Empty))
@@ -720,14 +560,6 @@ namespace SIP.Formas.Ventas
             }
 
             OcultarError();
-        }
-
-        protected void btnConsultar_Click(object sender, EventArgs e)
-        {
-            OcultarError();
-
-            BindGridRecetas();
-
         }
 
         protected void gridProductosCatalogo_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -747,10 +579,5 @@ namespace SIP.Formas.Ventas
                 }
             }
         }
-
-       
-
     }
-
-
 }
