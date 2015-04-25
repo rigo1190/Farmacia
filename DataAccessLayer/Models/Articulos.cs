@@ -29,6 +29,9 @@ namespace DataAccessLayer.Models
 
         public int FPSfactorId { get; set; }
 
+
+        public  int CantidadUnidadMedida {get; set;}
+
         public int esMedicamento { get; set; }
 
         public double Porcentaje { get; set; }
@@ -47,8 +50,10 @@ namespace DataAccessLayer.Models
         public int CantidadDisponible { get; set; }        
         public decimal PrecioCompra { get; set; }
         public decimal PrecioVenta { get; set; }
-        
-              
+
+        public decimal PrecioCompraIVA { get; set; }
+        public decimal PrecioVentaIVA { get; set; }
+        public string NombreCompleto { get; set; }
         
 
         public virtual GruposPS GruposPS { get; set; }

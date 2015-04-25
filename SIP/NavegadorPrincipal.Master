@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 
-    <title>Farmacia x</title> 
+    <title>Sistema de Control de Inventarios</title> 
 
     <script src="<%= ResolveClientUrl("~/Scripts/WebForms/WebForms.js") %>"></script>
     <script src="<%= ResolveClientUrl("~/Scripts/WebForms/WebUIValidation.js") %>"></script>
@@ -96,27 +96,36 @@
                              
                           
 
-                          <li runat="server" id="mnTechosFinancieros" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-random"></span> Compras<b class="caret"></b></a>
+                          <li runat="server" id="menuCompras" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-random"></span> Compras<b class="caret"></b></a>
                              <ul class="dropdown-menu">
                                   <li><a href="<%=ResolveClientUrl("~/Formas/Compras/wfCotizaciones.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Cotizaciones -->  Pedidos</a></li>                                                           
                                   <li><a href="<%=ResolveClientUrl("~/Formas/Compras/wfFacturas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Facturas</a></li>                                                                                                                       
                              </ul>
                           </li>
 
-                          <li runat="server" id="mnObras" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-fullscreen"></span> Ventas<b class="caret"></b></a>
+                          <li runat="server" id="menuRecetas" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-eject"></span> Recetas<b class="caret"></b></a>
                              <ul class="dropdown-menu">
-                                  <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfRecetas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Recetas</a></li>
+                                  <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfRecetas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Recetas</a></li>                                                                  
+                             </ul>
+                          </li>
+
+
+
+                          <li runat="server" id="menuVentas" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-fullscreen"></span> Ventas<b class="caret"></b></a>
+                             <ul class="dropdown-menu">
+                                  
                                   <%--<li><a href="<%=ResolveClientUrl("~/Formas/Ventas/VentasRecetas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Ventas por Recetas</a></li> 
                                  <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfVentas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Ventas</a></li>                                --%>
-                                  <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfSalidasGenericas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Otras Salidas</a></li>
                                  <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfVentasDia.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Ventas Día</a></li>
+                                  <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfSalidasGenericas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Otras Salidas</a></li>
+                                 
                                   
                                                                   
                              </ul>
                           </li>
 
 
-                          <li runat="server" id="mnInventarios" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-sort-by-attributes"></span> Inventarios<b class="caret"></b></a>
+                          <li runat="server" id="menuInventarios" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-sort-by-attributes"></span> Inventarios<b class="caret"></b></a>
                              <ul class="dropdown-menu">
                                  <li><a href="<%=ResolveClientUrl("~/Formas/Inventarios/wfExistencias.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Existencias</a></li>
                                  <li><a href="<%=ResolveClientUrl("~/Formas/Inventarios/wfStocksMinimos.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Stocks Mínimos</a></li>
@@ -129,21 +138,22 @@
  
  
 
-                         <li runat="server" id="mnCatalogos" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Catálogos<b class="caret"></b></a>
+                         <li runat="server" id="menuCatalogos" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Catálogos<b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfGruposProductos.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Grupo de Productos</a></li>                              
-                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfArticulos.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Artículos</a></li>                             
+                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfArticulos.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Productos</a></li>                             
                                 <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfUnidadesDeMedida.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Unidades de Medida</a></li>                              
                                 <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfPresentaciones.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Presentaciones</a></li>                               
                                 <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfFPSfactores.aspx") %>"><span class="glyphicon glyphicon-minus"></span> FPS</a></li>                                  
                                 <li><a href="<%=ResolveClientUrl( "~/Formas/Catalogos/wfLaboratorios.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Laboratorios</a></li>                                  
                                 <li>-_-</li>
                                 <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfProveedores.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Proveedores</a></li>  
+                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfCatPacientes.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Pacientes</a></li>  
                                                               
                             </ul>
                         </li>                                                 
                         
-                         <li runat="server" id="mnInformes" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-th-list"></span> Informes<b class="caret"></b></a>
+                         <li runat="server" id="menuInformes" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-th-list"></span> Informes<b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li><span class="glyphicon glyphicon-minus"></span> Multicriterio de Compras</li>     
                                 <li>-_-</li>

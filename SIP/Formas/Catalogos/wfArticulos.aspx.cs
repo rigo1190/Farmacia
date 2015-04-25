@@ -135,20 +135,23 @@ namespace SIP.Formas.Catalogos
             System.Web.UI.HtmlControls.HtmlGenericControl thTwo = new System.Web.UI.HtmlControls.HtmlGenericControl("TH");
             System.Web.UI.HtmlControls.HtmlGenericControl thThree = new System.Web.UI.HtmlControls.HtmlGenericControl("TH");
             System.Web.UI.HtmlControls.HtmlGenericControl thFour = new System.Web.UI.HtmlControls.HtmlGenericControl("TH");
+            System.Web.UI.HtmlControls.HtmlGenericControl thFive = new System.Web.UI.HtmlControls.HtmlGenericControl("TH");
             
 
             trHead.Attributes.Add("align", "center");
 
 
-            thOne.InnerText = "Clave";
-            thTwo.InnerText = "Nombre";
-            thThree.InnerText = "Unidad de Medida";
-            thFour.InnerText = "Presentación";
+            thOne.InnerText = "Código";
+            thTwo.InnerText = "Producto";
+            thThree.InnerText = "Existencia";
+            thFour.InnerText = "$ Compra + IVA";
+            thFive.InnerText = "$ Venta + IVA";
 
             trHead.Controls.Add(thOne);
             trHead.Controls.Add(thTwo);
             trHead.Controls.Add(thThree);
             trHead.Controls.Add(thFour);
+            trHead.Controls.Add(thFive);
             
             tabla.Controls.Add(trHead);
 
@@ -161,13 +164,15 @@ namespace SIP.Formas.Catalogos
                 System.Web.UI.HtmlControls.HtmlGenericControl tdTwo = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
                 System.Web.UI.HtmlControls.HtmlGenericControl tdThree = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
                 System.Web.UI.HtmlControls.HtmlGenericControl tdFour = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
+                System.Web.UI.HtmlControls.HtmlGenericControl tdFive = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
                 
 
                 tdOne.Attributes.Add("align", "left");
                 tdOne.InnerText = item.Clave;
-                tdTwo.InnerText = item.Nombre;
-                tdThree.InnerText = item.UnidadesDeMedida.Nombre;
-                tdFour.InnerText = item.Presentacion.Nombre;
+                tdTwo.InnerText = item.NombreCompleto;
+                tdThree.InnerText = item.CantidadEnAlmacen.ToString();
+                tdFour.InnerText = item.PrecioCompraIVA.ToString("C2");
+                tdFive.InnerText = item.PrecioVentaIVA.ToString("C2");
 
                 
 
@@ -175,6 +180,7 @@ namespace SIP.Formas.Catalogos
                 tr.Controls.Add(tdTwo);
                 tr.Controls.Add(tdThree);
                 tr.Controls.Add(tdFour);
+                tr.Controls.Add(tdFive);
                  
 
                 tabla.Controls.Add(tr);

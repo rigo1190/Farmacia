@@ -5,7 +5,7 @@
 <head id="Head1" runat="server">
 
    
-    <title>Farmacia X</title>
+    <title>Sistema de Control de Inventarios</title> 
 
     <%--  <%: Scripts.Render("~/bundles/jquery") %>
       <%: Scripts.Render("~/bundles/bootstrap") %>

@@ -54,7 +54,13 @@ namespace SIP.Formas.Compras
             Articulos articulo = uow.ArticulosBL.GetByID(obj.ArticuloId);
 
             obj.PrecioVenta = decimal.Parse(txtPrecioVenta.Value);
-            articulo.PrecioVenta = decimal.Parse(txtPrecioVenta.Value);
+
+            decimal factorIVA = decimal.Parse(Session["IVA"].ToString());
+            factorIVA++;
+
+            articulo.PrecioVenta = Math.Round( decimal.Parse(txtPrecioVenta.Value) / factorIVA,2);
+            articulo.PrecioVentaIVA = decimal.Parse(txtPrecioVenta.Value);
+            
 
             uow.FacturasAlmacenArticulosBL.Update(obj);
             uow.ArticulosBL.Update(articulo);

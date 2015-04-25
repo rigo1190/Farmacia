@@ -157,6 +157,24 @@ namespace SIP.Formas.Catalogos {
         protected global::System.Web.UI.WebControls.DropDownList ddlUM;
         
         /// <summary>
+        /// txtCantidadUM control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtCantidadUM;
+        
+        /// <summary>
+        /// RequiredFieldValidator7 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator7;
+        
+        /// <summary>
         /// ddlPresentacion control.
         /// </summary>
         /// <remarks>
@@ -265,13 +283,22 @@ namespace SIP.Formas.Catalogos {
         protected global::System.Web.UI.HtmlControls.HtmlInputText txtPrecioCompra;
         
         /// <summary>
-        /// RequiredFieldValidator5 control.
+        /// txtPrecioCompraIVA control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator5;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtPrecioCompraIVA;
+        
+        /// <summary>
+        /// RequiredFieldValidator8 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator8;
         
         /// <summary>
         /// txtPrecioVenta control.
@@ -283,13 +310,22 @@ namespace SIP.Formas.Catalogos {
         protected global::System.Web.UI.HtmlControls.HtmlInputText txtPrecioVenta;
         
         /// <summary>
-        /// RequiredFieldValidator6 control.
+        /// txtPrecioVentaIVA control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator6;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtPrecioVentaIVA;
+        
+        /// <summary>
+        /// RequiredFieldValidator5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator5;
         
         /// <summary>
         /// btnGuardar control.

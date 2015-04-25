@@ -18,10 +18,19 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 <div class="container">
 
+
+     <div id="divEncabezado" runat="server" class="panel panel-success">
+      <div class="panel-heading">
+             <div class="row">
+                <div class="col-md-8"><h3 class="panel-title"> Comparativo de Precios de Compra </h3></div>
+                <div class="col-md-2"> . </div>
+                <div class="col-md-2"><a href="<%=ResolveClientUrl("wfFacturas.aspx") %>">Regresar</a></div>
+             </div>
+       </div>
+     </div>
+
     <div id="divDatos" runat="server" class="panel panel-success">
-        <div class="panel-heading">
-            <h3 class="panel-title">Comparativo de Precios de Compra</h3>
-        </div>
+        
 
         <asp:GridView Height="25px" ShowHeaderWhenEmpty="true" CssClass="table" ID="grid" DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
                     <Columns>
@@ -35,7 +44,7 @@
 
                         <asp:TemplateField HeaderText="Producto" ItemStyle-CssClass="col-md-4">
                             <ItemTemplate>
-                                <asp:Label ID="Label2" runat="server" Text='<%# Bind("Articulo.Nombre") %>'></asp:Label>
+                                <asp:Label ID="Label2" runat="server" Text='<%# Bind("Articulo.NombreCompleto") %>'></asp:Label>
                             </ItemTemplate>                        
                         </asp:TemplateField>
 
@@ -49,7 +58,7 @@
                     
                         <asp:TemplateField HeaderText="Precio Compra Actual" ItemStyle-CssClass="col-md-1">
                             <ItemTemplate>
-                                <asp:Label ID="Label4" runat="server" Text='<%# Bind("Precio","{0:C2}")  %>'></asp:Label>
+                                <asp:Label ID="Label4" runat="server" Text='<%# Bind("PrecioIVA","{0:C2}")  %>'></asp:Label>
                             </ItemTemplate>                        
                         </asp:TemplateField>
 

@@ -117,7 +117,7 @@ namespace SIP.Formas.Inventarios
         private void cargardetalle(int grupo, System.Web.UI.HtmlControls.HtmlGenericControl tabla)
         {
 
-            List<Articulos> detalle = uow.ArticulosBL.Get(q => q.GruposPSId == grupo && q.CantidadEnAlmacen > 0).ToList();
+            List<Articulos> detalle = uow.ArticulosBL.Get(q => q.GruposPSId == grupo && q.CantidadEnAlmacen > 0).OrderBy(q=>q.Nombre).ToList();
 
             if (detalle.Count == 0)
                 return;

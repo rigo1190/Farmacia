@@ -24,7 +24,11 @@ namespace SIP.Formas.Compras
                 divFactura.Style.Add("display", "none");
 
                 divCantidadExtra.Style.Add("display","none");
-
+                
+                ddlModo.DataSource = uow.FacturaModoEntradaBL.Get();
+                ddlModo.DataValueField = "Id";
+                ddlModo.DataTextField = "Nombre";
+                ddlModo.DataBind();
 
                 //_URLVisor.Value = ResolveClientUrl("~/rpts/wfVerReporte.aspx");
             }
@@ -50,7 +54,7 @@ namespace SIP.Formas.Compras
             this.gridDetalle.DataBind();
 
 
-            List<FacturasAlmacenArticulosTMP> lista = uow.FacturasAlmacenArticulosTMPBL.Get(p => p.PedidoId == idPedido && p.Precio == 0).ToList();
+            List<FacturasAlmacenArticulosTMP> lista = uow.FacturasAlmacenArticulosTMPBL.Get(p => p.PedidoId == idPedido && p.Precio == 0 && p.Cantidad > 0).ToList();
             var listaArticulos = from cot in lista
                                  join art in uow.ArticulosBL.Get(p => p.Status == 1).ToList().OrderBy(q => q.Nombre)
                                  on cot.ArticuloId equals art.Id
@@ -59,12 +63,15 @@ namespace SIP.Formas.Compras
 
             ddlArticulo.DataSource = listaArticulos;// uow.ArticulosBL.Get(p => p.Status == 1).ToList().OrderBy(q => q.Nombre);
             ddlArticulo.DataValueField = "Id";
-            ddlArticulo.DataTextField = "Nombre";
+            ddlArticulo.DataTextField = "NombreCompleto";
             ddlArticulo.DataBind();
 
             if (ddlArticulo.Items.Count == 0) {
                 DIVagregar.Style.Add("display","none");
-                DIVCerrarProceso.Style.Add("display", "block");
+                
+                if (gridDetalle.Rows.Count != 0)
+                    DIVCerrarProceso.Style.Add("display", "block");
+                    
             }
             else
             {
@@ -149,19 +156,51 @@ namespace SIP.Formas.Compras
                 CantidadExtra = 0;
             }
             obj.CantidadExtra = CantidadExtra;
-            obj.Precio = decimal.Parse(txtPrecio.Value);
-            obj.Subtotal = obj.Precio * decimal.Parse(obj.Cantidad.ToString());
-            
+
+            int idModo = int.Parse(ddlModo.SelectedValue);
+            FacturaModoEntrada mode = uow.FacturaModoEntradaBL.GetByID(idModo);
+
+            decimal factorIVA = decimal.Parse(Session["IVA"].ToString());
+            factorIVA++;
+
+
+
             if (articulo.esMedicamento == 1)
             {
+                obj.Precio = decimal.Parse(txtPrecio.Value);
+                obj.PrecioIVA = decimal.Parse(txtPrecio.Value);
+                obj.Subtotal = obj.Precio * decimal.Parse(obj.Cantidad.ToString());
+                obj.Total = obj.Precio * decimal.Parse(obj.Cantidad.ToString());
                 obj.IVA = 0;
-                obj.Total = obj.Subtotal;
+
             }
             else
             {
-                obj.IVA = obj.Subtotal * decimal.Parse(Session["IVA"].ToString());
-                obj.Total = obj.Subtotal * decimal.Parse(Session["IVA"].ToString());
-            }
+
+                if (mode.incluyeIVA == 1)
+                {
+                    obj.Precio = decimal.Parse(txtPrecio.Value) / factorIVA;
+                    obj.PrecioIVA = decimal.Parse(txtPrecio.Value);
+                    obj.Subtotal = obj.Precio * decimal.Parse(obj.Cantidad.ToString());
+                    obj.Total = obj.PrecioIVA * decimal.Parse(obj.Cantidad.ToString());
+                    obj.IVA = obj.Total - obj.Subtotal;
+                }
+                else
+                {
+
+                    obj.Precio = decimal.Parse(txtPrecio.Value);
+                    obj.PrecioIVA = decimal.Parse(txtPrecio.Value) * factorIVA;
+                    obj.Subtotal = obj.Precio * decimal.Parse(obj.Cantidad.ToString());
+                    obj.Total = obj.PrecioIVA * decimal.Parse(obj.Cantidad.ToString());
+                    obj.IVA = obj.Total - obj.Subtotal;
+                }
+
+                
+
+            } 
+
+                            
+            
 
             uow.FacturasAlmacenArticulosTMPBL.Update(obj);
             uow.SaveChanges();
@@ -175,6 +214,22 @@ namespace SIP.Formas.Compras
             catch { }
 
         }
+
+
+        protected void btnDescartar_Click(object sender, EventArgs e)
+        {
+            int idArticulo = int.Parse(ddlArticulo.SelectedValue);
+            int idPedido = int.Parse(_idPedido.Value); 
+
+            FacturasAlmacenArticulosTMP obj = uow.FacturasAlmacenArticulosTMPBL.Get(p => p.PedidoId == idPedido && p.ArticuloId == idArticulo).First();
+
+            obj.Cantidad = 0;
+            uow.FacturasAlmacenArticulosTMPBL.Update(obj);
+            uow.SaveChanges();
+            BindGridDetalle();
+        }
+
+
 
         protected void imgBtnEliminar_Click(object sender, ImageClickEventArgs e)
         {
@@ -202,11 +257,11 @@ namespace SIP.Formas.Compras
             List<FacturasAlmacenArticulosTMP> lista;
             int idPedido = int.Parse(_idPedido.Value);
 
-            lista = uow.FacturasAlmacenArticulosTMPBL.Get(p => p.PedidoId == idPedido && p.Precio == 0).ToList();
+            lista = uow.FacturasAlmacenArticulosTMPBL.Get(p => p.PedidoId == idPedido && p.Precio == 0 && p.Cantidad > 0).ToList();
 
             if (lista.Count > 0)
             {
-                lblMensajes.Text = "Para poder registrar la factura, es necesario tener el detalle de productos que integran la factura";
+                lblMensajes.Text = "Para poder registrar la factura, es necesario registrar todos los productos";
                 divMsg.Style.Add("display", "block");
                 return;
             }
@@ -226,7 +281,7 @@ namespace SIP.Formas.Compras
             }
 
 
-            lista = uow.FacturasAlmacenArticulosTMPBL.Get(p => p.PedidoId == idPedido && p.Precio > 0).ToList();
+            lista = uow.FacturasAlmacenArticulosTMPBL.Get(p => p.PedidoId == idPedido && p.Precio > 0 && p.Cantidad > 0).ToList();
 
             Pedidos pedido = uow.PedidosBL.GetByID(idPedido);
 
@@ -268,13 +323,16 @@ namespace SIP.Formas.Compras
                 detalle.ArticuloId = item.ArticuloId;
                 detalle.Cantidad = item.Cantidad;
                 detalle.Adicional = item.CantidadExtra;
+                
                 detalle.Precio = item.Precio;
+                detalle.PrecioIVA = item.PrecioIVA;
+
                 detalle.Subtotal = item.Subtotal;
                 detalle.IVA = item.IVA;
                 detalle.Total = item.Total;
-                detalle.PrecioDeCompraAnterior = item.Articulo.PrecioCompra;
-                detalle.PrecioVenta = item.Articulo.PrecioVenta;
-                detalle.Diferencia = item.Precio - item.Articulo.PrecioCompra;
+                detalle.PrecioDeCompraAnterior = item.Articulo.PrecioCompraIVA;
+                detalle.PrecioVenta = item.Articulo.PrecioVentaIVA;
+                detalle.Diferencia = item.PrecioIVA - item.Articulo.PrecioCompraIVA;
                 detalle.Status = 1;
                 detalle.StatusNombre = "Pendiente";
                 uow.FacturasAlmacenArticulosBL.Insert(detalle);
@@ -284,13 +342,14 @@ namespace SIP.Formas.Compras
                 bitDetalle.ArticuloMovimiento = bitacora;
                 bitDetalle.ArticuloId = item.ArticuloId;
                 bitDetalle.Cantidad = item.Cantidad + item.CantidadExtra;
-                bitDetalle.Importe = item.Precio;
+                bitDetalle.Importe = item.PrecioIVA;
                 uow.ArticulosMovimientosEntradasBL.Insert(bitDetalle);
 
                 Articulos articulo = uow.ArticulosBL.GetByID(item.ArticuloId);
                 articulo.CantidadDisponible = articulo.CantidadDisponible + (item.Cantidad + item.CantidadExtra);
                 articulo.CantidadEnAlmacen = articulo.CantidadEnAlmacen + (item.Cantidad + item.CantidadExtra);
                 articulo.PrecioCompra = item.Precio;
+                articulo.PrecioCompraIVA = item.PrecioIVA;
                 uow.ArticulosBL.Update(articulo);
 
             }
@@ -309,6 +368,7 @@ namespace SIP.Formas.Compras
         {
             Response.Redirect("wfFacturas.aspx");
         }
+
 
 
     }

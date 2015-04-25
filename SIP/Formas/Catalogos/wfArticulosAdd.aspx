@@ -47,7 +47,7 @@
 
 
 
-                    <asp:TemplateField HeaderText="Clave" ItemStyle-CssClass="col-md-1">
+                    <asp:TemplateField HeaderText="Código" ItemStyle-CssClass="col-md-2">
                         <ItemTemplate>
                             <asp:Label ID="lblClave" runat="server" Text='<%# Bind("Clave") %>'></asp:Label>
                         </ItemTemplate>                        
@@ -55,21 +55,27 @@
 
 
 
-                    <asp:TemplateField HeaderText="Nombre" ItemStyle-CssClass="col-md-6">
+                    <asp:TemplateField HeaderText="Producto" ItemStyle-CssClass="col-md-6">
                         <ItemTemplate>
-                            <asp:Label ID="lblNombre" runat="server" Text='<%# Bind("Nombre") %>'></asp:Label>
+                            <asp:Label ID="lblNombre" runat="server" Text='<%# Bind("NombreCompleto") %>'></asp:Label>
                         </ItemTemplate>                        
                     </asp:TemplateField>
                     
-                    <asp:TemplateField HeaderText="Unidad de Medida" ItemStyle-CssClass="col-md-2">
+                    <asp:TemplateField HeaderText="Existencia" ItemStyle-CssClass="col-md-1">
                         <ItemTemplate>
-                            <asp:Label ID="lblUM" runat="server" Text='<%# Bind("UnidadesDeMedida.Nombre") %>'></asp:Label>
+                            <asp:Label ID="lblUM" runat="server" Text='<%# Bind("CantidadEnAlmacen") %>'></asp:Label>
                         </ItemTemplate>                        
                     </asp:TemplateField>
 
-                    <asp:TemplateField HeaderText="Presentación" ItemStyle-CssClass="col-md-2">
+                    <asp:TemplateField HeaderText="$ Compra + IVA" ItemStyle-CssClass="col-md-1">
                         <ItemTemplate>
-                            <asp:Label ID="lblPresentacion" runat="server" Text='<%# Bind("Presentacion.Nombre") %>'></asp:Label>
+                            <asp:Label ID="lblPresentacion" runat="server" Text='<%# Bind("PrecioCompraIVA","{0:C2}") %>'></asp:Label>
+                        </ItemTemplate>                        
+                    </asp:TemplateField>
+
+                    <asp:TemplateField HeaderText="$ Venta + IVA" ItemStyle-CssClass="col-md-1">
+                        <ItemTemplate>
+                            <asp:Label ID="lblPresentacion" runat="server" Text='<%# Bind("PrecioVentaIVA","{0:C2}") %>'></asp:Label>
                         </ItemTemplate>                        
                     </asp:TemplateField>
 
@@ -124,7 +130,7 @@
 
     <div class="col-md-4">
                 <div class="form-group"">                    
-                    <label for="Clave">Clave</label>
+                    <label for="Clave">Código</label>
                     <input type="text" class="input-sm required form-control" id="txtClave" runat="server" style="text-align: left; width:200px; align-items:flex-start" />
                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtClave" ErrorMessage="El campo clave es obligatorio" ValidationGroup="validateX">*</asp:RequiredFieldValidator>                     
                 </div>
@@ -137,19 +143,35 @@
 
                 
 
-                <div class="form-group">
-                    <label for="UdM">Unidad de Medida</label>
-                    <div>
-                        <asp:DropDownList ID="ddlUM" CssClass="form-control" runat="server"></asp:DropDownList>
-                </div>
-                </div>
 
+
+
+                <div class="form-group">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="UdM">Unidad de Medida</label>
+                            <div>
+                                <asp:DropDownList ID="ddlUM" CssClass="form-control" runat="server"></asp:DropDownList>
+                            </div>                            
+                        </div>
+
+                        <div class="col-md-6"> 
+                            <div class="form-group">
+                                <label for="CantidadUM">Cantidad U.M.</label>
+                                <input type="text" class="input-sm required form-control campoNumerico" id="txtCantidadUM" runat="server" style="text-align: left; align-items:flex-start" />
+                                <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ControlToValidate="txtCantidadUM" ErrorMessage="El campo Cantidad UM es obligatorio" ValidationGroup="validateX">*</asp:RequiredFieldValidator>                    
+                            </div>
+                        </div>
+                    
+                    </div>    
+                </div>
 
                 <div class="form-group">
                     <label for="Presentacion">Presentación</label>
                     <div>
                         <asp:DropDownList ID="ddlPresentacion" CssClass="form-control" runat="server"></asp:DropDownList>
-                </div>
+                    </div>                    
                 </div>
 
                 <div class="form-group">
@@ -219,15 +241,46 @@
     
     
                 <div class="form-group"">                    
-                    <label for="PrecioCompra">Precio de Compra</label>
-                    <input type="text" class="input-sm required form-control campoNumerico" id="txtPrecioCompra" runat="server" style="text-align: left; width:200px; align-items:flex-start" />
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="txtPrecioCompra" ErrorMessage="El campo Precio de Compra es obligatorio" ValidationGroup="validateX">*</asp:RequiredFieldValidator>                     
+                    
+                
+                
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="PrecioCompra">$ Compra</label>
+                            <input type="text" class="input-sm required form-control campoNumerico" id="txtPrecioCompra" runat="server" style="text-align: left;   align-items:flex-start" disabled="disabled" />                            
+                        </div>
+
+                        <div class="col-md-6"> 
+                          <label for="PrecioCompra">$ Compra + IVA</label>
+                          <input type="text" class="input-sm required form-control campoNumerico" id="txtPrecioCompraIVA" runat="server" style="text-align: left;   align-items:flex-start" />
+                           <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" ControlToValidate="txtPrecioCompraIVA" ErrorMessage="El campo '$ Compra + IVA' es obligatorio" ValidationGroup="validateX">*</asp:RequiredFieldValidator>                     
+                        </div>
+                    
+                    </div> 
+
+                
+                
+                
                 </div>
     
-                <div class="form-group"">                    
-                    <label for="PrecioVenta">Precio de Venta</label>
-                    <input type="text" class="input-sm required form-control campoNumerico" id="txtPrecioVenta" runat="server" style="text-align: left; width:200px; align-items:flex-start" />
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="txtPrecioVenta" ErrorMessage="El campo Precio de Venta es obligatorio" ValidationGroup="validateX">*</asp:RequiredFieldValidator>                     
+                <div class="form-group"">  
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="PrecioVenta">$ Venta</label>
+                            <input type="text" class="input-sm required form-control campoNumerico" id="txtPrecioVenta" runat="server" style="text-align: left;  align-items:flex-start" disabled="disabled" />                            
+                        </div>
+
+                        <div class="col-md-6"> 
+                          <label for="PrecioVenta">$ Venta + IVA</label>
+                            <input type="text" class="input-sm required form-control campoNumerico" id="txtPrecioVentaIVA" runat="server" style="text-align: left;  align-items:flex-start" />
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="txtPrecioVentaIVA" ErrorMessage="El campo '$ Venta + IVA' es obligatorio" ValidationGroup="validateX">*</asp:RequiredFieldValidator>                     
+                        </div>
+                    
+                    </div> 
+
+                                      
+                    
                 </div>
 
                    <div class="form-group">

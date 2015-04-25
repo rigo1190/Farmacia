@@ -40,6 +40,16 @@
 
 
  <div class="container">
+
+        <div id="divEncabezado" runat="server" class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">Cotizaciones</h3>
+            </div>
+        </div>
+
+
+
+
      <div id="divBtnNuevo" runat="server">
         <asp:Button ID="btnNuevo" runat="server" Text="Nueva Cotización..." CssClass="btn btn-primary" OnClick="btnNuevo_Click" AutoPostBack="false" />
     </div>
@@ -85,7 +95,7 @@
                     </asp:TemplateField>
 
 
-                        <asp:TemplateField HeaderText="Acciones" ItemStyle-CssClass="col-md-1">
+                        <asp:TemplateField HeaderText="Ver Reporte" ItemStyle-CssClass="col-md-1">
                         <ItemTemplate>
                             
                             <asp:ImageButton ID="imgRPT" ToolTip="Ver Cotizaciones" runat="server" ImageUrl="~/img/Sub.png" OnClick="imgRPT_Click"/>

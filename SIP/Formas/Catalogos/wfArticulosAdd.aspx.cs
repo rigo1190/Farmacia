@@ -39,9 +39,8 @@ namespace SIP.Formas.Catalogos
 
             GruposPS grupoPS = uow.GruposPSBL.GetByID(grupo);
 
-            this.txtTitulo.Text = "Artículos del Grupo : " + grupoPS.Clave + " - " + grupoPS.Nombre;
-            this.txtTituloBis.Text = "Artículos del Grupo : " + grupoPS.Clave + " - " + grupoPS.Nombre;
-
+            this.txtTitulo.Text = "Productos del Grupo : " + grupoPS.Clave + " - " + grupoPS.Nombre;
+            this.txtTituloBis.Text = "Productos del Grupo : " + grupoPS.Clave + " - " + grupoPS.Nombre;
 
         }
 
@@ -118,6 +117,7 @@ namespace SIP.Formas.Catalogos
 
             
             ddlUM.SelectedIndex  = 0;
+            txtCantidadUM.Value = string.Empty;
             ddlPresentacion.SelectedIndex = 0;
             ddlFPS.SelectedIndex = 0;
             ddlLaboratorio.SelectedIndex = 0;
@@ -129,7 +129,11 @@ namespace SIP.Formas.Catalogos
 
             txtStockMinimo.Value = string.Empty;
             txtPrecioCompra.Value = string.Empty;
-            txtPrecioVenta.Value = string.Empty; 
+            txtPrecioVenta.Value = string.Empty;
+
+            txtPrecioCompraIVA.Value = string.Empty;
+            txtPrecioVentaIVA.Value = string.Empty;
+
         }
 
         protected void imgBtnEdit_Click(object sender, ImageClickEventArgs e)
@@ -147,7 +151,8 @@ namespace SIP.Formas.Catalogos
             ddlPresentacion.SelectedValue = obj.PresentacionId.ToString();
             ddlFPS.SelectedValue = obj.FPSfactorId.ToString();
             ddlLaboratorio.SelectedValue = obj.LaboratorioId.ToString();
-            
+
+            txtCantidadUM.Value = obj.CantidadUnidadMedida.ToString();
             txtPorcentaje.Value = obj.Porcentaje.ToString() ;
             txtSustanciaActiva.Value = obj.SustanciaActiva;
             txtObservaciones.Value = obj.Observaciones;
@@ -162,8 +167,12 @@ namespace SIP.Formas.Catalogos
             
 
             txtStockMinimo.Value = obj.StockMinimo.ToString();
+            
+            txtPrecioCompra.Value = obj.PrecioCompra.ToString();
             txtPrecioVenta.Value = obj.PrecioVenta.ToString();
-            txtPrecioCompra.Value = obj.PrecioCompra.ToString(); 
+
+            txtPrecioCompraIVA.Value = obj.PrecioCompraIVA.ToString();
+            txtPrecioVentaIVA.Value = obj.PrecioVentaIVA.ToString();
 
             _Accion.Text = "Modificar";
             ModoForma(true);
@@ -252,25 +261,49 @@ namespace SIP.Formas.Catalogos
             obj.Clave = txtClave.Value;
             obj.Nombre = txtNombre.Value;
             obj.UnidadesDeMedidaId = int.Parse(ddlUM.SelectedValue.ToString());
+            obj.CantidadUnidadMedida = int.Parse(txtCantidadUM.Value.Substring(0, txtCantidadUM.Value.Length - 3));
             obj.PresentacionId = int.Parse(ddlPresentacion.SelectedValue.ToString());
             obj.FPSfactorId = int.Parse(ddlFPS.SelectedValue.ToString());
             obj.LaboratorioId = int.Parse(ddlLaboratorio.SelectedValue.ToString());
 
             obj.Porcentaje = double.Parse( txtPorcentaje.Value);
             obj.SustanciaActiva = txtSustanciaActiva.Value;
-            obj.Observaciones = txtObservaciones.Value;
+            obj.Observaciones = txtObservaciones.Value;            
+            obj.StockMinimo = double.Parse(txtStockMinimo.Value);
+
+            
             if (chkEsMedicamento.Checked) { 
                 obj.esMedicamento = 1;
+                obj.PrecioCompra = decimal.Parse(txtPrecioCompraIVA.Value);
+                obj.PrecioVenta = decimal.Parse(txtPrecioVentaIVA.Value);
+
+                obj.PrecioCompraIVA = decimal.Parse(txtPrecioCompraIVA.Value);
+                obj.PrecioVentaIVA = decimal.Parse(txtPrecioVentaIVA.Value);
+
             } else { 
                 obj.esMedicamento = 0;
+
+                decimal desgloseIVA = decimal.Parse(Session["IVA"].ToString());
+                desgloseIVA++;
+
+                obj.PrecioCompra = decimal.Parse(txtPrecioCompraIVA.Value) / desgloseIVA;
+                obj.PrecioVenta = decimal.Parse(txtPrecioVentaIVA.Value) / desgloseIVA;
+
+                obj.PrecioCompraIVA = decimal.Parse(txtPrecioCompraIVA.Value);
+                obj.PrecioVentaIVA = decimal.Parse(txtPrecioVentaIVA.Value);
+
             }
+
             
 
-            obj.StockMinimo = double.Parse(txtPorcentaje.Value);
-            obj.PrecioCompra = decimal.Parse( txtPrecioCompra.Value);
-            obj.PrecioVenta = decimal.Parse(txtPrecioVenta.Value);
+
+
+            
             obj.Status = 1;
 
+
+
+            obj.NombreCompleto = obj.Nombre + " (" + ddlPresentacion.SelectedItem.Text + " " + obj.CantidadUnidadMedida.ToString() + " " + ddlUM.SelectedItem.Text + ")";
 
             //validaciones
             uow.Errors.Clear();
@@ -318,7 +351,8 @@ namespace SIP.Formas.Catalogos
             if (uow.Errors.Count == 0)
                 uow.SaveChanges();
 
-
+            
+             
 
             if (uow.Errors.Count == 0)//Integrando el nuevo nodo en el arbol
             {

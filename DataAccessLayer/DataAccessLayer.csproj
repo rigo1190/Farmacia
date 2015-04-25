@@ -70,6 +70,7 @@
     <Compile Include="Models\CotizacionesTMPasignaciones.cs" />
     <Compile Include="Models\CotizacionesTMPproveedores.cs" />
     <Compile Include="Models\Ejercicio.cs" />
+    <Compile Include="Models\FacturaModoEntrada.cs" />
     <Compile Include="Models\FacturasAlmacen.cs" />
     <Compile Include="Models\FacturasAlmacenArticulos.cs" />
     <Compile Include="Models\FacturasAlmacenArticulosTMP.cs" />

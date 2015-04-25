@@ -33,11 +33,14 @@
    <div class="container">
 
     
-    <div id="divDatos" runat="server" class="panel panel-success">
+     <div id="divDatos" runat="server" class="panel panel-success">
         <div class="panel-heading">
             <h3 class="panel-title">Facturas</h3>
         </div>
 
+        <div id="divBtnNuevo" runat="server">
+            <asp:Button ID="btnNuevo" runat="server" Text="Nuevo" CssClass="btn btn-primary" OnClick="btnNuevo_Click" AutoPostBack="false" />
+        </div>
 
         <asp:GridView Height="25px" ShowHeaderWhenEmpty="true" CssClass="table" ID="grid" DataKeyNames="Id" AutoGenerateColumns="False" runat="server" OnRowDataBound="grid_RowDataBound">
                 <Columns>
@@ -85,7 +88,7 @@
                     
 
 
-                        <asp:TemplateField HeaderText="Acciones" ItemStyle-CssClass="col-md-1">
+                        <asp:TemplateField HeaderText="Ver Reporte" ItemStyle-CssClass="col-md-1">
                         <ItemTemplate>
                             
                             <asp:ImageButton ID="imgVer" ToolTip="Ver" runat="server" ImageUrl="~/img/Sub.png" OnClick="imgVer_Click"/>
@@ -108,9 +111,7 @@
     </div>
 
 
-    <div id="divBtnNuevo" runat="server">
-        <asp:Button ID="btnNuevo" runat="server" Text="Nuevo" CssClass="btn btn-primary" OnClick="btnNuevo_Click" AutoPostBack="false" />
-    </div>
+
     
      
 

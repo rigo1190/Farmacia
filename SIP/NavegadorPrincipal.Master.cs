@@ -17,12 +17,27 @@ namespace SIP
             uow = new UnitOfWork();
 
             lblUsuario.Text = Session["NombreUsuario"].ToString();
-            
-            //Ejercicio objEjercicio = uow.EjercicioBusinessLogic.GetByID(Utilerias.StrToInt(Session["EjercicioId"].ToString()));
-            //lblEjercicio.Text = objEjercicio != null ? objEjercicio.Año.ToString() : string.Empty;
 
-            //mnCatalogos.Visible = true;
-            //mnControlFinanciero.Visible = true;
+
+            int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
+            Usuario user = uow.UsuarioBusinessLogic.GetByID(idUser);
+
+            if (user.Nivel == 2) {
+                menuCompras.Style.Add("display", "none");
+                menuVentas.Style.Add("display", "none");
+                menuInventarios.Style.Add("display", "none");
+                menuCatalogos.Style.Add("display", "none");
+                menuInformes.Style.Add("display", "none");                
+            }
+
+            if (user.Nivel == 3)
+            {
+                menuCompras.Style.Add("display", "none");
+                menuRecetas.Style.Add("display", "none");
+                menuInventarios.Style.Add("display", "none");
+                menuCatalogos.Style.Add("display", "none");
+                menuInformes.Style.Add("display", "none");
+            }
 
         }
 

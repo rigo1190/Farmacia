@@ -13,9 +13,18 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container">
     
-    <div class="panel-heading">
-            <h3 class="panel-title">Generación de Pedidos</h3>
-    </div>
+ 
+
+
+     <div id="divEncabezado" runat="server" class="panel panel-success">
+      <div class="panel-heading">
+             <div class="row">
+                <div class="col-md-8"><h3 class="panel-title"> Pedidos </h3></div>
+                <div class="col-md-2"> . </div>
+                <div class="col-md-2"><a href="<%=ResolveClientUrl("wfCotizaciones.aspx") %>">Regresar</a></div>
+             </div>
+       </div>
+     </div>
 
 
 
@@ -36,21 +45,36 @@
                 </div>
             </div>
 
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <div class="form-group">
                     <a>Seleccione el producto</a> 
                     <asp:DropDownList ID="ddlArticulo" CssClass="form-control" runat="server"></asp:DropDownList>                                
                 </div>
             </div>
                             
-            <div class="col-md-1" id="DIVagregar" runat="server" >
-                <div class="form-group">
-                    <br />
-                        <asp:Button  CssClass="btn btn-default" Text="Agregar" ID="btnAgregar" runat="server" OnClick="btnAgregar_Click" AutoPostBack="false"/>            
+            <div class="col-md-2" id="DIVagregar" runat="server" >
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group"><br />
+                                <asp:Button  CssClass="btn btn-default" Text="Agregar" ID="btnAgregar" runat="server" OnClick="btnAgregar_Click" AutoPostBack="false"/>            
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group"><br />
+                                <asp:Button  CssClass="btn btn-default" Text="Descartar" ID="btnDescartar" runat="server" OnClick="btnDescartar_Click" AutoPostBack="false"/>            
+                        </div>
+                    </div>
                 </div>
+
+
+                
             </div>
     
-            <div class="col-md-1" id="DIVgenerarPedidos" runat="server" >
+            <div class="col-md-2" id="DIVgenerarPedidos" runat="server" >
+
+                
+
                 <div class="form-group">
                     <br />
                         <asp:Button ID="btnGenerar" runat="server" Text="Generar Pedidos" CssClass="btn btn-primary" OnClick="btnGenerar_Click" AutoPostBack="false" />
@@ -87,9 +111,9 @@
                         </ItemTemplate>                        
                     </asp:TemplateField>
 
-                    <asp:TemplateField HeaderText="Artículo" ItemStyle-CssClass="col-md-4">
+                    <asp:TemplateField HeaderText="Producto" ItemStyle-CssClass="col-md-4">
                         <ItemTemplate>
-                            <asp:Label ID="lblCel" runat="server" Text='<%# Bind("Articulo.Nombre") %>'></asp:Label>
+                            <asp:Label ID="lblCel" runat="server" Text='<%# Bind("Articulo.NombreCompleto") %>'></asp:Label>
                         </ItemTemplate>                        
                     </asp:TemplateField>
 

@@ -41,6 +41,59 @@
 
 
 
+
+
+
+    function fnc_ObtenerValoresSeleccionados() {
+        var cadena = "";
+        var index = 0;
+        var grid = document.getElementById('<%=gridProductosCatalogo.ClientID %>'); //Se recupera el grid
+            var primera = true;
+
+            for (i = 1; i < grid.rows.length; i++) { //Se recorren las filas
+                var idProducto = "";
+                var respuesta = 0;
+
+                idProducto = $("input#ContentPlaceHolder1_gridProductosCatalogo" + "_idProducto_" + index).val();
+
+                if (idProducto != null && idProducto != "" && idProducto != undefined) {
+
+                    if ($("input#ContentPlaceHolder1_gridProductosCatalogo" + "_chkSeleccionar_" + index).is(':checked')) {
+                        if (primera) {
+                            cadena += idProducto;
+                            primera = false;
+                        } else
+                            cadena += "|" + idProducto;
+                    }
+                }
+
+                index++;
+            }
+
+         //Se desmarcan las casillas
+            index = 0;
+            for (i = 1; i < grid.rows.length; i++) { //Se recorren las filas
+
+                $("input#ContentPlaceHolder1_gridProductosCatalogo" + "_chkSeleccionar_" + index).prop('checked', false);
+
+                index++;
+            }
+
+
+
+            $("#<%= _CadValoresSeleccionados.ClientID %>").val(cadena);
+
+        }
+
+
+
+
+
+
+
+
+
+
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -52,6 +105,17 @@
     <div class="panel-footer alert alert-danger" id="divMsg" style="display:none" runat="server">
                 <asp:Label ID="lblMensajes" runat="server" Text=""></asp:Label>
     </div>
+
+
+     <div id="divEncabezado" runat="server" class="panel panel-success">
+      <div class="panel-heading">
+             <div class="row">
+                <div class="col-md-8"><h3 class="panel-title"> Creando nueva cotización   </h3></div>
+                <div class="col-md-2"> . </div>
+                <div class="col-md-2"><a href="<%=ResolveClientUrl("wfCotizaciones.aspx") %>">Regresar</a></div>
+             </div>
+       </div>
+     </div>
 
 
      <div id="divBtnNuevo" runat="server">
@@ -146,159 +210,202 @@
     </div>    
      
      
+      <div style="display:none" runat="server">
+            <asp:TextBox ID="_ElId" runat="server" Enable="false" BorderColor="White" BorderStyle="None" ForeColor="White"></asp:TextBox>
+            <asp:TextBox ID="_Accion" runat="server" Enable="false" BorderColor="White" BorderStyle="None" ForeColor="White"></asp:TextBox>                                    
+            <input type="hidden" runat="server" id="_URLVisor" />
+          <input type="hidden" runat="server" id="_CadValoresSeleccionados" />
+        </div>
 
     <div id="divDatos" runat="server" class="panel panel-success">
         <div class="panel-heading">
             <div class="row">
-            <div class="col-md-8"><h3 class="panel-title">Artículos</h3></div>
+            <div class="col-md-8"><h3 class="panel-title">Productos</h3></div>
                 <div class="col-md-1"> . </div>
                 <div class="col-md-2"> Total : <asp:Label ID="txtImporteTotal" runat="server" Text="Total"></asp:Label>   </div>
             </div>
             </div>
-        </div>
-
-
-        <asp:GridView Height="25px" ShowHeaderWhenEmpty="true" CssClass="table" ID="grid" DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
-                <Columns>
-
-
-
-                        <asp:TemplateField HeaderText="Clave" ItemStyle-CssClass="col-md-1">
-                            <ItemTemplate>
-                                <asp:Label ID="Label1" runat="server" Text='<%# Bind("Articulo.Clave") %>'></asp:Label>
-                            </ItemTemplate>                        
-                        </asp:TemplateField>
-
-
-
-                        <asp:TemplateField HeaderText="Nombre" ItemStyle-CssClass="col-md-5">
-                            <ItemTemplate>
-                                <asp:Label ID="Label2" runat="server" Text='<%# Bind("Articulo.Nombre") %>'></asp:Label>
-                            </ItemTemplate>                        
-                        </asp:TemplateField>
-
-                     <asp:TemplateField HeaderText="U.M." ItemStyle-CssClass="col-md-5">
-                            <ItemTemplate>
-                                <asp:Label ID="Label21" runat="server" Text='<%# Bind("Articulo.UnidadesDeMedida.Nombre") %>'></asp:Label>
-                            </ItemTemplate>                        
-                        </asp:TemplateField>
-
-                     <asp:TemplateField HeaderText="Presentación" ItemStyle-CssClass="col-md-5">
-                            <ItemTemplate>
-                                <asp:Label ID="Label22" runat="server" Text='<%# Bind("Articulo.Presentacion.Nombre") %>'></asp:Label>
-                            </ItemTemplate>                        
-                        </asp:TemplateField>
-
-
-                    
-                        <asp:TemplateField HeaderText="Cantidad" ItemStyle-CssClass="col-md-1">
-                            <ItemTemplate>
-                                <asp:Label ID="Label3" runat="server" Text='<%# Bind("Cantidad") %>'></asp:Label>
-                            </ItemTemplate>                        
-                        </asp:TemplateField>
-
-                        <asp:TemplateField HeaderText="Precio" ItemStyle-CssClass="col-md-1">
-                            <ItemTemplate>
-                                <asp:Label ID="Label4" runat="server" Text='<%# Bind("Precio","{0:C2}") %>'></asp:Label>
-                            </ItemTemplate>                        
-                        </asp:TemplateField>
-
-                        
-                        <asp:TemplateField HeaderText="Subtotal" ItemStyle-CssClass="col-md-1">
-                            <ItemTemplate>
-                                <asp:Label ID="Label5" runat="server" Text='<%# Bind("Subtotal","{0:C2}") %>'></asp:Label>
-                            </ItemTemplate>                        
-                        </asp:TemplateField>
-
-                        
-                        <asp:TemplateField HeaderText="IVA" ItemStyle-CssClass="col-md-1">
-                            <ItemTemplate>
-                                <asp:Label ID="Label6" runat="server" Text='<%# Bind("IVA","{0:C2}") %>'></asp:Label>
-                            </ItemTemplate>                        
-                        </asp:TemplateField>
-
-                        
-                        <asp:TemplateField HeaderText="Total" ItemStyle-CssClass="col-md-1">
-                            <ItemTemplate>
-                                <asp:Label ID="Label7" runat="server" Text='<%# Bind("Total","{0:C2}") %>'></asp:Label>
-                            </ItemTemplate>                        
-                        </asp:TemplateField>
-
-
-
-
-                        <asp:TemplateField HeaderText="Acciones" ItemStyle-CssClass="col-md-1">
-                        <ItemTemplate>
-                            
-                            
-                            <asp:ImageButton ID="imgBtnEliminar" ToolTip="Borrar" runat="server" ImageUrl="~/img/close.png"  OnClick="imgBtnEliminar_Click"/>
-                            
-                        </ItemTemplate>
-                        <HeaderStyle BackColor="#EEEEEE" />
-                        <ItemStyle HorizontalAlign="right" VerticalAlign="Middle" BackColor="#EEEEEE" />
-                    </asp:TemplateField>                                  
-
-
-                </Columns>
-                    
-                
-                    
-        </asp:GridView>
-
-
-<div class="row"> 
-
-    <div class="col-md-11">
-       <div id="divCaptura" runat="server" class="panel panel-success">
-
         
 
+        <asp:GridView ID="gridProductos" OnRowDeleting="gridProductos_RowDeleting" OnRowUpdating="gridProductos_RowUpdating" OnRowCancelingEdit="gridProductos_RowCancelingEdit" OnRowEditing="gridProductos_RowEditing" PageSize="10" Height="25px" EnablePersistedSelection="true" Width="1200px"  ShowHeaderWhenEmpty="true"  DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
+                                    <Columns>
+                                        <asp:CommandField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ControlStyle-Font-Size="Smaller" ShowDeleteButton="true" HeaderText="Eliminar" />
+                                        
+                                        
+                                        <asp:TemplateField HeaderText="Código" HeaderStyle-Font-Size="Smaller" ItemStyle-Font-Size="Smaller"  HeaderStyle-Width="150px" HeaderStyle-CssClass="panel-footer" SortExpression="NOAplica">
+                                            <EditItemTemplate>
+                                                <input type="text" disabled="disabled" runat="server" value='<%# Bind("Articulo.Clave") %>' id="txtEsMedicamento" />
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:label runat="server" ID="lblMedicamento" Text='<%# Bind("Articulo.Clave") %>'></asp:label>
+                                            </ItemTemplate>
+                                             <ItemStyle HorizontalAlign="Center" />
+                                        </asp:TemplateField>
+                                        
+                                        
+                                        <asp:TemplateField HeaderText="Producto" SortExpression="Orden" HeaderStyle-Font-Size="Smaller" ItemStyle-Font-Size="Smaller"  HeaderStyle-CssClass="panel-footer" >
+                                            <EditItemTemplate>
+                                                <input type="text" disabled="disabled" runat="server" value='<%# Bind("Articulo.NombreCompleto") %>' id="txtNombre" />
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" ID="lblNombre" Text='<%# Bind("Articulo.NombreCompleto") %>'></asp:Label>
+                                            </ItemTemplate> 
+                                        </asp:TemplateField>
 
-        <div class="row">
+                                        
 
-            <div class="col-md-8">
-                <div class="form-group">
-                    <label for="articulo">Seleccione un artículo</label>
-                    <div>
-                        <asp:DropDownList ID="ddlArticulo" CssClass="form-control" runat="server"></asp:DropDownList>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group"">                    
-                    <label for="Cantidad">Cantidad</label>
-                    <input type="text" class="input-sm required form-control" id="txtCantidad" runat="server" style="text-align: left;  align-items:flex-start" />
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtCantidad" ErrorMessage="El campo Cantidad es obligatorio" ValidationGroup="validateX">*</asp:RequiredFieldValidator>                     
-                    <asp:RangeValidator ID="RangeValidator1" runat="server" ControlToValidate="txtCantidad" ErrorMessage="El Campo cantidad requiere un valor númerico" MaximumValue="10000" MinimumValue="1" Type="Integer" ValidationGroup="validateX">*</asp:RangeValidator>
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group">
-                    <label for="Cantidad">.</label><br />
-                        <asp:Button  CssClass="btn btn-default" Text="Agregar" ID="btnGuardar" runat="server" OnClick="btnGuardar_Click" AutoPostBack="false" ValidationGroup="validateX"/>            
-                </div>
-            </div>
-    
-        </div>
-                
-                      
+                                        <asp:TemplateField HeaderText="Cantidad" HeaderStyle-Font-Size="Smaller" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderStyle-Width="120px" HeaderStyle-CssClass="panel-footer"  SortExpression="NOAplica">
+                                            <EditItemTemplate>
+                                                <input type="number" runat="server" value='<%# Bind("Cantidad") %>' id="txtCantidad" />
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:label runat="server" Text='<%# Bind("Cantidad") %>' ID="lblCantidad"></asp:label>
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" />
+                                        </asp:TemplateField>
 
-        <div style="display:none" runat="server">
-            <asp:TextBox ID="_ElId" runat="server" Enable="false" BorderColor="White" BorderStyle="None" ForeColor="White"></asp:TextBox>
-            <asp:TextBox ID="_Accion" runat="server" Enable="false" BorderColor="White" BorderStyle="None" ForeColor="White"></asp:TextBox>                                    
-            <input type="hidden" runat="server" id="_URLVisor" />
-        </div>
+                                        <asp:CommandField HeaderStyle-Font-Size="Smaller" ControlStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ShowEditButton="True" />
+                                        
 
-        <asp:ValidationSummary ID="ValidationSummary1" runat="server" ValidationGroup="validateX" ViewStateMode="Disabled" />
 
-            </div>
+
+                                        <asp:TemplateField HeaderText="$ Compra + IVA" HeaderStyle-Font-Size="Smaller" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center"  HeaderStyle-Width="120px"  HeaderStyle-CssClass="panel-footer"  SortExpression="NOAplica">
+                                            <EditItemTemplate>
+                                                <input type="text" disabled="disabled" runat="server" value='<%# Bind("Articulo.PrecioCompraIVA","{0:C2}") %>' id="txtPV" />
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%#Bind("Articulo.PrecioCompraIVA","{0:C2}") %>' ID="lblPV"></asp:Label>
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" />
+                                        </asp:TemplateField>
+
+
+                                        <asp:TemplateField HeaderText="SubTotal" HeaderStyle-Font-Size="Smaller" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center"  HeaderStyle-Width="120px" HeaderStyle-CssClass="panel-footer"  SortExpression="NOAplica">
+                                            <EditItemTemplate>
+                                                <input type="text" disabled="disabled" value='<%#Bind("Subtotal","{0:C2}") %>' runat="server" id="txtSubtotal" />
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" ID="lblSubtotal" Text='<%#Bind("Subtotal","{0:C2}") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" />
+                                        </asp:TemplateField>
+
+                                        
+                                        <asp:TemplateField HeaderText="IVA" HeaderStyle-Font-Size="Smaller" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center"  HeaderStyle-Width="120px" HeaderStyle-CssClass="panel-footer"  SortExpression="NOAplica">
+                                            <EditItemTemplate>
+                                                <input type="text" disabled="disabled" value='<%#Bind("IVA","{0:C2}") %>' runat="server" id="txtIVA" />
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" ID="lblIVA" Text='<%#Bind("IVA","{0:C2}") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" />
+                                        </asp:TemplateField>
+
+                                        <asp:TemplateField HeaderText="Total" HeaderStyle-Font-Size="Smaller" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center"  HeaderStyle-Width="120px" HeaderStyle-CssClass="panel-footer"  SortExpression="NOAplica">
+                                             <EditItemTemplate>
+                                                <input type="text" disabled="disabled" value='<%#Bind("Total","{0:C2}") %>' runat="server" id="txtTotal" />
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" ID="lblTotal" Text='<%#Bind("Total","{0:C2}") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" />
+                                        </asp:TemplateField>
+
+                                        
+                                    </Columns>
+                                    <%--<PagerSettings FirstPageText="Primera" LastPageText="Ultima" Mode="NextPreviousFirstLast" NextPageText="Siguiente" PreviousPageText="Anterior" />--%>
+                                </asp:GridView>
+ 
+
+
+       <br>
+
+
+     <div class="row">
+                     <div class="col-md-12">
+                         <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Seleccione los productos</a>
+                                </h3>
+                            </div>
+
+                            <div id="collapse1" class="panel-collapse">
+                                <div class="panel-body">
+                                    <div class="row" style="height:330px; overflow:scroll">
+
+                                        <asp:GridView  ID="gridProductosCatalogo" PageSize="10" Height="15px" Width="1250px" EnablePersistedSelection="true" ShowHeaderWhenEmpty="true"  DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
+                                        <Columns>
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-Width="90px" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Center" HeaderText="Seleccionar" SortExpression="SI">
+                                                <ItemTemplate>
+                                                    <input type="checkbox" value="false" runat="server" id="chkSeleccionar" />
+                                                </ItemTemplate>
+                                                <ItemStyle HorizontalAlign="Center" />
+                                            </asp:TemplateField>
+
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-Font-Size="Smaller" ItemStyle-Width="450px" HeaderText="Nombre Producto" HeaderStyle-CssClass="panel-footer" SortExpression="Orden">
+                                                <ItemTemplate>
+                                                    <%# DataBinder.Eval(Container.DataItem, "NombreCompleto") %>
+                                                    <input type="hidden" value='<%# DataBinder.Eval(Container.DataItem, "Id") %>' runat="server" id="idProducto" />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+
+
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-Width="110px" ItemStyle-Font-Size="Smaller" HeaderText="Es Medicamento" HeaderStyle-Width="150px" HeaderStyle-CssClass="panel-footer" SortExpression="Orden">
+                                                <ItemTemplate>
+                                                    <asp:label runat="server" ID="lblMedicamento" Text='<%# Convert.ToInt16(Eval("EsMedicamento")) == 0 ? "NO":"SI" %>'></asp:label>
+                                                </ItemTemplate>
+                                                <ItemStyle  HorizontalAlign="Center" />
+                                            </asp:TemplateField>
+
+
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller"  HeaderStyle-Width="90px"  ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="$ Compra + IVA" HeaderStyle-CssClass="panel-footer" SortExpression="NOAplica">
+                                                <ItemTemplate>                                                    
+                                                    <asp:Label ID="lblPrecio2" Text='<%# Bind("PrecioCompraIVA","{0:C2}") %>' runat="server"></asp:Label>
+                                                </ItemTemplate>
+                                                <ItemStyle HorizontalAlign="Center" />
+                                            </asp:TemplateField>
+
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller"  HeaderStyle-Width="90px"  ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="$ Venta + IVA" HeaderStyle-CssClass="panel-footer" SortExpression="NOAplica">
+                                                <ItemTemplate>                                                    
+                                                    <asp:Label ID="lblPrecio" Text='<%# Bind("PrecioVentaIVA","{0:C2}") %>' runat="server"></asp:Label>
+                                                </ItemTemplate>
+                                                <ItemStyle HorizontalAlign="Center" />
+                                            </asp:TemplateField>
+
+
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-Width="90px" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Existencias" HeaderStyle-CssClass="panel-footer" SortExpression="NOAplica">
+                                                <ItemTemplate>
+                                                    <%# DataBinder.Eval(Container.DataItem, "CantidadEnAlmacen") %>
+                                                </ItemTemplate>
+                                                <ItemStyle HorizontalAlign="Center" />
+                                            </asp:TemplateField>
+           
+                                        </Columns>
+                                        <%--<PagerSettings FirstPageText="Primera" LastPageText="Ultima" Mode="NextPreviousFirstLast" NextPageText="Siguiente" PreviousPageText="Anterior" />--%>
+                                    </asp:GridView>
+                                    </div>
+                                    <div class="row">
+                                        <asp:Button runat="server" OnClick="btnAgregarDeCat_Click" OnClientClick="return fnc_ObtenerValoresSeleccionados();" ID="btnAgregarDeCat" Text="Agregar +" CssClass="btn btn-primary" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                     </div>
+
+
+
+
+
+
+
+
     </div>
-    </div>
-    </div>
 
 
     
-    
+    </div>
     
 
 

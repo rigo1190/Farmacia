@@ -63,7 +63,15 @@ namespace SIP.Formas.Compras
 
 
 
+                LinkButton linkPrecios = (LinkButton)e.Row.FindControl("linkPrecios");
+                FacturasAlmacen factura = uow.FacturasAlmacenBL.GetByID(id);
 
+                if (factura.Status > 1)
+                {
+                    linkPrecios.Enabled = false;
+                    linkPrecios.Text = " ";
+                }
+                    
 
                  
 

@@ -43,15 +43,26 @@
 
 
 
+     <div id="divEncabezado" runat="server" class="panel panel-success">
+      <div class="panel-heading">
+             <div class="row">
+                <div class="col-md-8"><h3 class="panel-title"> Registro de Facturas... </h3></div>
+                <div class="col-md-2"> . </div>
+                <div class="col-md-2"><a href="<%=ResolveClientUrl("wfFacturas.aspx") %>">Regresar</a></div>
+             </div>
+       </div>
+     </div>
+
+
     <div class="panel-footer alert alert-danger" id="divMsg" style="display:none" runat="server">
         <asp:Label ID="lblMensajes" runat="server" Text=""></asp:Label>
     </div>
 
 
        
-    <div id="divPedidos" runat="server" class="panel panel-success">
+    <div id="divPedidos" runat="server" >
 
-        <div class="panel-heading">
+        <div class="panel panel-heading">
             <h3 class="panel-title">Seleccione el pedido a registrar</h3>
         </div>
 
@@ -97,10 +108,18 @@
 
 
 
-    <div id="divFactura" runat="server" class="panel panel-success">
+    <div id="divFactura" runat="server" >
 
-        <div class="panel-heading">
-            <h3 class="panel-title">Registrar pedido en el almacén</h3>
+        <div class="panel panel-heading">
+
+            <div class="row">
+                <div class="col-md-8"><h3 class="panel-title">Indique los precios de los productos de la factura</h3></div>
+                <div class="col-md-4"> <asp:DropDownList ID="ddlModo" CssClass="form-control" runat="server"></asp:DropDownList> </div>
+                
+             </div>
+
+
+            
         </div>
 
         <div class="row" id="DIVCerrarProceso" runat="server"> 
@@ -170,10 +189,25 @@
                     
                       
                     <div class="col-md-2"  >
-                        <div class="form-group">
-                            <br />
-                                <asp:Button  CssClass="btn btn-default" Text="Agregar" ID="btnAgregar" runat="server" OnClick="btnAgregar_Click" AutoPostBack="false"/>            
+                        
+
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group"> <br />
+                                        <asp:Button  CssClass="btn btn-default" Text="Agregar" ID="btnAgregar" runat="server" OnClick="btnAgregar_Click" AutoPostBack="false"/>            
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group"><br />
+                                        <asp:Button  CssClass="btn btn-default" Text="Descartar" ID="btnDescartar" runat="server" OnClick="btnDescartar_Click" AutoPostBack="false"/>            
+                                </div>
+                            </div>
                         </div>
+
+
+
+
                     </div>
 
                     <div class="col-md-2"  >                        
@@ -197,9 +231,9 @@
 
 
 
-                        <asp:TemplateField HeaderText="Nombre" ItemStyle-CssClass="col-md-5">
+                        <asp:TemplateField HeaderText="Nombre" ItemStyle-CssClass="col-md-4">
                             <ItemTemplate>
-                                <asp:Label ID="lblNombre" runat="server" Text='<%# Bind("Articulo.Nombre") %>'></asp:Label>
+                                <asp:Label ID="lblNombre" runat="server" Text='<%# Bind("Articulo.NombreCompleto") %>'></asp:Label>
                             </ItemTemplate>                        
                         </asp:TemplateField>
                     
@@ -217,6 +251,11 @@
                         <asp:TemplateField HeaderText="Precio" ItemStyle-CssClass="col-md-1">
                             <ItemTemplate>
                                 <asp:Label ID="lblPrecio" runat="server" Text='<%# Bind("Precio","{0:C2}") %>'></asp:Label>
+                            </ItemTemplate>                        
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Precio + IVA" ItemStyle-CssClass="col-md-1">
+                            <ItemTemplate>
+                                <asp:Label ID="lblPrecio2" runat="server" Text='<%# Bind("PrecioIVA","{0:C2}") %>'></asp:Label>
                             </ItemTemplate>                        
                         </asp:TemplateField>
 

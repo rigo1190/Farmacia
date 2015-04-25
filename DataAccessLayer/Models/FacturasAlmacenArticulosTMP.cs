@@ -20,6 +20,8 @@ namespace DataAccessLayer.Models
 
         public int CantidadExtra { get; set; }
 
+        public decimal PrecioIVA { get; set; }
+
         public virtual Pedidos Pedido { get; set; }
         public virtual Articulos Articulo { get; set; }
     }

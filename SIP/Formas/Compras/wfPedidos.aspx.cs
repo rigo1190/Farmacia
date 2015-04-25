@@ -95,7 +95,7 @@ namespace SIP.Formas.Compras
         private void BindComboProductos()
         {
             int idCotizacion = int.Parse(Session["XCotizacionId"].ToString());
-            List<CotizacionesTMPasignaciones> lista = uow.CotizacionesTMPAsignacionesBL.Get(p => p.CotizacionId == idCotizacion && p.ProveedorId == null).ToList();
+            List<CotizacionesTMPasignaciones> lista = uow.CotizacionesTMPAsignacionesBL.Get(p => p.CotizacionId == idCotizacion && p.ProveedorId == null && p.Cantidad > 0).ToList();
 
 
             var listaArticulos = from cot in lista
@@ -106,15 +106,19 @@ namespace SIP.Formas.Compras
 
             ddlArticulo.DataSource = listaArticulos;// uow.ArticulosBL.Get(p => p.Status == 1).ToList().OrderBy(q => q.Nombre);
             ddlArticulo.DataValueField = "Id";
-            ddlArticulo.DataTextField = "Nombre";
+            ddlArticulo.DataTextField = "NombreCompleto";
             ddlArticulo.DataBind();
 
 
 
             if (ddlArticulo.Items.Count==0)
             {
-                DIVgenerarPedidos.Style.Add("display", "block");
                 DIVagregar.Style.Add("display", "none");
+
+                if (this.gridAsignaciones.Rows.Count != 0)                
+                    DIVgenerarPedidos.Style.Add("display", "block");
+                    
+                
             }
             else
             {
@@ -131,7 +135,7 @@ namespace SIP.Formas.Compras
 
 
             int idCotizacion = int.Parse(Session["XCotizacionId"].ToString());
-            List<CotizacionesTMPasignaciones> lista = uow.CotizacionesTMPAsignacionesBL.Get(p => p.CotizacionId == idCotizacion && p.ProveedorId != null).ToList();
+            List<CotizacionesTMPasignaciones> lista = uow.CotizacionesTMPAsignacionesBL.Get(p => p.CotizacionId == idCotizacion && p.ProveedorId != null).OrderBy(q=>q.Proveedor.RazonSocial).ToList();
 
             this.gridAsignaciones.DataSource = lista;
             this.gridAsignaciones.DataBind();
@@ -160,6 +164,28 @@ namespace SIP.Formas.Compras
             BindComboProductos();
 
         }
+
+
+        protected void btnDescartar_Click(object sender, EventArgs e)
+        {
+            if (ddlArticulo.Items.Count == 0)
+                return;
+
+            int idCotizacion = int.Parse(Session["XCotizacionId"].ToString());
+            int idArticulo = int.Parse(ddlArticulo.SelectedValue);
+
+            CotizacionesTMPasignaciones obj = uow.CotizacionesTMPAsignacionesBL.Get(p => p.CotizacionId == idCotizacion && p.ArticuloId == idArticulo).First();
+
+            obj.Cantidad = 0;
+
+            uow.CotizacionesTMPAsignacionesBL.Update(obj);
+            uow.SaveChanges();
+
+
+            
+            BindComboProductos();
+        }
+
 
         protected void imgBtnEliminar_Click(object sender, ImageClickEventArgs e)
         {
@@ -376,24 +402,20 @@ namespace SIP.Formas.Compras
             System.Web.UI.HtmlControls.HtmlGenericControl thOne = new System.Web.UI.HtmlControls.HtmlGenericControl("TH");
             System.Web.UI.HtmlControls.HtmlGenericControl thTwo = new System.Web.UI.HtmlControls.HtmlGenericControl("TH");
             System.Web.UI.HtmlControls.HtmlGenericControl thThree = new System.Web.UI.HtmlControls.HtmlGenericControl("TH");
-            System.Web.UI.HtmlControls.HtmlGenericControl thFour = new System.Web.UI.HtmlControls.HtmlGenericControl("TH");
-            System.Web.UI.HtmlControls.HtmlGenericControl thFive = new System.Web.UI.HtmlControls.HtmlGenericControl("TH");
+            
 
 
             trHead.Attributes.Add("align", "center");
 
 
             thOne.InnerText = "Codigo";
-            thTwo.InnerText = "Nombre";
-            thThree.InnerText = "Unidad de Medida";
-            thFour.InnerText = "Presentación";
-            thFive.InnerText = "Cantidad";
+            thTwo.InnerText = "Producto";
+            thThree.InnerText = "Cantidad";
+             
 
             trHead.Controls.Add(thOne);
             trHead.Controls.Add(thTwo);
             trHead.Controls.Add(thThree);
-            trHead.Controls.Add(thFour);
-            trHead.Controls.Add(thFive);
 
             tabla.Controls.Add(trHead);
 
@@ -405,29 +427,27 @@ namespace SIP.Formas.Compras
                 System.Web.UI.HtmlControls.HtmlGenericControl tdOne = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
                 System.Web.UI.HtmlControls.HtmlGenericControl tdTwo = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
                 System.Web.UI.HtmlControls.HtmlGenericControl tdThree = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
-                System.Web.UI.HtmlControls.HtmlGenericControl tdFour = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
-                System.Web.UI.HtmlControls.HtmlGenericControl tdFive = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
+                
 
 
                 tdOne.Attributes.Add("align", "left");
                 tdOne.InnerText = item.Articulo.Clave;
-                tdTwo.InnerText = item.Articulo.Nombre;
-                tdThree.InnerText = item.Articulo.UnidadesDeMedida.Nombre;
-                tdFour.InnerText = item.Articulo.Presentacion.Nombre;
-                tdFive.InnerText = item.Cantidad.ToString();
+                tdTwo.InnerText = item.Articulo.NombreCompleto;
+                tdThree.InnerText = item.Cantidad.ToString();
 
 
 
                 tr.Controls.Add(tdOne);
                 tr.Controls.Add(tdTwo);
                 tr.Controls.Add(tdThree);
-                tr.Controls.Add(tdFour);
-                tr.Controls.Add(tdFive);
+
 
 
                 tabla.Controls.Add(tr);
             }
         }
+
+
 
      
 

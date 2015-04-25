@@ -22,24 +22,6 @@ namespace SIP.Formas.Compras {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divDatos;
         
         /// <summary>
-        /// grid control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView grid;
-        
-        /// <summary>
-        /// _URLVisor control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputHidden _URLVisor;
-        
-        /// <summary>
         /// divBtnNuevo control.
         /// </summary>
         /// <remarks>
@@ -56,5 +38,23 @@ namespace SIP.Formas.Compras {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnNuevo;
+        
+        /// <summary>
+        /// grid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView grid;
+        
+        /// <summary>
+        /// _URLVisor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden _URLVisor;
     }
 }

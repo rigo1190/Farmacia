@@ -50,6 +50,7 @@ namespace BusinessLogicLayer
         private IBusinessLogic<FacturasAlmacen> facturasalmacenBL;
         private IBusinessLogic<FacturasAlmacenArticulos> facturasalmacenarticulosBL;
         private IBusinessLogic<FacturasAlmacenArticulosTMP> facturasalmacenarticulostmpBL;
+        private IBusinessLogic<FacturaModoEntrada> facturamodoentradaBL;
 
         private IBusinessLogic<ArticulosMovimientos> articulosmovimientosBL;
         private IBusinessLogic<ArticulosMovimientosEntradas> articulosmovimientosentradasBL;
@@ -498,6 +499,19 @@ namespace BusinessLogicLayer
                     this.facturasalmacenarticulostmpBL = new GenericBusinessLogic<FacturasAlmacenArticulosTMP>(contexto);
                 }
                 return this.facturasalmacenarticulostmpBL;
+            }
+        }
+
+
+        public IBusinessLogic<FacturaModoEntrada> FacturaModoEntradaBL
+        {
+            get
+            {
+                if (this.facturamodoentradaBL == null)
+                {
+                    this.facturamodoentradaBL = new GenericBusinessLogic<FacturaModoEntrada>(contexto);
+                }
+                return this.facturamodoentradaBL;
             }
         }
 

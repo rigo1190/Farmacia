@@ -13,6 +13,15 @@ namespace SIP.Formas.Compras {
     public partial class wfFacturasNueva {
         
         /// <summary>
+        /// divEncabezado control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divEncabezado;
+        
+        /// <summary>
         /// divMsg control.
         /// </summary>
         /// <remarks>
@@ -56,6 +65,15 @@ namespace SIP.Formas.Compras {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divFactura;
+        
+        /// <summary>
+        /// ddlModo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlModo;
         
         /// <summary>
         /// DIVCerrarProceso control.
@@ -191,6 +209,15 @@ namespace SIP.Formas.Compras {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAgregar;
+        
+        /// <summary>
+        /// btnDescartar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDescartar;
         
         /// <summary>
         /// chkExtras control.
