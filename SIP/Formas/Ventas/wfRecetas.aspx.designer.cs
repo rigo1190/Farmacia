@@ -292,7 +292,16 @@ namespace SIP.Formas.Ventas {
         protected global::System.Web.UI.WebControls.Label lblMsgSuccess;
         
         /// <summary>
-        /// _IDReceta control.
+        /// Control divImagenes.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divImagenes;
+        
+        /// <summary>
+        /// Control _IDReceta.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.

@@ -12,6 +12,16 @@
 
         });
 
+        function fnc_MostrarPassword() {
+            $("#modalPassword").modal('show'); //Se muestra el modal
+            $("#<%= txtPassword.ClientID %>").val("");
+            $("#<%= divMsgError.ClientID %>").css("display", "none");
+            $("#<%= divMsgSuccess.ClientID %>").css("display", "none");
+            $("#<%= lblMsgError.ClientID %>").val("");
+
+            return false;
+        }
+
         function fnc_MostrarSalida(idSalida) {
 
             var izq = (screen.width - 750) / 2
@@ -165,7 +175,7 @@
 
                                  <div class="col-md-2">
                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                     <asp:Button runat="server" Text="Generar Salida" OnClick="btnGenerarSalida_Click" OnClientClick="return fnc_Validar(); " ID="btnGenerarSalida" CssClass="btn btn-primary" />
+                                     <button class="btn btn-primary" onclick="fnc_MostrarPassword(); return false;">Generar Salida</button>
                                  </div>
 
                                  <div class="col-md-2">
@@ -314,6 +324,28 @@
     <div runat="server" style="display:none">
         <input type="hidden" runat="server" id="_Accion" />
         <input type="hidden" runat="server" id="_CadValoresSeleccionados" />
+        <input type="hidden" runat="server" id="_ProductosVenta" />
+    </div>
+
+
+
+    <div class="modal fade" id="modalPassword" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="ModalLabel">Ingrese Password de confirmación</h4>
+              </div>
+              <div class="modal-body">
+                  <asp:TextBox CssClass="form-control" runat="server" ID="txtPassword" TextMode="Password"></asp:TextBox>
+              </div>
+              <div class="modal-footer">
+                 <asp:Button runat="server" Text="Aceptar" OnClick="btnGenerarSalida_Click" OnClientClick="return fnc_Validar(); " ID="btnGenerarSalida" CssClass="btn btn-primary" />
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+              </div>
+        
+            </div>
+        </div>
     </div>
 
 </asp:Content>

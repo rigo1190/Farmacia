@@ -112,8 +112,8 @@ namespace SIP.Formas.Ventas
             divReceta.Style.Add("display", "block");
             divDetalleReceta.Style.Add("display", "block");
 
-            divMsgError.Style.Add("display", "none");
-            divMsgSuccess.Style.Add("display", "none");
+            //divMsgError.Style.Add("display", "none");
+            //divMsgSuccess.Style.Add("display", "none");
             divBtnImagen.Style.Add("display", "block");
         }
 
@@ -167,29 +167,6 @@ namespace SIP.Formas.Ventas
             else
                 uow.RecetasBusinessLogic.Update(obj);
 
-            M = GuardarImagenReceta();
-
-            if (!M.Equals(string.Empty))
-            {
-                divMsgError.Style.Add("display", "block");
-                divMsgSuccess.Style.Add("display", "none");
-                lblMsgError.Text = M;
-
-                if (_Accion.Value.Equals("A"))
-                    ModoEdicion();
-                else
-                {
-                    divEncabezado.Style.Add("display", "none");
-                    divCaptura.Style.Add("display", "block");
-                    divReceta.Style.Add("display", "block");
-                    divGuardarReceta.Style.Add("display", "block");
-                    divDetalleReceta.Style.Add("display", "none");
-                }
-                    
-
-                return;
-            }
-
             uow.SaveChanges();
 
             if (uow.Errors.Count > 0)
@@ -211,6 +188,7 @@ namespace SIP.Formas.Ventas
                     divReceta.Style.Add("display", "block");
                     divGuardarReceta.Style.Add("display", "block");
                     divDetalleReceta.Style.Add("display", "none");
+                    divBtnImagen.Style.Add("display", "none");
                 }
                     
 
@@ -221,10 +199,35 @@ namespace SIP.Formas.Ventas
             BindGridRecetas();
             _IDReceta.Value = obj.Id.ToString();
 
+            M = GuardarImagenReceta();
+
+            if (!M.Equals(string.Empty))
+            {
+                divMsgError.Style.Add("display", "block");
+                divMsgSuccess.Style.Add("display", "none");
+                lblMsgError.Text = M;
+
+                if (_Accion.Value.Equals("A"))
+                    ModoEdicion();
+                else
+                {
+                    divEncabezado.Style.Add("display", "none");
+                    divCaptura.Style.Add("display", "block");
+                    divReceta.Style.Add("display", "block");
+                    divGuardarReceta.Style.Add("display", "block");
+                    divDetalleReceta.Style.Add("display", "none");
+                    divBtnImagen.Style.Add("display", "none");
+                }
+
+
+                return;
+            }
+
             if (_Accion.Value.Equals("N"))
             {
                 BindGridDetalleRecetas();
                 ModoNuevo();
+                
             }
             else
                 ModoEdicion();
@@ -318,9 +321,16 @@ namespace SIP.Formas.Ventas
                     return M;
                 }
 
+                FileInfo fileInfo = new FileInfo(fileUpload.PostedFile.FileName);
+                if (fileInfo.Extension != ".jpg" && fileInfo.Extension != ".bmp" && fileInfo.Extension != ".png")
+                {
+                    M = "El archivo no es válido. Solo se admiten archivos de imagen con extensión jpg, bmp, png";
+                    return M;
+                }
+
+
                 if (obj.detalleImagenes!=null)
                     newImg = obj.detalleImagenes.Where(e => e.NombreArchivo == fileUpload.FileName && e.TipoArchivo == fileUpload.PostedFile.ContentType).FirstOrDefault();
-
 
                 if (newImg == null)
                 {
@@ -331,6 +341,17 @@ namespace SIP.Formas.Ventas
 
                     uow.RecetasImagenesBusinessLogic.Insert(newImg);
                     //obj.detalleImagenes.Add(newImg);
+
+                    uow.SaveChanges();
+
+                    if (uow.Errors.Count > 0)
+                    {
+                        foreach (string err in uow.Errors)
+                            M += err;
+
+                        return M;
+                    }
+
                 }
 
                 M = GuardarArchivo(fileUpload.PostedFile, obj.Id);
@@ -343,6 +364,11 @@ namespace SIP.Formas.Ventas
 
             return M;
         }
+
+
+        
+
+
 
         private void GuardarDetalleReceta()
         {
@@ -427,6 +453,20 @@ namespace SIP.Formas.Ventas
             {
                 int idReceta = Utilerias.StrToInt(gridRecetas.DataKeys[e.Row.RowIndex].Values["Id"].ToString());
                 HtmlButton btnVer = (HtmlButton)e.Row.FindControl("btnVer");
+                Recetas obj = uow.RecetasBusinessLogic.GetByID(idReceta);
+
+                if (obj.Status == 2)
+                {
+                    ImageButton edit = (ImageButton)e.Row.FindControl("imgBtnEdit");
+                    ImageButton del = (ImageButton)e.Row.FindControl("imgBtnEliminarReceta");
+
+                    if (edit != null)
+                        edit.Enabled = false;
+
+                    if (del != null)
+                        del.Enabled = false;
+                }
+
 
                 if (btnVer!=null)
                     btnVer.Attributes["onclick"] = "fnc_MostrarReceta(" + idReceta + ")";
@@ -679,6 +719,45 @@ namespace SIP.Formas.Ventas
 
                 return;
             }
+        }
+
+        protected void btnImagenes_ServerClick(object sender, EventArgs e)
+        {
+            GridViewRow row = (GridViewRow)((HtmlButton)sender).NamingContainer;
+            int idReceta=Utilerias.StrToInt(gridRecetas.DataKeys[row.RowIndex].Value.ToString());
+            string carpeta = System.Configuration.ConfigurationManager.AppSettings["ImagenesRecetas"];
+            string url = string.Empty;
+
+            List<RecetasImagenes> list = uow.RecetasImagenesBusinessLogic.Get(i => i.RecetaId == idReceta).ToList();
+
+            foreach (RecetasImagenes img in list)
+            {
+                Image imagen = new Image();
+
+                url = ResolveClientUrl(carpeta + "/" + idReceta + "/"+ img.NombreArchivo);
+
+                imagen.ImageUrl = url;
+                imagen.Width = 150;
+                imagen.Height = 100;
+
+                imagen.Attributes["onclick"] = "fnc_AbrirArchivo(" + idReceta + ",'" + img.NombreArchivo + "')";
+
+                divImagenes.Controls.Add(imagen);
+            }
+
+            divEncabezado.Style.Add("display", "block");
+            divCaptura.Style.Add("display", "none");
+            divGuardarReceta.Style.Add("display", "none");
+            divReceta.Style.Add("display", "none");
+            divDetalleReceta.Style.Add("display", "none");
+
+            divMsgError.Style.Add("display", "none");
+            divMsgSuccess.Style.Add("display", "none");
+            divBtnImagen.Style.Add("display", "none");
+
+            //Mostrar el modal
+            ClientScript.RegisterStartupScript(this.GetType(), "script", "fnc_MostrarModal()", true);
+        
         }
 
         

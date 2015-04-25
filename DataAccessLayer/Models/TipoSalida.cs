@@ -15,5 +15,7 @@ namespace DataAccessLayer.Models
 
         public string Nombre { get; set; }
 
+        public bool EsUsoInterno { get; set; }
+
     }
 }

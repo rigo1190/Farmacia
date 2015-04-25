@@ -25,6 +25,86 @@
                     </div>
                     <div class="panel-body">
 
+                        <div class="row">  
+                            <div class="form-group">  
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <label>Fecha recetas:</label>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input  class="form-control datepicker" runat="server" id="txtFechaFiltro"/>
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                        </td>
+
+                                        <td>
+
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                        <td>
+                                             <div class="form-group">
+                                                 <label>Por Recetas</label>
+                                                 <input type="checkbox" value="false" runat="server" id="chkRecetas" />
+                                            </div>
+
+                                        </td>
+
+
+                                        <td>
+
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                        <td>
+
+                                        </td>
+
+                                        <td>
+                                            <div class="form-group">
+                                                 <label>Por Catálogo</label>
+                                                 <input type="checkbox" value="false" runat="server" id="chkCat" />
+                                            </div>
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                        <td>
+
+                                        </td>
+
+                                        <td>
+                                            <div>
+                                                <asp:Button ID="btnConsultar" runat="server" Text="Consultar" OnClick="btnConsultar_Click" CssClass="btn btn-primary" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                        
+                                </table>
+                            </div>
+                        </div>
+
+
+
                         <div class="row">
 
                             <div class="col-md-8">
@@ -32,7 +112,7 @@
                             </div>
 
                             <div class="col-md-4">
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                               <%-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
                                 <asp:Button runat="server" ID="btnVR" OnClick="btnVR_Click" Text="Venta por recetas" CssClass="btn btn-default" />
                                 <asp:Button runat="server" ID="btnV" OnClick="btnV_Click" Text="Venta por catálogo" CssClass="btn btn-default" />
                             </div>
@@ -40,20 +120,20 @@
                         </div>
 
                         <div style="height:330px; overflow:scroll">
-                             <asp:GridView Width="1250px" PageSize="10" Height="25px" EnablePersistedSelection="true" ShowHeaderWhenEmpty="true" ID="gridVentas" DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
+                             <asp:GridView Width="1250px" OnRowDataBound="gridVentas_RowDataBound" PageSize="10" Height="25px" EnablePersistedSelection="true" ShowHeaderWhenEmpty="true" ID="gridVentas" DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
                                 <Columns>
-                                    <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer"  HeaderText="Acciones">
+                                    <%--<asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer"  HeaderText="Acciones">
                                         <ItemTemplate>
                                             <%--<asp:ImageButton OnClick="imgBtnEdit_Click" ID="imgBtnEdit" ToolTip="Editar" runat="server" ImageUrl="~/img/Edit1.png" />
-                                            <asp:ImageButton OnClick="imgBtnEliminarReceta_Click"  ID="imgBtnEliminar" ToolTip="Eliminar" runat="server" ImageUrl="~/img/close.png" OnClientClick="return fnc_Mensaje();"/>--%>
+                                            <asp:ImageButton OnClick="imgBtnEliminarReceta_Click"  ID="imgBtnEliminar" ToolTip="Eliminar" runat="server" ImageUrl="~/img/close.png" OnClientClick="return fnc_Mensaje();"/>
                                         </ItemTemplate>
                                         <HeaderStyle BackColor="#EEEEEE" />
                                         <ItemStyle HorizontalAlign="right" VerticalAlign="Middle" Width="50px" BackColor="#EEEEEE" />
-                                    </asp:TemplateField>
+                                    </asp:TemplateField>--%>
 
                                     <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Center" ItemStyle-Font-Size="Small" HeaderStyle-Width="150px" HeaderText="Número de Folio" SortExpression="Orden">
                                         <ItemTemplate>
-                                            <%# DataBinder.Eval(Container.DataItem, "Folio") %>
+                                            <%# DataBinder.Eval(Container.DataItem, "FolioCadena") %>
                                         </ItemTemplate>
                                         <ItemStyle HorizontalAlign="Center" />
                                     </asp:TemplateField>
@@ -65,16 +145,17 @@
                                         <ItemStyle HorizontalAlign="Center" />
                                     </asp:TemplateField>
 
-                                    <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Center" ItemStyle-Font-Size="Smaller"  HeaderText="Cliente" SortExpression="NOAplica">
+                                    <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Center" ItemStyle-Font-Size="Smaller"  HeaderText="Tipo Venta" SortExpression="NOAplica">
                                         <ItemTemplate>
-                                            <%# DataBinder.Eval(Container.DataItem, "Cliente.RazonSocial") %>
+                                            <%--<%# DataBinder.Eval(Container.DataItem, "Cliente.RazonSocial") %>--%>
+                                            <asp:Label runat="server" ID="lblTipoVenta"></asp:Label>
                                         </ItemTemplate>
                                         <ItemStyle HorizontalAlign="Center" />
                                     </asp:TemplateField>
 
                                     <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Importe Total" SortExpression="NOAplica">
                                         <ItemTemplate>
-                                            <%# DataBinder.Eval(Container.DataItem, "Importe") %>
+                                            <asp:Label runat="server" Text='<%#Bind("Importe","{0:C2}") %>' ID="lblPV"></asp:Label>
                                         </ItemTemplate>
                                         <ItemStyle HorizontalAlign="Center" />
                                     </asp:TemplateField>

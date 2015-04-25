@@ -94,15 +94,6 @@ namespace SIP.Formas.Ventas {
         protected global::System.Web.UI.HtmlControls.HtmlInputText txtCobrar;
         
         /// <summary>
-        /// Control btnAceptarVenta.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAceptarVenta;
-        
-        /// <summary>
         /// Control btnCancelarVenta.
         /// </summary>
         /// <remarks>
@@ -148,6 +139,24 @@ namespace SIP.Formas.Ventas {
         protected global::System.Web.UI.WebControls.Label lblMsgSuccess;
         
         /// <summary>
+        /// Control txtPassword.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPassword;
+        
+        /// <summary>
+        /// Control btnAceptarVenta.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAceptarVenta;
+        
+        /// <summary>
         /// Control _IDReceta.
         /// </summary>
         /// <remarks>
@@ -173,5 +182,14 @@ namespace SIP.Formas.Ventas {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputHidden _CadValoresSeleccionados;
+        
+        /// <summary>
+        /// Control _ProductosVenta.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden _ProductosVenta;
     }
 }

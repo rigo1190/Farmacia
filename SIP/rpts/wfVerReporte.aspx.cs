@@ -38,6 +38,8 @@ namespace SIP.rpts
         private void CargarParametros(int caller, string parametros, ref ReportDocument rdc)
         {
             string[] primerArray = parametros.Split('-');
+            DateTime fechaInicio;
+            DateTime fechaFin; 
 
             switch (caller)
             {
@@ -51,6 +53,12 @@ namespace SIP.rpts
 
                 case 3: //VENTAS GENERALES
                     rdc.RecordSelectionFormula = "{pa_VentasGenerales;1.VentaId} in [" + primerArray[0] + "]";
+                    fechaInicio = Convert.ToDateTime(primerArray[1]);
+                    fechaFin = Convert.ToDateTime(primerArray[2]);
+
+                    rdc.SetParameterValue("fechaIni", fechaInicio);
+                    rdc.SetParameterValue("fechaFin", fechaFin);
+
                     break;
 
 				case 4: //SALIDA
@@ -59,6 +67,13 @@ namespace SIP.rpts
 
                 case 5: //SALIDAS GENERALES
                     rdc.RecordSelectionFormula = "{pa_SalidasGenerales;1.SalidaId} in [" + primerArray[0] + "]";
+                    break;
+
+                case 6: //ARTICULOS VENDIDOS
+                    fechaInicio = Convert.ToDateTime(primerArray[0]);
+                    fechaFin = Convert.ToDateTime(primerArray[1]);
+                    rdc.SetParameterValue("@fechaInicio", fechaInicio.ToString("yyyy-MM-dd") + " 00:00:00");
+                    rdc.SetParameterValue("@fechaFin", fechaFin.ToString("yyyy-MM-dd") + " 00:00:00");
                     break;
 
                 case 101: //COTIZACIONES TMP
@@ -161,6 +176,10 @@ namespace SIP.rpts
 
                 case 5:
                     nombreReporte = "rptSalidasTotales.rpt";
+                    break;
+
+                case 6:
+                    nombreReporte = "rptArticulosVendidos.rpt";
                     break;
 
                 case 101:

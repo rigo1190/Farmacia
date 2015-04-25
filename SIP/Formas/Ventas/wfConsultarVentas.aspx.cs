@@ -162,7 +162,7 @@ namespace SIP.Formas.Ventas
 
             //Se agrega la Clausula WHERE a el filtro
             if (!filtro.Equals(string.Empty))
-                filtro = "WHERE " + filtro +" AND (Ventas.Status=1)";
+                filtro = "WHERE " + filtro;// +" AND (Ventas.Status=1)";
             
 
             return filtro;

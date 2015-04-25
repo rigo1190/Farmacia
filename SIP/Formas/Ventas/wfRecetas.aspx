@@ -41,6 +41,11 @@
 
         });
 
+        function fnc_MostrarModal() {
+            $("#myModal").modal('show'); //Se muestra el modal
+        }
+
+
         function fnc_MostrarReceta(idReceta) {
 
             if (idReceta == "" || idReceta == null || idReceta == undefined) {
@@ -60,6 +65,14 @@
             url += argumentos;
             window.open(url, 'pmgw', 'toolbar=no,status=no,scrollbars=yes,resizable=yes,directories=no,location=no,menubar=no,width=750,height=500,top=' + sup + ',left=' + izq);
 
+        }
+
+        function fnc_AbrirArchivo(idReceta,nombre) {
+
+            var ruta = '<%= ResolveClientUrl("~/AbrirDocto.aspx") %>';
+            var izq = (screen.width - 750) / 2
+            var sup = (screen.height - 600) / 2
+            window.open(ruta + '?n=' + nombre + '&i='+idReceta, 'pmgw', 'toolbar=no,status=no,scrollbars=yes,resizable=yes,directories=no,location=no,menubar=no,width=750,height=500,top=' + sup + ',left=' + izq);
         }
 
 
@@ -245,7 +258,7 @@
 
                                             <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderStyle-Width="120px" HeaderText="Número de Folio" SortExpression="Orden">
                                                 <ItemTemplate>
-                                                    <%# DataBinder.Eval(Container.DataItem, "Folio") %>
+                                                    <%# DataBinder.Eval(Container.DataItem, "FolioCadena") %>
                                                     <%--<input type="hidden" value='<%# DataBinder.Eval(Container.DataItem, "Id") %>' runat="server" id="idPregunta" />--%>
                                                 </ItemTemplate>
                                                 <ItemStyle HorizontalAlign="Center" />
@@ -275,6 +288,13 @@
                                             <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Observaciones" SortExpression="NOAplica">
                                                 <ItemTemplate>
                                                     <%# DataBinder.Eval(Container.DataItem, "Observaciones") %>
+                                                </ItemTemplate>
+                                                <ItemStyle HorizontalAlign="Center" />
+                                            </asp:TemplateField>
+
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Imágenes" SortExpression="NOAplica">
+                                                <ItemTemplate>
+                                                    <button type="button" runat="server" id="btnImagenes" onserverclick="btnImagenes_ServerClick"><span class="glyphicon glyphicon-camera"></span></button>
                                                 </ItemTemplate>
                                                 <ItemStyle HorizontalAlign="Center" />
                                             </asp:TemplateField>
@@ -503,7 +523,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <asp:Button OnClick="btnGuardarDetalle_Click" ID="btnGuardarDetalle" OnClientClick="return fnc_ValidarDetalle();" runat="server" Text="Agregar/Guardar" CssClass="btn btn-primary" ></asp:Button>
-                                        <button type="button" onclick="fnc_Cancelar();" class="btn btn-default">Cancelar</button> 
+                                        <button type="button" onclick="fnc_Cancelar();" class="btn btn-default">Cancelar/Regresar</button> 
                                     </div>
                                 </div>
                                 
@@ -546,7 +566,23 @@
         </div>
         
 
-
+     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Imágenes</h4>
+              </div>
+              <div class="modal-body" runat="server" id="divImagenes">
+                  
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Aceptar</button>
+              </div>
+        
+            </div>
+        </div>
+    </div>
 
 
     

@@ -12,6 +12,15 @@
 
         });
 
+        function fnc_MostrarPassword() {
+            $("#modalPassword").modal('show'); //Se muestra el modal
+            $("#<%= txtPassword.ClientID %>").val("");
+            $("#<%= divMsgError.ClientID %>").css("display", "none");
+            $("#<%= divMsgSuccess.ClientID %>").css("display", "none");
+            $("#<%= lblMsgError.ClientID %>").val("");
+
+            return false;
+        }
 
         function fnc_Validar() {
 
@@ -114,6 +123,14 @@
         <div class="page-header"">
              <h3>Ventas</h3>
         </div>
+
+        <div class="row">
+            <div class="col-md-8"></div>
+            <div class="col-md-4 text-right">
+                <a href="<%=ResolveClientUrl("~/Formas/Ventas/wfVentasDia.aspx") %>" ><span class="glyphicon glyphicon-arrow-left"></span> <strong>Regresar Ventas del Día</strong></a>
+            </div>
+        </div>        
+        <br />
 
          <div class="panel panel-success">
             <div class="panel-heading">
@@ -282,7 +299,7 @@
                                             <asp:TemplateField HeaderStyle-Font-Size="Smaller"  HeaderStyle-Width="90px"  ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Precio Venta" HeaderStyle-CssClass="panel-footer" SortExpression="NOAplica">
                                                 <ItemTemplate>
                                                     <%--<%# DataBinder.Eval(Container.DataItem, "PrecioVenta") %>--%>
-                                                    <asp:Label ID="lblPrecio" Text='<%# Bind("PrecioVenta","{0:C2}") %>' runat="server"></asp:Label>
+                                                    <asp:Label ID="lblPrecio" runat="server"></asp:Label>
                                                 </ItemTemplate>
                                                 <ItemStyle HorizontalAlign="Center" />
                                             </asp:TemplateField>
@@ -334,7 +351,7 @@
                             <label>A COBRAR:</label>
                             <input type="text" value="0.00" style="font-size:x-large; font-style:italic; text-align:right" disabled="disabled" name="prueba" runat="server" class="form-control" id="txtCobrar" />
                         </div>
-                         <asp:Button runat="server" Text="Generar Venta" OnClick="btnAceptarVenta_Click" ID="btnAceptarVenta" OnClientClick="return fnc_Validar();" CssClass="btn btn-primary" />
+                         <button class="btn btn-primary" onclick="fnc_MostrarPassword(); return false;">Generar Ventas</button>
                          <asp:Button runat="server" Text="Cancelar Venta" OnClick="btnCancelarVenta_Click" ID="btnCancelarVenta" CssClass="btn btn-default" />
                     </div>
 
@@ -359,10 +376,31 @@
         </div>
     </div>
      
+    <div class="modal fade" id="modalPassword" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="ModalLabel">Ingrese Password de confirmación</h4>
+              </div>
+              <div class="modal-body">
+                  <asp:TextBox CssClass="form-control" runat="server" ID="txtPassword" TextMode="Password"></asp:TextBox>
+              </div>
+              <div class="modal-footer">
+                 <asp:Button runat="server" Text="Generar Venta" OnClick="btnAceptarVenta_Click" ID="btnAceptarVenta" OnClientClick="return fnc_Validar();" CssClass="btn btn-primary" />
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+              </div>
+        
+            </div>
+        </div>
+    </div>
+
+
     <div runat="server" style="display:none">
         <input type="hidden" runat="server" id="_IDReceta" />
         <input type="hidden" runat="server" id="_Accion" />
         <input type="hidden" runat="server" id="_CadValoresSeleccionados" />
+        <input type="hidden" runat="server" id="_ProductosVenta" />
     </div>
 
 </asp:Content>

@@ -196,10 +196,11 @@
                  <div class="panel panel-default">
                     <div class="panel-heading">
                         <div class="row">
-                            <div class="col-md-11">
+                            <div class="col-md-10">
                                 <h3 class="panel-title"><i class="fa"></i>Listado de Ventas</h3>
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
+                                <label>Detalle Salidas</label>
                                 <button type="button" id="btnImprimir0" onclick="fnc_MostrarSalidas();"><span class="glyphicon glyphicon-print"></span></button>
                             </div>
                         </div>
@@ -208,14 +209,14 @@
                         <div style="height:330px; overflow:scroll">
                             <asp:GridView AllowPaging="true" Width="1250px" OnPageIndexChanging="gridSalidas_PageIndexChanging" OnRowDataBound="gridSalidas_RowDataBound" PageSize="10" Height="25px" EnablePersistedSelection="true" ShowHeaderWhenEmpty="true" ID="gridSalidas" DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
                                 <Columns>
-                                    <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" HeaderText="Acciones">
+                                    <%--<asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" HeaderText="Acciones">
                                         <ItemTemplate>
                                             <%--<asp:ImageButton OnClick="imgBtnEdit_Click" ID="imgBtnEdit" ToolTip="Editar" runat="server" ImageUrl="~/img/Edit1.png" />
-                                            <asp:ImageButton OnClick="imgBtnEliminarReceta_Click"  ID="imgBtnEliminar" ToolTip="Eliminar" runat="server" ImageUrl="~/img/close.png" OnClientClick="return fnc_Mensaje();"/>--%>
+                                            <asp:ImageButton OnClick="imgBtnEliminarReceta_Click"  ID="imgBtnEliminar" ToolTip="Eliminar" runat="server" ImageUrl="~/img/close.png" OnClientClick="return fnc_Mensaje();"/>
                                         </ItemTemplate>
                                         <HeaderStyle BackColor="#EEEEEE" />
                                         <ItemStyle HorizontalAlign="right" VerticalAlign="Middle" Width="50px" BackColor="#EEEEEE" />
-                                    </asp:TemplateField>
+                                    </asp:TemplateField>--%>
 
                                     <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Center" ItemStyle-Font-Size="Small" HeaderStyle-Width="150px" HeaderText="Número de Folio" SortExpression="Orden">
                                         <ItemTemplate>

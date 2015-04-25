@@ -181,6 +181,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="AbrirDocto.aspx" />
     <Content Include="Ajax.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -925,6 +926,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbrirDocto.aspx.cs">
+      <DependentUpon>AbrirDocto.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AbrirDocto.aspx.designer.cs">
+      <DependentUpon>AbrirDocto.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Ajax.aspx.cs">
       <DependentUpon>Ajax.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

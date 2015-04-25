@@ -28,7 +28,15 @@ namespace SIP.Formas.Ventas
 
         private void BindDropDownTipos()
         {
-            ddlTipos.DataSource = uow.TipoSalidaBusinessLogic.Get();
+            int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
+            Usuario user = uow.UsuarioBusinessLogic.GetByID(idUser);
+
+            if (user.EsAdmin)
+                ddlTipos.DataSource = uow.TipoSalidaBusinessLogic.Get();
+            else
+                ddlTipos.DataSource = uow.TipoSalidaBusinessLogic.Get(e=>e.EsUsoInterno==true);
+
+            
             ddlTipos.DataValueField = "Id";
             ddlTipos.DataTextField = "Nombre";
             ddlTipos.DataBind();
@@ -44,7 +52,7 @@ namespace SIP.Formas.Ventas
                            select new
                            {
                                Id = a.Id,
-                               Nombre = a.Nombre + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje,
+                               Nombre = a.Nombre + " " + a.CantidadUnidadMedida + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje,
                                EsMedicamento = a.esMedicamento,
                                PrecioVenta = a.PrecioVenta,
                                CantidadDisponible = a.CantidadDisponible
@@ -56,8 +64,19 @@ namespace SIP.Formas.Ventas
 
         private void BindGridProductosSalidas()
         {
-            int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
-            List<ArticuloSalidaGenerica> listArticulos = uow.ArticuloSalidaGenericaBusinessLogic.Get(e => e.UsuarioId == idUser).ToList();
+            //int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
+            List<ArticuloSalidaGenerica> listArticulos = new List<ArticuloSalidaGenerica>();//uow.ArticuloSalidaGenericaBusinessLogic.Get(e => e.UsuarioId == idUser).ToList();
+
+            //Se lee la cadena de _ProductosVenta
+            if (!_ProductosVenta.Value.Equals(string.Empty))
+            {
+                string[] ids = _ProductosVenta.Value.Split('|');
+
+                foreach (string id in ids)
+                    listArticulos.Add(uow.ArticuloSalidaGenericaBusinessLogic.GetByID(Utilerias.StrToInt(id)));
+
+            }
+
 
             gridProductos.DataSource = listArticulos;
             gridProductos.DataBind();
@@ -74,6 +93,7 @@ namespace SIP.Formas.Ventas
                 return M;
 
             //Se bindea el grid
+            _ProductosVenta.Value = string.Empty;
             BindGridProductosSalidas();
 
             //Se limpia la cadena de valores de la lista de productos del catalogo
@@ -91,11 +111,20 @@ namespace SIP.Formas.Ventas
         {
             int max = 1;
 
-            if (uow.AlmacenSalidasGenericasBL.Get().Count() > 0)
+            if (uow.AlmacenSalidasGenericasBL.Get(e=>e.Ejercicio==DateTime.Now.Year).Count() > 0)
                 max = uow.AlmacenSalidasGenericasBL.Get().Max(e => e.Folio) + 1;
 
             return max;
 
+        }
+
+        private string ArmarFolioCadena(int folio)
+        {
+            string folioCad = string.Empty;
+            string num = string.Format("{0:0000}", folio);
+            folioCad = "SAL/" + num + "/" + DateTime.Now.Year;
+
+            return folioCad;
         }
 
         private void OcultarError()
@@ -140,7 +169,7 @@ namespace SIP.Formas.Ventas
             return M;
         }
 
-        private string CrearArticulosMovimientos(int salidaId, List<ArticuloSalidaGenerica> listArticulos)
+        private string CrearArticulosMovimientos(int salidaId, List<ArticuloSalidaGenerica> listArticulos, int idUser)
         {
             //Crear registros para la tabla de ArticulosMovimientos y sus detalles ArticulosMovimientosSalidas
             string M = string.Empty;
@@ -156,6 +185,7 @@ namespace SIP.Formas.Ventas
             artMovimiento.Fecha = DateTime.Now; //Preguntar cual es la fecha que se debe de colocar???
             artMovimiento.Status = 1; //Preguntar cual es la Status que se debe de colocar???
             artMovimiento.Movimiento = movimiento;
+            artMovimiento.CreatedById = idUser;
 
             uow.ArticulosMovimientosBL.Insert(artMovimiento);
             uow.SaveChanges();
@@ -178,6 +208,7 @@ namespace SIP.Formas.Ventas
                 artMovSalida.ArticuloMovimientoId = artMovimiento.Id;
                 artMovSalida.ArticuloId = artVenta.ArticuloId;
                 artMovSalida.Cantidad = artVenta.Cantidad;
+                artMovSalida.CreatedById = idUser;
 
                 uow.ArticulosMovimientosSalidasBL.Insert(artMovSalida);
                 uow.SaveChanges();
@@ -201,32 +232,36 @@ namespace SIP.Formas.Ventas
 
         private string EliminarArticuloSalida()
         {
-            int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
-
-            bool eliminados = uow.ArticuloSalidaGenericaBusinessLogic.DeleteAll(e => e.UsuarioId == idUser);
+            //int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
             string M = string.Empty;
+            //Se recorre la lista de productos de la venta
+            string[] idsProductos = _ProductosVenta.Value.Split('|');
 
-            if (eliminados)
+            foreach (string id in idsProductos)
             {
-                uow.SaveChanges();
-
-                //SI HUBO ERORRES AL ELIMINAR REGISTROS PREVIOS
-                if (uow.Errors.Count > 0)
+                if (!id.Equals(string.Empty))
                 {
-                    foreach (string m in uow.Errors)
-                        M += m;
+                    uow.ArticuloSalidaGenericaBusinessLogic.Delete(Utilerias.StrToInt(id));
+                    uow.SaveChanges();
 
-                    return M;
+                    //SI HUBO ERORRES AL ELIMINAR REGISTROS PREVIOS
+                    if (uow.Errors.Count > 0)
+                    {
+                        foreach (string m in uow.Errors)
+                            M += m;
+
+                        return M;
+                    }
                 }
             }
 
             return M;
         }
 
-        private string CrearSalida()
+        private string CrearSalida(int userId)
         {
             string M = string.Empty;
-            int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
+            int idUser = userId;//Utilerias.StrToInt(Session["IdUser"].ToString());
 
             AlmacenSalidasGenericas salida = new AlmacenSalidasGenericas();
 
@@ -235,6 +270,8 @@ namespace SIP.Formas.Ventas
             salida.Fecha = Convert.ToDateTime(txtFecha.Value);
             salida.TipoSalidaId = Utilerias.StrToInt(ddlTipos.SelectedValue);
             salida.Observaciones = txtObservaciones.Value;
+            salida.FolioCadena = ArmarFolioCadena(salida.Folio);
+            salida.CreatedById = idUser;
 
             uow.AlmacenSalidasGenericasBL.Insert(salida);
             uow.SaveChanges();
@@ -251,15 +288,18 @@ namespace SIP.Formas.Ventas
             //Se prosigue a llenar el detalle en AlmacenSalidasGenericasArticulos
             //con los articulos detallados
 
-            List<ArticuloSalidaGenerica> listArticulos = uow.ArticuloSalidaGenericaBusinessLogic.Get(e => e.UsuarioId == idUser).ToList();
+            List<ArticuloSalidaGenerica> listArticulos = new List<ArticuloSalidaGenerica>();//uow.ArticuloSalidaGenericaBusinessLogic.Get(e => e.UsuarioId == idUser).ToList();
+            string[] idsProductos = _ProductosVenta.Value.Split('|');
 
-            foreach (ArticuloSalidaGenerica artSalida in listArticulos)
+            foreach (string id in idsProductos)
             {
+                ArticuloSalidaGenerica artSalida = uow.ArticuloSalidaGenericaBusinessLogic.GetByID(Utilerias.StrToInt(id));
                 AlmacenSalidasGenericasArticulos salidaDetalle = new AlmacenSalidasGenericasArticulos();
 
                 salidaDetalle.AlmacenSalidaGenericaId = salida.Id;
                 salidaDetalle.ArticuloId = artSalida.ArticuloId;
                 salidaDetalle.Cantidad = artSalida.Cantidad;
+                salidaDetalle.CreatedById = idUser;
 
                 uow.AlmacenSalidasGenericasArticulos.Insert(salidaDetalle);
                 uow.SaveChanges();
@@ -282,7 +322,7 @@ namespace SIP.Formas.Ventas
             if (!M.Equals(string.Empty))
                 return M;
 
-            M=CrearArticulosMovimientos(salida.Id, listArticulos);  //Se generan registros en ArticulosMovimientos y sus detalles
+            M=CrearArticulosMovimientos(salida.Id, listArticulos, idUser);  //Se generan registros en ArticulosMovimientos y sus detalles
 
             if (!M.Equals(string.Empty))
                 return M;
@@ -299,6 +339,25 @@ namespace SIP.Formas.Ventas
             return M;
         }
 
+
+        private bool ExisteProductoEnSalida(int idProducto)
+        {
+            string[] ids = _ProductosVenta.Value.Split('|');
+
+            foreach (string id in ids)
+            {
+                int idArtSalida = Utilerias.StrToInt(id);
+                ArticuloSalidaGenerica artVenta = uow.ArticuloSalidaGenericaBusinessLogic.Get(e => e.Id == idArtSalida && e.ArticuloId == idProducto).FirstOrDefault();
+
+                if (artVenta != null)
+                    return true;
+                else
+                    continue;
+            }
+
+            return false;
+
+        }
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
@@ -319,6 +378,12 @@ namespace SIP.Formas.Ventas
                 idProducto = Utilerias.StrToInt(id);
 
                 articulo = uow.ArticulosBL.GetByID(idProducto);
+
+                if (!_ProductosVenta.Value.Equals(string.Empty))
+                {
+                    if (ExisteProductoEnSalida(articulo.Id))
+                        continue;
+                }
 
                 ArticuloSalidaGenerica artSalida = new ArticuloSalidaGenerica();
                 artSalida.ArticuloId = idProducto;
@@ -343,6 +408,11 @@ namespace SIP.Formas.Ventas
                     return;
                 }
 
+                if (_ProductosVenta.Value == string.Empty)
+                    _ProductosVenta.Value = artSalida.Id.ToString();
+                else
+                    _ProductosVenta.Value += "|" + artSalida.Id.ToString();
+
             }
 
             _CadValoresSeleccionados.Value = string.Empty;
@@ -364,7 +434,7 @@ namespace SIP.Formas.Ventas
                        on a.PresentacionId equals p.Id
                        select new
                        {
-                           Nombre = a.Nombre + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje,
+                           Nombre = a.Nombre + " " + a.CantidadUnidadMedida + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje,
                        }).FirstOrDefault();
 
             nombre = art.Nombre;
@@ -440,6 +510,8 @@ namespace SIP.Formas.Ventas
             string M = string.Empty;
             int idArticulo = Utilerias.StrToInt(gridProductos.DataKeys[e.RowIndex].Value.ToString());
             ArticuloSalidaGenerica objArticulo = uow.ArticuloSalidaGenericaBusinessLogic.GetByID(idArticulo);
+            string[] idsProducto = _ProductosVenta.Value.Split('|');
+
 
             uow.ArticuloSalidaGenericaBusinessLogic.Delete(objArticulo);
             uow.SaveChanges();
@@ -457,6 +529,19 @@ namespace SIP.Formas.Ventas
                 return;
             }
 
+            _ProductosVenta.Value = string.Empty;
+
+            foreach (string id in idsProducto)
+            {
+                if (!id.Equals(idArticulo.ToString()))
+                {
+                    if (_ProductosVenta.Value.Equals(string.Empty))
+                        _ProductosVenta.Value = id;
+                    else
+                        _ProductosVenta.Value += "|" + id;
+                }
+            }
+
             BindGridProductosSalidas();
 
             OcultarError();
@@ -466,7 +551,21 @@ namespace SIP.Formas.Ventas
         {
             string M = string.Empty;
 
-            M=CrearSalida();
+            string pass = txtPassword.Text;
+
+            Usuario user = uow.UsuarioBusinessLogic.Get(u => u.Password == pass).FirstOrDefault();
+
+            if (user == null)
+            {
+                divMsgError.Style.Add("display", "block");
+                divMsgSuccess.Style.Add("display", "none");
+                lblMsgError.Text = "El password es incorrecto, intente de nuevo.";
+
+                return;
+            }
+
+
+            M=CrearSalida(user.Id);
 
             //Se muestra el mensaje de error, si es que existe
             if (!M.Equals(string.Empty))

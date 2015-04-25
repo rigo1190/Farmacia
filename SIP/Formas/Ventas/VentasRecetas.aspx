@@ -12,6 +12,16 @@
 
         });
 
+        function fnc_MostrarPassword() {
+            $("#modalPassword").modal('show'); //Se muestra el modal
+            $("#<%= txtPassword.ClientID %>").val("");
+            $("#<%= divMsgError.ClientID %>").css("display", "none");
+            $("#<%= divMsgSuccess.ClientID %>").css("display", "none");
+            $("#<%= lblMsgError.ClientID %>").val("");
+
+            return false;
+        }
+
 
         function fnc_Validar() {
 
@@ -56,6 +66,7 @@
 
         function fnc_LimpiarIdReceta() {
             $("#<%= _IDReceta.ClientID %>").val("");
+            $("#<%= divGridRecetas.ClientID %>").css("display", "block");
         }
 
         function fnc_MostrarModal() {
@@ -118,6 +129,14 @@
             <h3>Surtir Recetas</h3>
         </div>
 
+          <div class="row">
+            <div class="col-md-8"></div>
+                <div class="col-md-4 text-right">
+                    <a href="<%=ResolveClientUrl("~/Formas/Ventas/wfVentasDia.aspx") %>" ><span class="glyphicon glyphicon-arrow-left"></span> <strong>Regresar Ventas del Día</strong></a>
+                </div>
+          </div>        
+        <br />
+
          <div class="panel panel-success">
             <div class="panel-heading">
                 <h3 class="panel-title">
@@ -164,45 +183,48 @@
                                     </div>
                                 </div>
                                 
-                                <div class="row" style="height:170px; overflow:scroll">
-                                    <asp:GridView OnPageIndexChanging="gridRecetas_PageIndexChanging"  PageSize="10" Height="15px" Width="1250px" EnablePersistedSelection="true" ShowHeaderWhenEmpty="true" ID="gridRecetas" DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
-                                        <Columns>
-                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-HorizontalAlign="Center" ItemStyle-Font-Size="Smaller" ItemStyle-Width="180px" HeaderText="Número de Folio" HeaderStyle-CssClass="panel-footer" SortExpression="Orden">
-                                                <ItemTemplate>
-                                                    <%# DataBinder.Eval(Container.DataItem, "Folio") %>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
+                                <div id="divGridRecetas" runat="server">
+                                    <div class="row" style="height:170px; overflow:scroll">
+                                        <asp:GridView OnPageIndexChanging="gridRecetas_PageIndexChanging"  PageSize="10" Height="15px" Width="1250px" EnablePersistedSelection="true" ShowHeaderWhenEmpty="true" ID="gridRecetas" DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
+                                            <Columns>
+                                                <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-HorizontalAlign="Center" ItemStyle-Font-Size="Smaller" ItemStyle-Width="180px" HeaderText="Número de Folio" HeaderStyle-CssClass="panel-footer" SortExpression="Orden">
+                                                    <ItemTemplate>
+                                                        <%# DataBinder.Eval(Container.DataItem, "FolioCadena") %>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Center" ItemStyle-Font-Size="Smaller" HeaderText="Fecha" SortExpression="Orden">
-                                                <ItemTemplate>
-                                                    <%#Convert.ToDateTime(DataBinder.Eval(Container.DataItem, "Fecha")).ToString("d")%>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
+                                                <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Center" ItemStyle-Font-Size="Smaller" HeaderText="Fecha" SortExpression="Orden">
+                                                    <ItemTemplate>
+                                                        <%#Convert.ToDateTime(DataBinder.Eval(Container.DataItem, "Fecha")).ToString("d")%>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Nombre Paciente" HeaderStyle-CssClass="panel-footer" SortExpression="NOAplica">
-                                                <ItemTemplate>
-                                                    <%# DataBinder.Eval(Container.DataItem, "NombrePaciente") %>
-                                                </ItemTemplate>
-                                                <ItemStyle HorizontalAlign="Center" />
-                                            </asp:TemplateField>
+                                                <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Nombre Paciente" HeaderStyle-CssClass="panel-footer" SortExpression="NOAplica">
+                                                    <ItemTemplate>
+                                                        <%# DataBinder.Eval(Container.DataItem, "NombrePaciente") %>
+                                                    </ItemTemplate>
+                                                    <ItemStyle HorizontalAlign="Center" />
+                                                </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Observaciones" HeaderStyle-CssClass="panel-footer" SortExpression="NOAplica">
-                                                <ItemTemplate>
-                                                    <%# DataBinder.Eval(Container.DataItem, "Observaciones") %>
-                                                </ItemTemplate>
-                                                <ItemStyle HorizontalAlign="Center" />
-                                            </asp:TemplateField>
+                                                <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Observaciones" HeaderStyle-CssClass="panel-footer" SortExpression="NOAplica">
+                                                    <ItemTemplate>
+                                                        <%# DataBinder.Eval(Container.DataItem, "Observaciones") %>
+                                                    </ItemTemplate>
+                                                    <ItemStyle HorizontalAlign="Center" />
+                                                </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-Width="180px" ItemStyle-Font-Size="Smaller" HeaderText="Detalle Productos" ItemStyle-CssClass="col-md-2" HeaderStyle-CssClass="panel-footer">
-                                                <ItemTemplate>
-                                                        <button type="button" onserverclick="btnProductos_ServerClick" id="btnProductos" runat="server"> <span class="glyphicon glyphicon-list-alt"></span></button> 
-                                                </ItemTemplate>                          
-                                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="50px" />                                            
-                                            </asp:TemplateField>
-                                        </Columns>
-                                        <%--<PagerSettings FirstPageText="Primera" LastPageText="Ultima" Mode="NextPreviousFirstLast" NextPageText="Siguiente" PreviousPageText="Anterior" />--%>
-                                    </asp:GridView>
+                                                <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-Width="180px" ItemStyle-Font-Size="Smaller" HeaderText="Detalle Productos" ItemStyle-CssClass="col-md-2" HeaderStyle-CssClass="panel-footer">
+                                                    <ItemTemplate>
+                                                            <button type="button" onserverclick="btnProductos_ServerClick" id="btnProductos" runat="server"> <span class="glyphicon glyphicon-list-alt"></span></button> 
+                                                    </ItemTemplate>                          
+                                                    <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="50px" />                                            
+                                                </asp:TemplateField>
+                                            </Columns>
+                                            <%--<PagerSettings FirstPageText="Primera" LastPageText="Ultima" Mode="NextPreviousFirstLast" NextPageText="Siguiente" PreviousPageText="Anterior" />--%>
+                                        </asp:GridView>
+                                    </div>
                                 </div>
+                               
                             </div>
 
                         </div>
@@ -420,7 +442,7 @@
                             <label>A COBRAR:</label>
                             <input type="text" value="0.00" style="font-size:x-large; font-style:italic; text-align:right" disabled="disabled" name="prueba" runat="server" class="form-control" id="txtCobrar" />
                         </div>
-                         <asp:Button runat="server" Text="Generar Venta" OnClick="btnAceptarVenta_Click" ID="btnAceptarVenta" OnClientClick="return fnc_Validar();" CssClass="btn btn-primary" />
+                         <button class="btn btn-primary" onclick="fnc_MostrarPassword(); return false;">Generar Ventas</button>
                          <asp:Button runat="server" Text="Cancelar Venta" OnClick="btnCancelarVenta_Click" ID="btnCancelarVenta" CssClass="btn btn-default" />
                     </div>
 
@@ -468,10 +490,33 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modalPassword" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="ModalLabel">Ingrese Password de confirmación</h4>
+              </div>
+              <div class="modal-body">
+                  <asp:TextBox CssClass="form-control" runat="server" ID="txtPassword" TextMode="Password"></asp:TextBox>
+              </div>
+              <div class="modal-footer">
+                 <asp:Button runat="server" Text="Aceptar" OnClick="btnAceptarVenta_Click" ID="btnAceptarVenta" OnClientClick="return fnc_Validar();" CssClass="btn btn-primary" />
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+              </div>
+        
+            </div>
+        </div>
+    </div>
+
+
      <div runat="server" style="display:none">
         <input type="hidden" runat="server" id="_IDReceta" />
         <input type="hidden" runat="server" id="_Accion" />
         <input type="hidden" runat="server" id="_CadValoresSeleccionados" />
+        <input type="hidden" runat="server" id="_ProductosVenta" />
+         <input type="hidden" runat="server" id="_SeleccionoDeReceta" />
+
     </div>
 
 

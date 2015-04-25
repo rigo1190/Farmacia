@@ -32,11 +32,38 @@
                 return false;
 
             var ids = $("#<%= _IDsVenta.ClientID %>").val(); 
+            var fechaInicio = $("#<%= txtFechaI.ClientID %>").val();
+            var fechaFin = $("#<%= txtFechaT.ClientID %>").val();
 
             var url = "<%= ResolveClientUrl("~/rpts/wfVerReporte.aspx") %>";
-            var argumentos = "?c=" + 3 + "&p=" + ids;
+            var argumentos = "?c=" + 3 + "&p=" + ids + "-" + fechaInicio + "-" + fechaFin;
             url += argumentos;
             window.open(url, 'pmgw', 'toolbar=no,status=no,scrollbars=yes,resizable=yes,directories=no,location=no,menubar=no,width=750,height=500,top=' + sup + ',left=' + izq);
+
+        }
+
+        function fnc_MostrarArticulosVendidos(){
+
+            var izq = (screen.width - 750) / 2
+            var sup = (screen.height - 600) / 2
+
+            if ($("#<%= chkRango.ClientID %>").is(':checked')) {
+
+                var fechaInicio = $("#<%= txtFechaI.ClientID %>").val();
+                var fechaFin = $("#<%= txtFechaT.ClientID %>").val();
+                var url = "<%= ResolveClientUrl("~/rpts/wfVerReporte.aspx") %>";
+                var argumentos = "?c=" + 6 + "&p="+ fechaInicio + "-" + fechaFin;
+                url += argumentos;
+                window.open(url, 'pmgw', 'toolbar=no,status=no,scrollbars=yes,resizable=yes,directories=no,location=no,menubar=no,width=750,height=500,top=' + sup + ',left=' + izq);
+
+
+            } else {
+                alert("Seleccione un rango de fechas previamente")
+
+                return false;
+            }
+
+            
 
         }
 
@@ -238,10 +265,15 @@
                         
 
                         <div class="row">
-                            <div class="col-md-11">
+                            <div class="col-md-7">
                                 <h3 class="panel-title"><i class="fa"></i>Listado de Ventas</h3>
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-md-3">
+                                <label>Artículos Vendidos</label>
+                                <button type="button" id="btnImprimir" onclick="fnc_MostrarArticulosVendidos();"><span class="glyphicon glyphicon-print"></span></button>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Detalle Ventas</label>
                                 <button type="button" id="btnImprimir0" onclick="fnc_MostrarVentas();"><span class="glyphicon glyphicon-print"></span></button>
                             </div>
                         </div>
@@ -252,18 +284,18 @@
                         <div style="height:330px; overflow:scroll">
                              <asp:GridView Width="1250px" OnPageIndexChanging="gridVentas_PageIndexChanging" OnRowDataBound="gridVentas_RowDataBound" PageSize="10" Height="25px" EnablePersistedSelection="true" ShowHeaderWhenEmpty="true" ID="gridVentas" DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
                                 <Columns>
-                                    <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer"  HeaderText="Acciones">
+                                    <%--<asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer"  HeaderText="Acciones">
                                         <ItemTemplate>
-                                            <%--<asp:ImageButton OnClick="imgBtnEdit_Click" ID="imgBtnEdit" ToolTip="Editar" runat="server" ImageUrl="~/img/Edit1.png" />
-                                            <asp:ImageButton OnClick="imgBtnEliminarReceta_Click"  ID="imgBtnEliminar" ToolTip="Eliminar" runat="server" ImageUrl="~/img/close.png" OnClientClick="return fnc_Mensaje();"/>--%>
+                                            <asp:ImageButton OnClick="imgBtnEdit_Click" ID="imgBtnEdit" ToolTip="Editar" runat="server" ImageUrl="~/img/Edit1.png" />
+                                            <asp:ImageButton OnClick="imgBtnEliminarReceta_Click"  ID="imgBtnEliminar" ToolTip="Eliminar" runat="server" ImageUrl="~/img/close.png" OnClientClick="return fnc_Mensaje();"/>
                                         </ItemTemplate>
                                         <HeaderStyle BackColor="#EEEEEE" />
                                         <ItemStyle HorizontalAlign="right" VerticalAlign="Middle" Width="50px" BackColor="#EEEEEE" />
-                                    </asp:TemplateField>
+                                    </asp:TemplateField>--%>
 
                                     <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Center" ItemStyle-Font-Size="Small" HeaderStyle-Width="150px" HeaderText="Número de Folio" SortExpression="Orden">
                                         <ItemTemplate>
-                                            <%# DataBinder.Eval(Container.DataItem, "Folio") %>
+                                            <%# DataBinder.Eval(Container.DataItem, "FolioCadena") %>
                                         </ItemTemplate>
                                         <ItemStyle HorizontalAlign="Center" />
                                     </asp:TemplateField>
@@ -284,17 +316,17 @@
 
                                     <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Importe Total" SortExpression="NOAplica">
                                         <ItemTemplate>
-                                            <%# DataBinder.Eval(Container.DataItem, "Importe") %>
+                                            <asp:Label runat="server" Text='<%#Bind("Importe","{0:C2}") %>' ID="lblImporte"></asp:Label>
                                         </ItemTemplate>
                                         <ItemStyle HorizontalAlign="Center" />
                                     </asp:TemplateField>
 
-                                    <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Justify" HeaderText="Imprimir" SortExpression="NOAplica">
+                                    <%--<asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Justify" HeaderText="Imprimir" SortExpression="NOAplica">
                                     <ItemTemplate>
                                         <button type="button" runat="server" id="btnVer"><span class="glyphicon glyphicon-print"></span></button>
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" />
-                                </asp:TemplateField>
+                                </asp:TemplateField>--%>
 
                                 </Columns>
                                 <PagerSettings FirstPageText="Primera" LastPageText="Ultima" Mode="NextPreviousFirstLast" NextPageText="Siguiente" PreviousPageText="Anterior" />

@@ -21,6 +21,8 @@ namespace DataAccessLayer.Models
         public bool Activo { get; set; }
 
         public int Nivel { get; set; }
+		
+		public bool EsAdmin { get; set; }
 
     }
 }

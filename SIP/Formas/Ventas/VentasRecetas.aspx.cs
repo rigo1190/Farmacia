@@ -44,29 +44,61 @@ namespace SIP.Formas.Ventas
         }
 
 
+        //private string EliminarArticuloVenta()
+        //{
+        //    int idUser=Utilerias.StrToInt(Session["IdUser"].ToString());
+
+        //    bool eliminados=uow.ArticuloVentaBusinessLogic.DeleteAll(e=>e.UsuarioId==idUser);
+        //    string M=string.Empty;
+
+        //    if (eliminados)
+        //    {
+        //        uow.SaveChanges();
+
+        //        //SI HUBO ERORRES AL ELIMINAR REGISTROS PREVIOS
+        //        if (uow.Errors.Count > 0)
+        //        {
+        //            foreach (string m in uow.Errors)
+        //                M += m;
+
+        //            return M;
+        //        }
+        //    }
+
+        //    return M;
+        //}
+
         private string EliminarArticuloVenta()
         {
-            int idUser=Utilerias.StrToInt(Session["IdUser"].ToString());
+            string M = string.Empty;
 
-            bool eliminados=uow.ArticuloVentaBusinessLogic.DeleteAll(e=>e.UsuarioId==idUser);
-            string M=string.Empty;
+            //Se recorre la lista de productos de la venta
+            string[] idsProductos = _ProductosVenta.Value.Split('|');
 
-            if (eliminados)
+            foreach (string id in idsProductos)
             {
-                uow.SaveChanges();
 
-                //SI HUBO ERORRES AL ELIMINAR REGISTROS PREVIOS
-                if (uow.Errors.Count > 0)
+                if (!id.Equals(string.Empty))
                 {
-                    foreach (string m in uow.Errors)
-                        M += m;
+                    uow.ArticuloVentaBusinessLogic.Delete(Utilerias.StrToInt(id));
+                    uow.SaveChanges();
 
-                    return M;
+                    //SI HUBO ERORRES AL ELIMINAR REGISTROS PREVIOS
+                    if (uow.Errors.Count > 0)
+                    {
+                        foreach (string m in uow.Errors)
+                            M += m;
+
+                        return M;
+                    }
                 }
+                
             }
 
             return M;
         }
+
+
 
         private void BindGridProductosCatalago()
         {
@@ -75,7 +107,7 @@ namespace SIP.Formas.Ventas
                            on a.UnidadesDeMedidaId equals um.Id
                            join p in uow.PresentacionesBL.Get()
                            on a.PresentacionId equals p.Id
-                           select new { Id = a.Id, Nombre = a.Nombre + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje,
+                           select new { Id = a.Id, Nombre = a.Nombre + " "+a.CantidadUnidadMedida+ " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje,
                                         EsMedicamento = a.esMedicamento,
                                         PrecioVenta = a.PrecioVenta,
                                         CantidadDisponible=a.CantidadDisponible
@@ -99,18 +131,28 @@ namespace SIP.Formas.Ventas
         private void BindGridProductosVenta()
         {
             int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
-            List<ArticuloVenta> listArticulos = uow.ArticuloVentaBusinessLogic.Get(e => e.UsuarioId == idUser).OrderBy(e => e.Nombre).ToList();
+            List<ArticuloVenta> listArticulos = new List<ArticuloVenta>();// = uow.ArticuloVentaBusinessLogic.Get(e => e.UsuarioId == idUser).OrderBy(e => e.Nombre).ToList();
 
+            //Se lee la cadena de _ProductosVenta
 
-            //Llenar los campos de totales
-            decimal total = listArticulos.Sum(e => e.Total);
-            decimal iva = listArticulos.Sum(e => e.IVA);
-            decimal cobrar = total + iva;
+            if (!_ProductosVenta.Value.Equals(string.Empty))
+            {
+                string[] ids = _ProductosVenta.Value.Split('|');
 
-            txtTotalR.Value =total.ToString("c");
-            txtIVAR.Value = iva.ToString("c");
-            txtCobrar.Value = cobrar.ToString("c");
+                foreach (string id in ids)
+                {
+                    listArticulos.Add(uow.ArticuloVentaBusinessLogic.GetByID(Utilerias.StrToInt(id)));
+                }
 
+                //Llenar los campos de totales
+                decimal total = listArticulos.Sum(e => e.Total);
+                decimal iva = listArticulos.Sum(e => e.IVA);
+                decimal cobrar = total;// total + iva;
+
+                txtTotalR.Value = total.ToString("c");
+                txtIVAR.Value = iva.ToString("c");
+                txtCobrar.Value = cobrar.ToString("c");
+            }
 
             gridProductos.DataSource = listArticulos;
             gridProductos.DataBind();
@@ -127,6 +169,7 @@ namespace SIP.Formas.Ventas
                 return M;
 
             //Se bindea el grid
+            _ProductosVenta.Value = string.Empty;
             BindGridProductosVenta();
 
             //Se limpia la cadena de valores de la lista de productos del catalogo
@@ -147,7 +190,7 @@ namespace SIP.Formas.Ventas
         }
 
 
-        private string ActualizarReceta()
+        private string ActualizarReceta(int idUser)
         {
             string M = string.Empty;
             if (!_IDReceta.Value.Equals(string.Empty))
@@ -158,7 +201,8 @@ namespace SIP.Formas.Ventas
                 Recetas receta = uow.RecetasBusinessLogic.GetByID(idReceta);
                 
                 receta.Status = 2; //Se pone como surtida 
-                
+                receta.EditedById = idUser;
+
                 uow.RecetasBusinessLogic.Update(receta);
                 uow.SaveChanges();
                 
@@ -214,7 +258,7 @@ namespace SIP.Formas.Ventas
         }
 
 
-        private string CrearArticulosMovimientos(int ventaId, List<ArticuloVenta> listArticulos)
+        private string CrearArticulosMovimientos(int ventaId, List<ArticuloVenta> listArticulos,int idUser)
         {
             //Crear registros para la tabla de ArticulosMovimientos y sus detalles ArticulosMovimientosSalidas
             string M = string.Empty;
@@ -230,6 +274,7 @@ namespace SIP.Formas.Ventas
             artMovimiento.Fecha = DateTime.Now; //Preguntar cual es la fecha que se debe de colocar???
             artMovimiento.Status = 1; //Preguntar cual es la Status que se debe de colocar???
             artMovimiento.Movimiento = movimiento;
+            artMovimiento.CreatedById = idUser;
 
             uow.ArticulosMovimientosBL.Insert(artMovimiento);
             uow.SaveChanges();
@@ -252,6 +297,7 @@ namespace SIP.Formas.Ventas
                 artMovSalida.ArticuloMovimientoId = artMovimiento.Id;
                 artMovSalida.ArticuloId = artVenta.ArticuloId;
                 artMovSalida.Cantidad = artVenta.Cantidad;
+                artMovSalida.CreatedById = idUser;
 
                 uow.ArticulosMovimientosSalidasBL.Insert(artMovSalida);
                 uow.SaveChanges();
@@ -275,7 +321,7 @@ namespace SIP.Formas.Ventas
         {
             int max = 1;
 
-            if (uow.VentasBL.Get().Count() > 0)
+            if (uow.VentasBL.Get(e=>e.Ejercicio==DateTime.Now.Year).Count() > 0)
                 max = uow.VentasBL.Get().Max(e => e.Folio) + 1;
 
             return max;
@@ -283,14 +329,43 @@ namespace SIP.Formas.Ventas
         }
 
 
-        private string CrearVenta()
+        private string ArmarFolioCadena(int folio)
+        {
+            string folioCad = string.Empty;
+            string num = string.Format("{0:0000}", folio);
+            folioCad = "VEN/" + num + "/" + DateTime.Now.Year;
+
+            return folioCad;
+        }
+
+        private bool ExisteProductoEnVenta(int idProducto)
+        {
+            string[] ids = _ProductosVenta.Value.Split('|');
+
+            foreach (string id in ids)
+            {
+                int idArtVenta = Utilerias.StrToInt(id);
+                ArticuloVenta artVenta = uow.ArticuloVentaBusinessLogic.Get(e => e.Id == idArtVenta && e.ArticuloId == idProducto).FirstOrDefault();
+
+                if (artVenta != null)
+                    return true;
+                else
+                    continue;
+            }
+
+            return false;
+
+        }
+
+        private string CrearVenta(int userId)
         {
             string M = string.Empty;
-            int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
+            int idUser = userId;//Utilerias.StrToInt(Session["IdUser"].ToString());
 
             DataAccessLayer.Models.Ventas venta = new DataAccessLayer.Models.Ventas();
             venta.Folio = ObtenerMaxFolio();//Utilerias.StrToInt(txtFolio.Value);
             venta.Ejercicio = DateTime.Now.Year; //???????
+            venta.FolioCadena = ArmarFolioCadena(venta.Folio);
 
             if (!_IDReceta.Value.Equals(string.Empty))
                 venta.RecetaId = Utilerias.StrToInt(_IDReceta.Value);
@@ -298,7 +373,7 @@ namespace SIP.Formas.Ventas
             venta.Status = 1;
             //venta.ClienteId = Utilerias.StrToInt(ddlClientes.SelectedValue);
             venta.Fecha = Convert.ToDateTime(txtFecha.Value);
-            
+            venta.CreatedById = userId;
             //Se almacena el encabezado de venta
             uow.VentasBL.Insert(venta);
             uow.SaveChanges();
@@ -317,10 +392,15 @@ namespace SIP.Formas.Ventas
             //Se buscan los ARTICULOS a VENDER en la tabla temporal de ARTICULOVENTA
             //Se recorren y se crean objetos de tipo VENTASARTICULOS
 
-            List<ArticuloVenta> listArticulos = uow.ArticuloVentaBusinessLogic.Get(a => a.UsuarioId == idUser).ToList();
+            List<ArticuloVenta> listArticulos = new List<ArticuloVenta>(); //uow.ArticuloVentaBusinessLogic.Get(a => a.UsuarioId == idUser).ToList();
 
-            foreach (ArticuloVenta art in listArticulos)
+            string[] idsProductos = _ProductosVenta.Value.Split('|');
+
+            foreach (string id in idsProductos)
             {
+                ArticuloVenta art=uow.ArticuloVentaBusinessLogic.GetByID(Utilerias.StrToInt(id));
+                listArticulos.Add(art);
+
                 VentasArticulos ventaArt = new VentasArticulos();
 
                 ventaArt.VentaId = venta.Id;
@@ -331,6 +411,7 @@ namespace SIP.Formas.Ventas
                 ventaArt.Subtotal = art.SubTotal;
                 ventaArt.IVA = art.IVA;
                 ventaArt.Total = art.Total;
+                ventaArt.CreatedById = idUser;
 
                 uow.VentasArticulosBL.Insert(ventaArt);
                 uow.SaveChanges();
@@ -369,12 +450,12 @@ namespace SIP.Formas.Ventas
             if (!M.Equals(string.Empty))
                 return M;
 
-            M=CrearArticulosMovimientos(venta.Id, listArticulos); //Se generan registros en ArticulosMovimientos y sus detalles
+            M=CrearArticulosMovimientos(venta.Id, listArticulos, idUser); //Se generan registros en ArticulosMovimientos y sus detalles
 
             if (!M.Equals(string.Empty))
                 return M;
 
-            M=ActualizarReceta(); //Se cambia el estatus a la receta que se vio involucrada en la venta
+            M=ActualizarReceta(idUser); //Se cambia el estatus a la receta que se vio involucrada en la venta
 
             if (!M.Equals(string.Empty))
                 return M;
@@ -385,7 +466,9 @@ namespace SIP.Formas.Ventas
                 return M;
 
             //Se muestra la venta
-            ClientScript.RegisterStartupScript(this.GetType(), "script", "fnc_MostrarVenta(" + venta.Id + ")", true);
+            //ClientScript.RegisterStartupScript(this.GetType(), "script", "fnc_MostrarVenta(" + venta.Id + ")", true);
+            //Se muestran las recetas
+            divGridRecetas.Style.Add("display", "block");
 
             return M;
         }
@@ -398,13 +481,20 @@ namespace SIP.Formas.Ventas
             _IDReceta.Value = idReceta.ToString();
 
             Recetas objReceta = uow.RecetasBusinessLogic.GetByID(idReceta);
-            
-            checkProductos.DataSource = objReceta.detalleReceta.Where(a=>a.ArticuloId != null).ToList();
+
+            decimal iva=decimal.Parse(Session["IVA"].ToString());
+
+            checkProductos.DataSource = objReceta.detalleReceta.Where(a => a.ArticuloId != null).Select(a => new {
+                                            a.ArticuloId, NombreMedicamento=a.Articulo.esMedicamento==0 ? a.NombreMedicamento + " " + (a.Articulo.PrecioVenta + (a.Articulo.PrecioVenta * iva)).ToString("c") : a.Articulo.PrecioVenta.ToString("c")} ).ToList();
+
             checkProductos.DataValueField = "ArticuloId";
             checkProductos.DataTextField = "NombreMedicamento";
             checkProductos.DataBind();
 
             OcultarError();
+
+            //Se oculta el div de las recetas
+            divGridRecetas.Style.Add("display", "none");
 
             ClientScript.RegisterStartupScript(this.GetType(), "script", "fnc_MostrarModal()", true);
 
@@ -430,32 +520,40 @@ namespace SIP.Formas.Ventas
                     idArticulo = Utilerias.StrToInt(item.Value);
                     articulo = uow.ArticulosBL.GetByID(idArticulo);
 
+                    if (!_ProductosVenta.Value.Equals(string.Empty))
+                    {
+                        if (ExisteProductoEnVenta(articulo.Id))
+                            continue;
+                    }
+
                     ArticuloVenta artVenta = new ArticuloVenta();
                     artVenta.ArticuloId = idArticulo;
                     artVenta.Cantidad = 1;
                     artVenta.Nombre = ConcatenarNombreArticulo(idArticulo);//articulo.Nombre;
                     artVenta.PrecioCompra = articulo.PrecioCompra;
-                    artVenta.PrecioVenta = articulo.PrecioVenta;
                     artVenta.EsMedicamento = articulo.esMedicamento; //Verificar tipo de campo
                     artVenta.RecetaId = idReceta;
                     artVenta.UsuarioId = idUser;
 
                     subtotal = articulo.PrecioVenta;
-
+                    artVenta.PrecioVenta = articulo.PrecioVenta;
                     //Preguntar como obtener el IVA ?????
                     if (articulo.esMedicamento == 0)
                     {
-                        iva = Convert.ToDecimal(subtotal * decimal.Parse(Session["IVA"].ToString()));
+                        //iva = Convert.ToDecimal(subtotal * decimal.Parse(Session["IVA"].ToString()));
+                        artVenta.PrecioVenta = articulo.PrecioVenta + (articulo.PrecioVenta * decimal.Parse(Session["IVA"].ToString()));
+                        subtotal = artVenta.PrecioVenta;
+                        iva = Convert.ToDecimal(articulo.PrecioVenta * decimal.Parse(Session["IVA"].ToString()));
                     }
                     artVenta.IVA = iva;
                     artVenta.SubTotal = subtotal;
-                    artVenta.Total = subtotal + iva;
+                    artVenta.Total = subtotal;//subtotal + iva;
                     
 
                     uow.ArticuloVentaBusinessLogic.Insert(artVenta);
                     uow.SaveChanges();
 
-                    //SI HUBO ERORRES AL ELIMINAR REGISTROS PREVIOS
+                    //SI HUBO ERORRES
                     if (uow.Errors.Count > 0)
                     {
                         foreach (string m in uow.Errors)
@@ -468,17 +566,25 @@ namespace SIP.Formas.Ventas
 
                         return;
                     }
-                   
 
-                }
+                    if (_ProductosVenta.Value == string.Empty)
+                        _ProductosVenta.Value = artVenta.Id.ToString();
+                    else
+                        _ProductosVenta.Value += "|" + artVenta.Id.ToString();
+
+                    _SeleccionoDeReceta.Value = "S";
+                }else
+                    _SeleccionoDeReceta.Value = "N";
             }
 
             if (checkProductos.Items.Count == 0)
                 _IDReceta.Value = string.Empty;
 
-            OcultarError();
-
             BindGridProductosVenta();
+
+            OcultarError();
+            //Se oculta el div de las recetas
+            divGridRecetas.Style.Add("display", "none");
 
         }
 
@@ -493,7 +599,7 @@ namespace SIP.Formas.Ventas
                            on a.PresentacionId equals p.Id
                            select new
                            {
-                               Nombre = a.Nombre + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje,
+                               Nombre = a.Nombre + " " + a.CantidadUnidadMedida + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje,
                            }).FirstOrDefault();
 
             nombre = art.Nombre;
@@ -514,6 +620,11 @@ namespace SIP.Formas.Ventas
             BindGridProductosVenta();
 
             OcultarError();
+
+            if (_SeleccionoDeReceta.Value.Equals("S"))
+                divGridRecetas.Style.Add("display", "none"); 
+            else
+                divGridRecetas.Style.Add("display", "block"); 
         }
 
         protected void gridProductos_RowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -527,6 +638,9 @@ namespace SIP.Formas.Ventas
 
             int cantidad = Utilerias.StrToInt(((HtmlInputGenericControl)gridProductos.Rows[e.RowIndex].FindControl("txtCantidad")).Value);
 
+            if (cantidad == 0)
+                cantidad = 1;
+
             Articulos artCat = uow.ArticulosBL.GetByID(objArticulo.ArticuloId);
 
             if (artCat.CantidadDisponible - cantidad < 0)
@@ -536,10 +650,11 @@ namespace SIP.Formas.Ventas
 
             if (objArticulo.EsMedicamento == 0)
             {
-                iva = Convert.ToDecimal(subtotal * decimal.Parse(Session["IVA"].ToString()));
+                //iva = Convert.ToDecimal(subtotal * decimal.Parse(Session["IVA"].ToString()));
+                iva = cantidad * (Convert.ToDecimal(artCat.PrecioVenta * decimal.Parse(Session["IVA"].ToString())));
             }
 
-            total = subtotal + iva;
+            total = subtotal;//subtotal + iva;
             objArticulo.IVA = iva;
             objArticulo.SubTotal = subtotal;
             objArticulo.Total = total;
@@ -569,6 +684,11 @@ namespace SIP.Formas.Ventas
 
             OcultarError();
 
+            if (_SeleccionoDeReceta.Value.Equals("S"))
+                divGridRecetas.Style.Add("display", "none");
+            else
+                divGridRecetas.Style.Add("display", "block"); 
+
         }
 
 
@@ -578,6 +698,11 @@ namespace SIP.Formas.Ventas
             BindGridProductosVenta();
 
             OcultarError();
+
+            if (_SeleccionoDeReceta.Value.Equals("S"))
+                divGridRecetas.Style.Add("display", "none");
+            else
+                divGridRecetas.Style.Add("display", "block"); 
         }
 
         protected void gridProductos_RowDeleting(object sender, GridViewDeleteEventArgs e)
@@ -585,6 +710,7 @@ namespace SIP.Formas.Ventas
             string M = string.Empty;
             int idArticulo = Utilerias.StrToInt(gridProductos.DataKeys[e.RowIndex].Value.ToString());
             ArticuloVenta objArticulo = uow.ArticuloVentaBusinessLogic.GetByID(idArticulo);
+            string [] idsProducto=_ProductosVenta.Value.Split('|');
 
             uow.ArticuloVentaBusinessLogic.Delete(objArticulo);
             uow.SaveChanges();
@@ -603,9 +729,27 @@ namespace SIP.Formas.Ventas
                 return;
             }
 
+            _ProductosVenta.Value = string.Empty;
+
+            foreach (string id in idsProducto)
+            {
+                if (!id.Equals(idArticulo))
+                {
+                    if (_ProductosVenta.Value.Equals(string.Empty))
+                        _ProductosVenta.Value = id;
+                    else
+                        _ProductosVenta.Value += "|" + id;
+                }
+            }
+
             BindGridProductosVenta();
 
             OcultarError();
+
+            if (_SeleccionoDeReceta.Value.Equals("S"))
+                divGridRecetas.Style.Add("display", "none");
+            else
+                divGridRecetas.Style.Add("display", "block"); 
         }
 
         protected void gridProductosCatalogo_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -632,30 +776,43 @@ namespace SIP.Formas.Ventas
 
             foreach (string id in ids)
             {
+
+                //Se valida que el articulo seleccionado no este agregado ya
+                //al grid de las ventas
                 idProducto = Utilerias.StrToInt(id);
 
                 articulo = uow.ArticulosBL.GetByID(idProducto);
+
+                if (!_ProductosVenta.Value.Equals(string.Empty))
+                {
+                    if (ExisteProductoEnVenta(articulo.Id))
+                        continue;
+                }
+
 
                 ArticuloVenta artVenta = new ArticuloVenta();
                 artVenta.ArticuloId = idProducto;
                 artVenta.Cantidad = 1;
                 artVenta.Nombre = ConcatenarNombreArticulo(idProducto);//articulo.Nombre;
                 artVenta.PrecioCompra = articulo.PrecioCompra;
-                artVenta.PrecioVenta = articulo.PrecioVenta;
                 artVenta.EsMedicamento = articulo.esMedicamento; //Verificar tipo de campo
                 artVenta.UsuarioId = idUser;
 
                 subtotal = articulo.PrecioVenta;
-
+                artVenta.PrecioVenta = articulo.PrecioVenta;
                 //Preguntar como obtener el IVA ?????
                 if (articulo.esMedicamento == 0)
                 {
-                    iva = Convert.ToDecimal(subtotal * decimal.Parse(Session["IVA"].ToString()));
+                    //iva = Convert.ToDecimal(subtotal * decimal.Parse(Session["IVA"].ToString()));
+                    artVenta.PrecioVenta = articulo.PrecioVenta + (articulo.PrecioVenta * decimal.Parse(Session["IVA"].ToString()));
+                    subtotal = artVenta.PrecioVenta;
+                    iva = Convert.ToDecimal(articulo.PrecioVenta * decimal.Parse(Session["IVA"].ToString()));
+
                 }
 
                 artVenta.IVA = iva;
                 artVenta.SubTotal = subtotal;
-                artVenta.Total = subtotal + iva;
+                artVenta.Total = subtotal;//subtotal + iva;
                 
 
                 uow.ArticuloVentaBusinessLogic.Insert(artVenta);
@@ -675,6 +832,11 @@ namespace SIP.Formas.Ventas
                     return;
                 }
 
+                if (_ProductosVenta.Value == string.Empty)
+                    _ProductosVenta.Value = artVenta.Id.ToString();
+                else
+                    _ProductosVenta.Value += "|" + artVenta.Id.ToString();
+
             }
 
             _CadValoresSeleccionados.Value = string.Empty;
@@ -682,13 +844,33 @@ namespace SIP.Formas.Ventas
             BindGridProductosVenta();
 
             OcultarError();
+
+            if (_SeleccionoDeReceta.Value.Equals("S"))
+                divGridRecetas.Style.Add("display", "none"); //Se oculta el div de las recetas
+            else
+                divGridRecetas.Style.Add("display", "block"); 
         }
 
         protected void btnAceptarVenta_Click(object sender, EventArgs e)
         {
             string M = string.Empty;
 
-            M=CrearVenta();
+            //Recuperar el password de confirmacion
+            //y el usuario con ese password
+            string pass = txtPassword.Text;
+
+            Usuario user = uow.UsuarioBusinessLogic.Get(u => u.Password == pass).FirstOrDefault();
+
+            if (user == null)
+            {
+                divMsgError.Style.Add("display", "block");
+                divMsgSuccess.Style.Add("display", "none");
+                lblMsgError.Text = "El password es incorrecto, intente de nuevo.";
+
+                return;
+            }
+
+            M=CrearVenta(user.Id);
 
             //Se muestra el mensaje de error, si es que existe
             if (!M.Equals(string.Empty))
@@ -720,6 +902,9 @@ namespace SIP.Formas.Ventas
             }
 
             OcultarError();
+
+            divGridRecetas.Style.Add("display", "block");
+            _SeleccionoDeReceta.Value = "N";
         }
 
         protected void btnConsultar_Click(object sender, EventArgs e)
@@ -734,9 +919,11 @@ namespace SIP.Formas.Ventas
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
+                decimal iva = decimal.Parse(Session["IVA"].ToString());
                 int id = Utilerias.StrToInt(gridProductosCatalogo.DataKeys[e.Row.RowIndex].Values["Id"].ToString());
                 HtmlControl chk = (HtmlControl)e.Row.FindControl("chkSeleccionar");
                 Articulos art = uow.ArticulosBL.GetByID(id);
+                Label lblPrecio = (Label)e.Row.FindControl("lblPrecio");
 
                 if (art.CantidadDisponible <= 0)
                 {
@@ -745,6 +932,11 @@ namespace SIP.Formas.Ventas
                         chk.Disabled = true;
                     }
                 }
+
+                if (art.esMedicamento == 0)
+                    lblPrecio.Text = (art.PrecioVenta + (art.PrecioVenta * iva)).ToString("c");
+                else
+                    lblPrecio.Text = (art.PrecioVenta).ToString("c");
             }
         }
 
