@@ -86,6 +86,8 @@ namespace DataAccessLayer.Models
         public virtual DbSet<InventarioInicialArticulos> DBSInventarioInicialArticulos { get; set; }
         public virtual DbSet<InventarioInicialArticulosCostos> DBSInventarioInicialArticulosCostos { get; set; }
 
+        public virtual DbSet<InventarioFisico> DBSinventariofisico { get; set; }
+
         public virtual DbSet<AlmacenEntradasGenericas> DBSAlmacenEntradasGenericas { get; set; }
         public virtual DbSet<AlmacenEntradasGenericasArticulos> DBSAlmacenEntradasGenericasArticulos { get; set; }
         public virtual DbSet<AlmacenSalidasGenericas> DBSAlmacenSalidasGenericas { get; set; }
@@ -131,6 +133,8 @@ namespace DataAccessLayer.Models
         public virtual DbSet<Paciente> DBSPaciente { get; set; }
 
         public virtual DbSet<FacturaModoEntrada> DBSfacturamodoentrada { get; set; }
+
+
 
         }
 

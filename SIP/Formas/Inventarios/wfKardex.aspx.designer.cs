@@ -13,13 +13,13 @@ namespace SIP.Formas.Inventarios {
     public partial class wfKardex {
         
         /// <summary>
-        /// linkReporte control.
+        /// divMain control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton linkReporte;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divMain;
         
         /// <summary>
         /// _URLVisor control.
@@ -40,12 +40,21 @@ namespace SIP.Formas.Inventarios {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divArticulos;
         
         /// <summary>
-        /// accordion control.
+        /// ddlArticulo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl accordion;
+        protected global::System.Web.UI.WebControls.DropDownList ddlArticulo;
+        
+        /// <summary>
+        /// btnMostrar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnMostrar;
     }
 }

@@ -17,6 +17,14 @@ namespace SIP.Formas.Catalogos
         {
             uow = new UnitOfWork(Session["IdUser"].ToString());
 
+
+            //bloqueo del contenido segun tipo de usuario
+            int iduser = int.Parse(Session["IdUser"].ToString());
+            Usuario usuario = uow.UsuarioBusinessLogic.GetByID(iduser);
+            if (usuario.Nivel != 1)
+                divMain.Style.Add("display", "none");
+            //endBloqueo
+
             if (!IsPostBack)
             {
                 BindGrid();
@@ -49,7 +57,7 @@ namespace SIP.Formas.Catalogos
         private void BindCombos()
         {
 
-            ddlUM.DataSource = uow.UnidadesDeMedidaBL.Get();
+            ddlUM.DataSource = uow.UnidadesDeMedidaBL.Get().OrderBy(p=>p.Nombre).ToList();
             ddlUM.DataValueField = "Id";
             ddlUM.DataTextField = "Nombre";
             ddlUM.DataBind();
@@ -57,7 +65,7 @@ namespace SIP.Formas.Catalogos
             //ddlUnidadMedida.Items.Insert(0, new ListItem("Seleccione...", "0"));
 
 
-            ddlPresentacion.DataSource = uow.PresentacionesBL.Get();
+            ddlPresentacion.DataSource = uow.PresentacionesBL.Get().OrderBy(p=>p.Nombre).ToList();
             ddlPresentacion.DataValueField = "Id";
             ddlPresentacion.DataTextField = "Nombre";
             ddlPresentacion.DataBind();
@@ -69,7 +77,13 @@ namespace SIP.Formas.Catalogos
 
 
 
-            ddlLaboratorio.DataSource = uow.LaboratoriosBL.Get();
+            ddlGrupo.DataSource = uow.GruposPSBL.Get().OrderBy(p => p.Nombre).ToList();
+            ddlGrupo.DataValueField = "Id";
+            ddlGrupo.DataTextField = "Nombre";
+            ddlGrupo.DataBind();
+
+
+            ddlLaboratorio.DataSource = uow.LaboratoriosBL.Get().OrderBy(p=>p.Nombre).ToList();
             ddlLaboratorio.DataValueField = "Id";
             ddlLaboratorio.DataTextField = "Nombre";
             ddlLaboratorio.DataBind();
@@ -112,6 +126,10 @@ namespace SIP.Formas.Catalogos
             _Accion.Text = "Nuevo";
             ModoForma(true);
 
+            DIVCantidad.Style.Add("display", "block");
+            DIVgrupoPS.Style.Add("display", "none");
+
+
             txtClave.Value = string.Empty;
             txtNombre.Value = string.Empty;
 
@@ -122,17 +140,17 @@ namespace SIP.Formas.Catalogos
             ddlFPS.SelectedIndex = 0;
             ddlLaboratorio.SelectedIndex = 0;
 
-            txtPorcentaje.Value = string.Empty;
+            txtPorcentaje.Value = "0";
             txtSustanciaActiva.Value = string.Empty;
             txtObservaciones.Value = string.Empty;
             chkEsMedicamento.Checked = false;
 
-            txtStockMinimo.Value = string.Empty;
-            txtPrecioCompra.Value = string.Empty;
-            txtPrecioVenta.Value = string.Empty;
+            txtStockMinimo.Value = "0";
+            txtPrecioCompra.Value = "0";
+            txtPrecioVenta.Value = "0";
 
-            txtPrecioCompraIVA.Value = string.Empty;
-            txtPrecioVentaIVA.Value = string.Empty;
+            txtPrecioCompraIVA.Value = "0";
+            txtPrecioVentaIVA.Value = "0";
 
         }
 
@@ -151,6 +169,7 @@ namespace SIP.Formas.Catalogos
             ddlPresentacion.SelectedValue = obj.PresentacionId.ToString();
             ddlFPS.SelectedValue = obj.FPSfactorId.ToString();
             ddlLaboratorio.SelectedValue = obj.LaboratorioId.ToString();
+            ddlGrupo.SelectedValue = obj.GruposPSId.ToString();
 
             txtCantidadUM.Value = obj.CantidadUnidadMedida.ToString();
             txtPorcentaje.Value = obj.Porcentaje.ToString() ;
@@ -176,6 +195,9 @@ namespace SIP.Formas.Catalogos
 
             _Accion.Text = "Modificar";
             ModoForma(true);
+
+            DIVCantidad.Style.Add("display", "none");
+            DIVgrupoPS.Style.Add("display", "block");
         }
 
         protected void imgBtnEliminar_Click(object sender, ImageClickEventArgs e)
@@ -255,7 +277,13 @@ namespace SIP.Formas.Catalogos
 
 
 
-            int grupo = int.Parse(Request.QueryString["grupo"].ToString());
+            int grupo = 0;
+
+            if (_Accion.Text == "Nuevo")
+                grupo = int.Parse(Request.QueryString["grupo"].ToString());
+            else
+                grupo = int.Parse(ddlGrupo.SelectedValue.ToString());
+
 
             obj.GruposPSId = grupo;
             obj.Clave = txtClave.Value;
@@ -304,6 +332,13 @@ namespace SIP.Formas.Catalogos
 
 
             obj.NombreCompleto = obj.Nombre + " (" + ddlPresentacion.SelectedItem.Text + " " + obj.CantidadUnidadMedida.ToString() + " " + ddlUM.SelectedItem.Text + ")";
+
+            if (ddlFPS.SelectedValue != "1")
+                obj.NombreCompleto +=  " " + ddlFPS.SelectedItem.Text;
+
+
+            if (obj.Porcentaje > 0)
+                obj.NombreCompleto += " " + obj.Porcentaje + " %";
 
             //validaciones
             uow.Errors.Clear();

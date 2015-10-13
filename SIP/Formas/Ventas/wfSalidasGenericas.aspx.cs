@@ -21,26 +21,34 @@ namespace SIP.Formas.Ventas
             {
                 ResetearSalida();
                 BindGridProductosCatalago();
-                BindDropDownTipos();
+                
+
+
+                int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
+                Usuario user = uow.UsuarioBusinessLogic.GetByID(idUser);
+
+                if (user.Nivel == 3)
+                {
+                    ddlTipos.DataSource = uow.TipoSalidaBusinessLogic.Get(p => p.EsUsoInterno == true);
+                    DIVSoloGuardar.Style.Add("display", "none");
+                }
+
+                else
+                {
+                    ddlTipos.DataSource = uow.TipoSalidaBusinessLogic.Get();                    
+                    DIVguardarWithModal.Style.Add("display", "none");
+                    txtPassword.Text = user.Password;
+                }
+
+                ddlTipos.DataValueField = "Id";
+                ddlTipos.DataTextField = "Nombre";
+                ddlTipos.DataBind();
+
             }
         }
 
 
-        private void BindDropDownTipos()
-        {
-            int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
-            Usuario user = uow.UsuarioBusinessLogic.GetByID(idUser);
 
-            if (user.EsAdmin)
-                ddlTipos.DataSource = uow.TipoSalidaBusinessLogic.Get();
-            else
-                ddlTipos.DataSource = uow.TipoSalidaBusinessLogic.Get(e=>e.EsUsoInterno==true);
-
-            
-            ddlTipos.DataValueField = "Id";
-            ddlTipos.DataTextField = "Nombre";
-            ddlTipos.DataBind();
-        }
 
         private void BindGridProductosCatalago()
         {
@@ -52,11 +60,12 @@ namespace SIP.Formas.Ventas
                            select new
                            {
                                Id = a.Id,
-                               Nombre = a.Nombre + " " + a.CantidadUnidadMedida + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje,
+                               NombreCompleto = a.NombreCompleto,
                                EsMedicamento = a.esMedicamento,
-                               PrecioVenta = a.PrecioVenta,
+                               PrecioVentaIVA = a.PrecioVentaIVA,
+                               Clave = a.Clave,
                                CantidadDisponible = a.CantidadDisponible
-                           }).OrderBy(e=>e.Nombre);
+                           }).OrderBy(e => e.NombreCompleto);
 
             gridProductosCatalogo.DataSource = listArt.ToList();//uow.ArticulosBL.Get().ToList();
             gridProductosCatalogo.DataBind();
@@ -82,15 +91,16 @@ namespace SIP.Formas.Ventas
             gridProductos.DataBind();
         }
 
-        private string ResetearSalida()
+        private void ResetearSalida()
         {
             string M = string.Empty;
 
             //Se eliminan los articulos de la tabla temporal
-            M=EliminarArticuloSalida();
 
-            if (!M.Equals(string.Empty))
-                return M;
+            uow.ArticuloSalidaGenericaBusinessLogic.DeleteAll();
+            uow.SaveChanges();
+
+            
 
             //Se bindea el grid
             _ProductosVenta.Value = string.Empty;
@@ -104,7 +114,7 @@ namespace SIP.Formas.Ventas
             txtFecha.Value = DateTime.Now.ToShortDateString();
             txtObservaciones.Value = string.Empty;
 
-            return M;
+            
         }
 
         private int ObtenerMaxFolio()
@@ -134,211 +144,8 @@ namespace SIP.Formas.Ventas
             lblMsgError.Text = "";
         }
 
-        private string ActualizarProductosCatalogo(List<ArticuloSalidaGenerica> listArticulos)
-        {
-            //Actualizar los articulos del catalalogo
-
-            Articulos artCatalogo;
-            string M = string.Empty;
-
-            foreach (ArticuloSalidaGenerica artSalida in listArticulos)
-            {
-                artCatalogo = uow.ArticulosBL.GetByID(artSalida.ArticuloId);
-
-                artCatalogo.CantidadEnAlmacen -= artSalida.Cantidad;
-                artCatalogo.CantidadDisponible -= artSalida.Cantidad;
-
-
-                uow.ArticulosBL.Update(artCatalogo);
-                uow.SaveChanges();
-
-
-                //SI HUBO ERORRES
-                if (uow.Errors.Count > 0)
-                {
-                    foreach (string m in uow.Errors)
-                        M += m;
-
-                    return M;
-                }
-
-            }
-
-            BindGridProductosCatalago();
-
-            return M;
-        }
-
-        private string CrearArticulosMovimientos(int salidaId, List<ArticuloSalidaGenerica> listArticulos, int idUser)
-        {
-            //Crear registros para la tabla de ArticulosMovimientos y sus detalles ArticulosMovimientosSalidas
-            string M = string.Empty;
-            int movimiento = uow.ArticulosMovimientosBL.Get().Count() > 0 ? uow.ArticulosMovimientosBL.Get().Max(e => e.Movimiento) + 1 : 1;
-
-            ArticulosMovimientosSalidas artMovSalida;
-
-            ArticulosMovimientos artMovimiento = new ArticulosMovimientos();
-
-            artMovimiento.Ejercicio = DateTime.Now.Year; //Preguntar que se debe de poner aqui????
-            artMovimiento.Tipo = 2; //preguntar cual tipo es????
-            artMovimiento.AlmacenSalidaGenericaId = salidaId;
-            artMovimiento.Fecha = DateTime.Now; //Preguntar cual es la fecha que se debe de colocar???
-            artMovimiento.Status = 1; //Preguntar cual es la Status que se debe de colocar???
-            artMovimiento.Movimiento = movimiento;
-            artMovimiento.CreatedById = idUser;
-
-            uow.ArticulosMovimientosBL.Insert(artMovimiento);
-            uow.SaveChanges();
-
-
-            //SI HUBO ERORRES
-            if (uow.Errors.Count > 0)
-            {
-                foreach (string m in uow.Errors)
-                    M += m;
-
-                return M;
-            }
-
-            //Se prosigue a llenar el detalle en ArticulosMovimientosSalidas
-            foreach (ArticuloSalidaGenerica artVenta in listArticulos)
-            {
-                artMovSalida = new ArticulosMovimientosSalidas();
-
-                artMovSalida.ArticuloMovimientoId = artMovimiento.Id;
-                artMovSalida.ArticuloId = artVenta.ArticuloId;
-                artMovSalida.Cantidad = artVenta.Cantidad;
-                artMovSalida.CreatedById = idUser;
-
-                uow.ArticulosMovimientosSalidasBL.Insert(artMovSalida);
-                uow.SaveChanges();
-
-
-                //SI HUBO ERORRES
-                if (uow.Errors.Count > 0)
-                {
-                    foreach (string m in uow.Errors)
-                        M += m;
-
-                    return M;
-                }
-
-            }
-
-            return M;
-
-
-        }
-
-        private string EliminarArticuloSalida()
-        {
-            //int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
-            string M = string.Empty;
-            //Se recorre la lista de productos de la venta
-            string[] idsProductos = _ProductosVenta.Value.Split('|');
-
-            foreach (string id in idsProductos)
-            {
-                if (!id.Equals(string.Empty))
-                {
-                    uow.ArticuloSalidaGenericaBusinessLogic.Delete(Utilerias.StrToInt(id));
-                    uow.SaveChanges();
-
-                    //SI HUBO ERORRES AL ELIMINAR REGISTROS PREVIOS
-                    if (uow.Errors.Count > 0)
-                    {
-                        foreach (string m in uow.Errors)
-                            M += m;
-
-                        return M;
-                    }
-                }
-            }
-
-            return M;
-        }
-
-        private string CrearSalida(int userId)
-        {
-            string M = string.Empty;
-            int idUser = userId;//Utilerias.StrToInt(Session["IdUser"].ToString());
-
-            AlmacenSalidasGenericas salida = new AlmacenSalidasGenericas();
-
-            salida.Folio = ObtenerMaxFolio();
-            salida.Ejercicio = DateTime.Now.Year; //???????
-            salida.Fecha = Convert.ToDateTime(txtFecha.Value);
-            salida.TipoSalidaId = Utilerias.StrToInt(ddlTipos.SelectedValue);
-            salida.Observaciones = txtObservaciones.Value;
-            salida.FolioCadena = ArmarFolioCadena(salida.Folio);
-            salida.CreatedById = idUser;
-
-            uow.AlmacenSalidasGenericasBL.Insert(salida);
-            uow.SaveChanges();
-
-            //SI HUBO ERORRES
-            if (uow.Errors.Count > 0)
-            {
-                foreach (string m in uow.Errors)
-                    M += m;
-
-                return M;
-            }
-
-            //Se prosigue a llenar el detalle en AlmacenSalidasGenericasArticulos
-            //con los articulos detallados
-
-            List<ArticuloSalidaGenerica> listArticulos = new List<ArticuloSalidaGenerica>();//uow.ArticuloSalidaGenericaBusinessLogic.Get(e => e.UsuarioId == idUser).ToList();
-            string[] idsProductos = _ProductosVenta.Value.Split('|');
-
-            foreach (string id in idsProductos)
-            {
-                ArticuloSalidaGenerica artSalida = uow.ArticuloSalidaGenericaBusinessLogic.GetByID(Utilerias.StrToInt(id));
-                AlmacenSalidasGenericasArticulos salidaDetalle = new AlmacenSalidasGenericasArticulos();
-
-                salidaDetalle.AlmacenSalidaGenericaId = salida.Id;
-                salidaDetalle.ArticuloId = artSalida.ArticuloId;
-                salidaDetalle.Cantidad = artSalida.Cantidad;
-                salidaDetalle.CreatedById = idUser;
-
-                uow.AlmacenSalidasGenericasArticulos.Insert(salidaDetalle);
-                uow.SaveChanges();
-
-
-                //SI HUBO ERORRES
-                if (uow.Errors.Count > 0)
-                {
-                    foreach (string m in uow.Errors)
-                        M += m;
-
-                    return M;
-                }
-
-            }
-
-
-            M=ActualizarProductosCatalogo(listArticulos);  //Se actualizan cantidades del articulo en el catalogo
-
-            if (!M.Equals(string.Empty))
-                return M;
-
-            M=CrearArticulosMovimientos(salida.Id, listArticulos, idUser);  //Se generan registros en ArticulosMovimientos y sus detalles
-
-            if (!M.Equals(string.Empty))
-                return M;
-
-            M=ResetearSalida();  //Se limpian los campos para una nueva salida
-
-
-            if (!M.Equals(string.Empty))
-                return M;
-
-            //Se muestra la Salida
-            ClientScript.RegisterStartupScript(this.GetType(), "script", "fnc_MostrarSalida(" + salida.Id + ")", true);
-
-            return M;
-        }
-
+        
+        
 
         private bool ExisteProductoEnSalida(int idProducto)
         {
@@ -373,6 +180,7 @@ namespace SIP.Formas.Ventas
             int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
            
 
+
             foreach (string id in ids)
             {
                 idProducto = Utilerias.StrToInt(id);
@@ -386,12 +194,10 @@ namespace SIP.Formas.Ventas
                 }
 
                 ArticuloSalidaGenerica artSalida = new ArticuloSalidaGenerica();
-                artSalida.ArticuloId = idProducto;
-                artSalida.Cantidad = 1;
-                artSalida.Nombre = ConcatenarNombreArticulo(idProducto);//articulo.Nombre;
-
-                artSalida.UsuarioId = idUser;
-
+                    artSalida.ArticuloId = idProducto;
+                    artSalida.Cantidad = 1;
+                    artSalida.Nombre = ConcatenarNombreArticulo(idProducto);//articulo.Nombre;
+                    artSalida.UsuarioId = idUser;
                 uow.ArticuloSalidaGenericaBusinessLogic.Insert(artSalida);
                 uow.SaveChanges();
 
@@ -434,7 +240,7 @@ namespace SIP.Formas.Ventas
                        on a.PresentacionId equals p.Id
                        select new
                        {
-                           Nombre = a.Nombre + " " + a.CantidadUnidadMedida + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje,
+                           Nombre = a.Nombre + " (" + p.Nombre + " " + a.CantidadUnidadMedida + " " + um.Nombre + ")",
                        }).FirstOrDefault();
 
             nombre = art.Nombre;
@@ -442,6 +248,141 @@ namespace SIP.Formas.Ventas
             return nombre;
 
         }
+
+
+        
+
+        protected void btnGenerarSalida_Click(object sender, EventArgs e)
+        {
+
+            int idUser = Utilerias.StrToInt(Session["IdUser"].ToString());
+            Usuario usuario = uow.UsuarioBusinessLogic.GetByID(idUser);
+
+            if (usuario.Nivel == 3)
+            {
+                string pass = txtPassword.Text;
+                Usuario user = uow.UsuarioBusinessLogic.Get(u => u.Password == pass).FirstOrDefault();
+
+                if (user == null)
+                {
+                    divMsgError.Style.Add("display", "block");
+                    divMsgSuccess.Style.Add("display", "none");
+                    lblMsgError.Text = "El password es incorrecto, intente de nuevo.";
+
+                    return;
+                }
+
+                idUser = user.Id;
+
+            }
+
+
+            
+
+            
+            
+
+
+            //detalle de la venta
+            int usuarioSesion = int.Parse(Session["IdUser"].ToString());
+            List<ArticuloSalidaGenerica> listArticulos = uow.ArticuloSalidaGenericaBusinessLogic.Get(p => p.UsuarioId == usuarioSesion).ToList();
+
+
+
+
+            AlmacenSalidasGenericas salida = new AlmacenSalidasGenericas();
+                salida.Folio = ObtenerMaxFolio();
+                salida.Ejercicio = DateTime.Now.Year;  
+                salida.Fecha = Convert.ToDateTime(txtFecha.Value);
+                salida.TipoSalidaId = int.Parse(ddlTipos.SelectedValue);
+                salida.Observaciones = txtObservaciones.Value;
+                salida.FolioCadena = ArmarFolioCadena(salida.Folio);
+                salida.UsuarioId = idUser;
+            uow.AlmacenSalidasGenericasBL.Insert(salida);
+
+
+
+            //bitacora
+            List<ArticulosMovimientos> listaBitacora = uow.ArticulosMovimientosBL.Get().ToList();
+            int movimiento;
+            if (listaBitacora.Count == 0)
+                movimiento = 0;
+            else
+                movimiento = listaBitacora.Max(p => p.Movimiento);
+
+            movimiento++;
+
+            ArticulosMovimientos bitacora = new ArticulosMovimientos();
+            bitacora.Ejercicio = DateTime.Now.Year;
+            bitacora.Tipo = 2;
+            bitacora.AlmacenSalidaGenerica = salida;
+            bitacora.Fecha = DateTime.Now;
+            bitacora.Status = 1;
+            bitacora.Movimiento = movimiento;
+            uow.ArticulosMovimientosBL.Insert(bitacora);
+
+
+             
+
+            foreach (ArticuloSalidaGenerica item in listArticulos)
+            {
+                
+                AlmacenSalidasGenericasArticulos salidaDetalle = new AlmacenSalidasGenericasArticulos();
+                    salidaDetalle.AlmacenSalidaGenerica = salida;
+                    salidaDetalle.ArticuloId = item.ArticuloId;
+                    salidaDetalle.Cantidad = item.Cantidad;
+                uow.AlmacenSalidasGenericasArticulos.Insert(salidaDetalle);
+
+
+                ArticulosMovimientosSalidas bitDetalle = new ArticulosMovimientosSalidas();
+                    bitDetalle.ArticuloMovimiento = bitacora;
+                    bitDetalle.ArticuloId = item.ArticuloId;
+                    bitDetalle.Cantidad = item.Cantidad;
+                uow.ArticulosMovimientosSalidasBL.Insert(bitDetalle);
+
+                Articulos articulo = uow.ArticulosBL.GetByID(item.ArticuloId);
+                    articulo.CantidadEnAlmacen -= item.Cantidad;
+                    articulo.CantidadDisponible -= item.Cantidad;
+                uow.ArticulosBL.Update(articulo);
+                
+
+
+            }
+
+            uow.SaveChanges();
+
+            if (uow.Errors.Count == 0)
+            {
+                uow.ArticuloSalidaGenericaBusinessLogic.DeleteAll();
+                uow.SaveChanges();
+            }
+            else
+            {
+                divMsgError.Style.Add("display", "block");
+                divMsgSuccess.Style.Add("display", "none");
+                lblMsgError.Text = "Hubo problemas al registrar la salida, intentelo nuevamente";
+                return;
+            }
+
+            
+            //Se muestra la Salida
+            //ClientScript.RegisterStartupScript(this.GetType(), "script", "fnc_MostrarSalida(" + salida.Id + ")", true);
+
+            Response.Redirect("wfListaSalidasGen.aspx");
+
+            
+
+        }
+
+        protected void btnCancelarSalida_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("wfListaSalidasGen.aspx");
+        }
+
+        
+
+
+        #region EventosDelGrid
 
 
         protected void gridProductosCatalogo_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -473,12 +414,20 @@ namespace SIP.Formas.Ventas
 
             int cantidad = Utilerias.StrToInt(((HtmlInputGenericControl)gridProductos.Rows[e.RowIndex].FindControl("txtCantidad")).Value);
 
+            if (cantidad == 0)
+                cantidad = 1;
+
             Articulos artCat = uow.ArticulosBL.GetByID(objArticulo.ArticuloId);
 
-            if (artCat.CantidadDisponible - cantidad < 0)
-                cantidad = (artCat.CantidadDisponible - cantidad) + cantidad;
-            
-            
+            if (cantidad > artCat.CantidadDisponible)
+            {
+                //gridProductos.EditIndex = -1;
+                //BindGridProductosSalidas();
+                //return;
+                cantidad = artCat.CantidadDisponible;
+            }
+
+
             objArticulo.Cantidad = cantidad;
 
             uow.ArticuloSalidaGenericaBusinessLogic.Update(objArticulo);
@@ -499,9 +448,7 @@ namespace SIP.Formas.Ventas
 
             // Cancelamos la edicion del grid
             gridProductos.EditIndex = -1;
-
             BindGridProductosSalidas();
-
             OcultarError();
         }
 
@@ -547,58 +494,6 @@ namespace SIP.Formas.Ventas
             OcultarError();
         }
 
-        protected void btnGenerarSalida_Click(object sender, EventArgs e)
-        {
-            string M = string.Empty;
-
-            string pass = txtPassword.Text;
-
-            Usuario user = uow.UsuarioBusinessLogic.Get(u => u.Password == pass).FirstOrDefault();
-
-            if (user == null)
-            {
-                divMsgError.Style.Add("display", "block");
-                divMsgSuccess.Style.Add("display", "none");
-                lblMsgError.Text = "El password es incorrecto, intente de nuevo.";
-
-                return;
-            }
-
-
-            M=CrearSalida(user.Id);
-
-            //Se muestra el mensaje de error, si es que existe
-            if (!M.Equals(string.Empty))
-            {
-                divMsgError.Style.Add("display", "block");
-                divMsgSuccess.Style.Add("display", "none");
-                lblMsgError.Text = M;
-
-                return;
-            }
-
-            OcultarError();
-        }
-
-        protected void btnCancelarSalida_Click(object sender, EventArgs e)
-        {
-            string M = string.Empty;
-
-            M=ResetearSalida();
-
-            //Se muestra el mensaje de error
-            if (!M.Equals(string.Empty))
-            {
-                divMsgError.Style.Add("display", "block");
-                divMsgSuccess.Style.Add("display", "none");
-                lblMsgError.Text = M;
-
-                return;
-            }
-
-            OcultarError();
-        }
-
         protected void gridProductosCatalogo_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
@@ -615,12 +510,15 @@ namespace SIP.Formas.Ventas
                     }
                 }
 
-                
+
 
                 //if (btnVer != null)
                 //    btnVer.Attributes["onclick"] = "fnc_MostrarReceta(" + idReceta + ")";
 
             }
         }
+        
+        #endregion
+
     }
 }

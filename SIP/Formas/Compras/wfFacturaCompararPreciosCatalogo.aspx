@@ -16,14 +16,14 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-<div class="container">
+<div class="container" id="divMain" runat="server">
 
 
      <div id="divEncabezado" runat="server" class="panel panel-success">
       <div class="panel-heading">
              <div class="row">
-                <div class="col-md-8"><h3 class="panel-title"> Comparativo de Precios de Compra </h3></div>
-                <div class="col-md-2"> . </div>
+                <div class="col-md-5"><h3 class="panel-title"> Comparativo de Precios de Compra </h3></div>
+                <div class="col-md-5"> <asp:LinkButton ID="linTerminar" runat="server" PostBackUrl="#"  OnClick ="linTerminar_Click">Terminar</asp:LinkButton>   </div>
                 <div class="col-md-2"><a href="<%=ResolveClientUrl("wfFacturas.aspx") %>">Regresar</a></div>
              </div>
        </div>
@@ -50,13 +50,13 @@
 
                        
 
-                        <asp:TemplateField HeaderText="Precio Compra Anterior" ItemStyle-CssClass="col-md-1">
+                        <asp:TemplateField HeaderText="Precio Compra + IVA Anterior" ItemStyle-CssClass="col-md-1">
                             <ItemTemplate>
                                 <asp:Label ID="Label3" runat="server" Text='<%# Bind("PrecioDeCompraAnterior","{0:C2}") %>'></asp:Label>
                             </ItemTemplate>                        
                         </asp:TemplateField>
                     
-                        <asp:TemplateField HeaderText="Precio Compra Actual" ItemStyle-CssClass="col-md-1">
+                        <asp:TemplateField HeaderText="Precio Compra + IVA Actual" ItemStyle-CssClass="col-md-1">
                             <ItemTemplate>
                                 <asp:Label ID="Label4" runat="server" Text='<%# Bind("PrecioIVA","{0:C2}")  %>'></asp:Label>
                             </ItemTemplate>                        
@@ -69,7 +69,7 @@
                         </asp:TemplateField>
 
 
-                        <asp:TemplateField HeaderText="Precio Venta" ItemStyle-CssClass="col-md-1">
+                        <asp:TemplateField HeaderText="Precio Venta + IVA" ItemStyle-CssClass="col-md-1">
                             <ItemTemplate>
                                 <asp:Label ID="Label6" runat="server" Text='<%# Bind("PrecioVenta","{0:C2}")  %>'></asp:Label>
                             </ItemTemplate>                        
@@ -99,7 +99,7 @@
 
             <div class="col-md-4">
                 <div class="form-group"">                    
-                    <label for="PrecioVenta">Precio de Venta</label>
+                    <label for="PrecioVenta">Precio de Venta + IVA</label>
                     <input type="text" class="input-sm required form-control campoNumerico" id="txtPrecioVenta" runat="server" style="text-align: left; width:200px; align-items:flex-start" />
                     <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="txtPrecioVenta" ErrorMessage="El campo Precio de Venta es obligatorio" ValidationGroup="validateX">*</asp:RequiredFieldValidator>                     
                 </div>

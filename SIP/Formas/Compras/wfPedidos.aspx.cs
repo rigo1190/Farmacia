@@ -18,6 +18,14 @@ namespace SIP.Formas.Compras
         {
             uow = new UnitOfWork(Session["IdUser"].ToString());
 
+
+            //bloqueo del contenido segun tipo de usuario
+            int iduser = int.Parse(Session["IdUser"].ToString());
+            Usuario usuario = uow.UsuarioBusinessLogic.GetByID(iduser);
+            if (usuario.Nivel != 1)
+                divMain.Style.Add("display", "none");
+            //endBloqueo            
+            
             if (!IsPostBack)
             {
                 int idCotizacion = int.Parse(Session["XCotizacionId"].ToString());
@@ -227,7 +235,7 @@ namespace SIP.Formas.Compras
             int idCotizacion = int.Parse(Session["XCotizacionId"].ToString());
 
 
-            var query = from p in uow.CotizacionesTMPAsignacionesBL.Get(p => p.CotizacionId == idCotizacion).ToList()
+            var query = from p in uow.CotizacionesTMPAsignacionesBL.Get(p => p.CotizacionId == idCotizacion && p.ProveedorId != null).ToList()
                         group p by new { id = p.ProveedorId} into g
                         select new { id = g.Key.id, count = g.Count() };
 

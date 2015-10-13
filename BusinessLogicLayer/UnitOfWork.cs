@@ -40,7 +40,7 @@ namespace BusinessLogicLayer
         private IBusinessLogic<InventarioInicial> inventarioinicialBL;
         private IBusinessLogic<InventarioInicialArticulos> inventarioinicialarticulosBL;
         private IBusinessLogic<InventarioInicialArticulosCostos> inventarioinicialarticuloscostosBL;
-
+        private IBusinessLogic<InventarioFisico> inventariofisicoBL;
 
         private IBusinessLogic<AlmacenEntradasGenericas> almacenentradasgenericasBL;
         private IBusinessLogic<AlmacenEntradasGenericasArticulos> almacenentradasgenericasarticulosBL;
@@ -416,6 +416,18 @@ namespace BusinessLogicLayer
             }
         }
 
+
+        public IBusinessLogic<InventarioFisico> InventarioFisicoBL
+        {
+            get
+            {
+                if (this.inventariofisicoBL == null)
+                {
+                    this.inventariofisicoBL = new GenericBusinessLogic<InventarioFisico>(contexto);
+                }
+                return this.inventariofisicoBL;
+            }
+        }
 
 
         public IBusinessLogic<AlmacenEntradasGenericas> AlmacenEntradasGenericasBL

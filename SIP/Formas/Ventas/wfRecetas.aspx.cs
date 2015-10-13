@@ -18,6 +18,13 @@ namespace SIP.Formas.Ventas
         {
             uow = new UnitOfWork(Session["IdUser"].ToString());
 
+            //bloqueo del contenido segun tipo de usuario
+            int iduser = int.Parse(Session["IdUser"].ToString());
+            Usuario usuario = uow.UsuarioBusinessLogic.GetByID(iduser);
+            if (usuario.Nivel == 3)
+                divMain.Style.Add("display", "none");
+            //endBloqueo
+
             if (!IsPostBack)
             {
                 txtFechaFiltro.Value = DateTime.Now.ToShortDateString();
@@ -44,13 +51,25 @@ namespace SIP.Formas.Ventas
 
         private void BindDropDownMedicamentos()
         {
-            var listArt = (from a in uow.ArticulosBL.Get(e=>e.CantidadDisponible > 0)
+            //var listArt = (from a in uow.ArticulosBL.Get(e=>e.CantidadDisponible > 0)
+            //               join um in uow.UnidadesDeMedidaBL.Get()
+            //               on a.UnidadesDeMedidaId equals um.Id
+            //               join p in uow.PresentacionesBL.Get()
+            //               on a.PresentacionId equals p.Id
+            //               select new { Id = a.Id, Nombre = a.Nombre + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje
+            //               }).OrderBy(e=>e.Nombre);
+
+            var listArt = (from a in uow.ArticulosBL.Get(e => e.Status == 1)
                            join um in uow.UnidadesDeMedidaBL.Get()
                            on a.UnidadesDeMedidaId equals um.Id
                            join p in uow.PresentacionesBL.Get()
                            on a.PresentacionId equals p.Id
-                           select new { Id = a.Id, Nombre = a.Nombre + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje
-                           }).OrderBy(e=>e.Nombre);
+                           select new
+                           {
+                               Id = a.Id,
+                               Nombre = a.NombreCompleto 
+                           }).OrderBy(e => e.Nombre);
+
 
             ddlMedicamentos.DataSource = listArt;
             ddlMedicamentos.DataValueField = "Id";
@@ -66,7 +85,7 @@ namespace SIP.Formas.Ventas
             if (!txtFechaFiltro.Value.Equals(string.Empty))
                 fechaFiltro = Convert.ToDateTime(txtFechaFiltro.Value);
 
-            gridRecetas.DataSource = uow.RecetasBusinessLogic.Get(e=>e.Fecha==fechaFiltro).ToList();
+            gridRecetas.DataSource = uow.RecetasBusinessLogic.Get(e=>e.Fecha==fechaFiltro && e.Status != 3).ToList();
             gridRecetas.DataBind();
         }
 
@@ -153,6 +172,12 @@ namespace SIP.Formas.Ventas
             obj.Observaciones = txtObservaciones.Value;
             obj.NombrePaciente = txtNombre.Value;
             obj.Status = 1;
+
+            if (int.Parse(ddlPaciente.SelectedValue) != 0)
+            {
+                obj.PacienteId = int.Parse(ddlPaciente.SelectedValue);
+            }
+
 
             if (_Accion.Value.Equals("N")){
 

@@ -12,6 +12,10 @@
     }
 
 
+    function fnc_ConfirmarGuardar() {
+        return confirm("¿Está seguro de que los datos de la factura son los correctos?");
+    }
+
 
 
     </script>

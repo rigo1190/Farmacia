@@ -39,7 +39,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
 
- <div class="container">
+ <div class="container" id="divMain" runat="server">
 
         <div id="divEncabezado" runat="server" class="panel panel-success">
             <div class="panel-heading">

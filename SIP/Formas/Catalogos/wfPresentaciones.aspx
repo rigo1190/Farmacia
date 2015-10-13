@@ -16,7 +16,7 @@
 
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-<div class="container">
+<div class="container" id="divMain" runat="server">
 
     <div class="panel-footer alert alert-success" id="divMsgSuccess" style="display:none" runat="server">
                 <asp:Label ID="lblMensajeSuccess" runat="server" Text=""></asp:Label>
@@ -52,7 +52,7 @@
                     
 
 
-                        <asp:TemplateField HeaderText="Acciones" ItemStyle-CssClass="col-md-.5">
+                        <asp:TemplateField HeaderText="Acciones" ItemStyle-CssClass="col-md-1">
                         <ItemTemplate>
                             
                             <asp:ImageButton ID="imgBtnEdit" ToolTip="Editar" runat="server" ImageUrl="~/img/Edit1.png" OnClick="imgBtnEdit_Click"/>

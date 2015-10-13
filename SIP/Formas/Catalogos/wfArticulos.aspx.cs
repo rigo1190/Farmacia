@@ -19,7 +19,16 @@ namespace SIP.Formas.Catalogos
         {
             uow = new UnitOfWork(Session["IdUser"].ToString());
 
+            //bloqueo del contenido segun tipo de usuario
+            int iduser = int.Parse(Session["IdUser"].ToString());
+            Usuario usuario = uow.UsuarioBusinessLogic.GetByID(iduser);
+            if (usuario.Nivel != 1)
+                divMain.Style.Add("display", "none");
+            //endBloqueo
+
             cargarGruposArticulos();
+
+            _URLVisor.Value = ResolveClientUrl("~/rpts/wfVerReporte.aspx");
         }
 
 
@@ -121,7 +130,7 @@ namespace SIP.Formas.Catalogos
         private void cargardetalle(int grupo, System.Web.UI.HtmlControls.HtmlGenericControl tabla)
         {
             
-            List<Articulos> detalle = uow.ArticulosBL.Get(q => q.GruposPSId == grupo && q.Status == 1).ToList();
+            List<Articulos> detalle = uow.ArticulosBL.Get(q => q.GruposPSId == grupo && q.Status == 1).OrderBy(q=>q.NombreCompleto).ToList();
 
             if (detalle.Count == 0)
                 return;

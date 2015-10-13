@@ -16,7 +16,7 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="container">
+    <div class="container" id="divMain" runat="server">
 
     <div class="panel-footer alert alert-success" id="divMsgSuccess" style="display:none" runat="server">
                 <asp:Label ID="lblMensajeSuccess" runat="server" Text=""></asp:Label>
@@ -27,7 +27,19 @@
 
     <div id="divDatos" runat="server" class="panel panel-success">
         <div class="panel-heading">
-            <h3 class="panel-title">Pacientes</h3>
+            <div class="row">
+
+                    <div class="col-md-10">
+                        <h3 class="panel-title">
+                            Pacientes
+                        </h3>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="<%=ResolveClientUrl("~/Formas/Ventas/wfRecetas.aspx") %>">Recetas</a>
+                    </div>
+
+
+                </div>
         </div>
 
 

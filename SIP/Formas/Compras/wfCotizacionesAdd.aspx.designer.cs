@@ -13,6 +13,15 @@ namespace SIP.Formas.Compras {
     public partial class wfCotizacionesAdd {
         
         /// <summary>
+        /// divMain control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divMain;
+        
+        /// <summary>
         /// divMsgSuccess control.
         /// </summary>
         /// <remarks>
@@ -175,15 +184,6 @@ namespace SIP.Formas.Compras {
         protected global::System.Web.UI.WebControls.GridView gridProductos;
         
         /// <summary>
-        /// gridProductosCatalogo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridProductosCatalogo;
-        
-        /// <summary>
         /// btnAgregarDeCat control.
         /// </summary>
         /// <remarks>
@@ -191,5 +191,14 @@ namespace SIP.Formas.Compras {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAgregarDeCat;
+        
+        /// <summary>
+        /// gridProductosCatalogo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gridProductosCatalogo;
     }
 }

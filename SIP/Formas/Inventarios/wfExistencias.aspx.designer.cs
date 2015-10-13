@@ -13,6 +13,15 @@ namespace SIP.Formas.Inventarios {
     public partial class wfExistencias {
         
         /// <summary>
+        /// divMain control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divMain;
+        
+        /// <summary>
         /// linkReporte control.
         /// </summary>
         /// <remarks>
@@ -20,6 +29,24 @@ namespace SIP.Formas.Inventarios {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton linkReporte;
+        
+        /// <summary>
+        /// linkInventarioFisico control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton linkInventarioFisico;
+        
+        /// <summary>
+        /// linkConcentradoInputOutput control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton linkConcentradoInputOutput;
         
         /// <summary>
         /// _URLVisor control.

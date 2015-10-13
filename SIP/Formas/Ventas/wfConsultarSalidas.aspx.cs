@@ -1,4 +1,5 @@
 ﻿using BusinessLogicLayer;
+using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,6 +10,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
+
 namespace SIP.Formas.Ventas
 {
     public partial class wfConsultarSalidas : System.Web.UI.Page
@@ -17,6 +19,13 @@ namespace SIP.Formas.Ventas
         protected void Page_Load(object sender, EventArgs e)
         {
             uow = new UnitOfWork(Session["IdUser"].ToString());
+            //bloqueo del contenido segun tipo de usuario
+            int iduser = int.Parse(Session["IdUser"].ToString());
+
+            Usuario usuario = uow.UsuarioBusinessLogic.GetByID(iduser);
+            if (usuario.Nivel != 1)
+                divMain.Style.Add("display", "none");
+            //endBloqueo
 
             if (!IsPostBack)
             {
@@ -51,7 +60,7 @@ namespace SIP.Formas.Ventas
                            on a.UnidadesDeMedidaId equals um.Id
                            join p in uow.PresentacionesBL.Get()
                            on a.PresentacionId equals p.Id
-                           select new { Id = a.Id, Nombre = a.Nombre + " " + um.Nombre + " " + p.Nombre + " " + a.Porcentaje }).OrderBy(e=>e.Nombre);
+                           select new { Id = a.Id, Nombre = a.NombreCompleto }).OrderBy(e=>e.Nombre);
 
             ddlArticulos.DataSource = listArt;
             ddlArticulos.DataValueField = "Id";
@@ -163,16 +172,19 @@ namespace SIP.Formas.Ventas
         {
             List<DataAccessLayer.Models.AlmacenSalidasGenericas> list = new List<DataAccessLayer.Models.AlmacenSalidasGenericas>();
             //string connString = @"data source=RIGO-PC\SQLEXPRESS;user id=sa;password=081995;initial catalog=BD3SoftInventarios;Persist Security Info=true";
-            string connString = System.Configuration.ConfigurationManager.ConnectionStrings[2].ConnectionString;
+            //string connString = System.Configuration.ConfigurationManager.ConnectionStrings[0].ConnectionString;
 
 
             DataAccessLayer.Models.AlmacenSalidasGenericas salida;
-            SqlConnection conn = null;
+            //SqlConnection conn = null;
+
+            SqlConnection conn = new SqlConnection(uow.Contexto.Database.Connection.ConnectionString.ToString());
+
             string ids = string.Empty; ;
 
             try
             {
-                conn = new SqlConnection(connString);
+                //conn = new SqlConnection(connString);
                 conn.Open();
 
                 SqlCommand cmd = conn.CreateCommand();//new SqlCommand();

@@ -13,7 +13,9 @@
     }
 
 
-
+    function fnc_ConfirmarGuardar() {
+        return confirm ("¿Esta seguro de guardar la cotización?");
+    }
 
     function fnc_AbrirReporte(id) {
 
@@ -97,7 +99,7 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
- <div class="container">
+<div class="container" id="divMain" runat="server">
 
     <div class="panel-footer alert alert-success" id="divMsgSuccess" style="display:none" runat="server">
                 <asp:Label ID="lblMensajeSuccess" runat="server" Text=""></asp:Label>
@@ -119,7 +121,7 @@
 
 
      <div id="divBtnNuevo" runat="server">
-        <asp:Button ID="btnNuevo" runat="server" Text="Guardar Cotización" CssClass="btn btn-primary" OnClick="btnNuevo_Click" AutoPostBack="false" />
+        <asp:Button ID="btnNuevo" runat="server" Text="Guardar Cotización" CssClass="btn btn-primary" OnClick="btnNuevo_Click" OnClientClick="return fnc_ConfirmarGuardar()" AutoPostBack="false" />
     </div>
 
 
@@ -318,7 +320,7 @@
  
 
 
-       <br>
+       <br />
 
 
      <div class="row">
@@ -332,62 +334,69 @@
 
                             <div id="collapse1" class="panel-collapse">
                                 <div class="panel-body">
-                                    <div class="row" style="height:330px; overflow:scroll">
 
+                                    <div class="row">
+                                        <asp:Button runat="server" OnClick="btnAgregarDeCat_Click" OnClientClick="return fnc_ObtenerValoresSeleccionados();" ID="btnAgregarDeCat" Text="Agregar productos seleccionados" CssClass="btn btn-default" />
+                                    </div>
+
+                                    <div class="row" style="height:330px; overflow:scroll">
                                         <asp:GridView  ID="gridProductosCatalogo" PageSize="10" Height="15px" Width="1250px" EnablePersistedSelection="true" ShowHeaderWhenEmpty="true"  DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
                                         <Columns>
-                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-Width="90px" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Center" HeaderText="Seleccionar" SortExpression="SI">
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-Width="100px" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Center" HeaderText="Seleccionar" SortExpression="SI">
                                                 <ItemTemplate>
                                                     <input type="checkbox" value="false" runat="server" id="chkSeleccionar" />
                                                 </ItemTemplate>
                                                 <ItemStyle HorizontalAlign="Center" />
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-Font-Size="Smaller" ItemStyle-Width="450px" HeaderText="Nombre Producto" HeaderStyle-CssClass="panel-footer" SortExpression="Orden">
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-Font-Size="Smaller" ItemStyle-Width="100px" HeaderText="Código" HeaderStyle-CssClass="panel-footer" SortExpression="Orden">
+                                                <ItemTemplate>
+                                                    <%# DataBinder.Eval(Container.DataItem, "Clave") %>
+                                                    <input type="hidden" value='<%# DataBinder.Eval(Container.DataItem, "Id") %>' runat="server" />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-Font-Size="Smaller" ItemStyle-Width="550px" HeaderText="Nombre Producto" HeaderStyle-CssClass="panel-footer" SortExpression="Orden">
                                                 <ItemTemplate>
                                                     <%# DataBinder.Eval(Container.DataItem, "NombreCompleto") %>
                                                     <input type="hidden" value='<%# DataBinder.Eval(Container.DataItem, "Id") %>' runat="server" id="idProducto" />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
 
-
-                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-Width="110px" ItemStyle-Font-Size="Smaller" HeaderText="Es Medicamento" HeaderStyle-Width="150px" HeaderStyle-CssClass="panel-footer" SortExpression="Orden">
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-Width="100px" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Existencias" HeaderStyle-CssClass="panel-footer" SortExpression="NOAplica">
                                                 <ItemTemplate>
-                                                    <asp:label runat="server" ID="lblMedicamento" Text='<%# Convert.ToInt16(Eval("EsMedicamento")) == 0 ? "NO":"SI" %>'></asp:label>
+                                                    <%# DataBinder.Eval(Container.DataItem, "CantidadEnAlmacen") %>
                                                 </ItemTemplate>
-                                                <ItemStyle  HorizontalAlign="Center" />
+                                                <ItemStyle HorizontalAlign="Center" />
                                             </asp:TemplateField>
 
-
-                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller"  HeaderStyle-Width="90px"  ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="$ Compra + IVA" HeaderStyle-CssClass="panel-footer" SortExpression="NOAplica">
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller"  HeaderStyle-Width="100px"  ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="$ Compra + IVA" HeaderStyle-CssClass="panel-footer" SortExpression="NOAplica">
                                                 <ItemTemplate>                                                    
                                                     <asp:Label ID="lblPrecio2" Text='<%# Bind("PrecioCompraIVA","{0:C2}") %>' runat="server"></asp:Label>
                                                 </ItemTemplate>
                                                 <ItemStyle HorizontalAlign="Center" />
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller"  HeaderStyle-Width="90px"  ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="$ Venta + IVA" HeaderStyle-CssClass="panel-footer" SortExpression="NOAplica">
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller"  HeaderStyle-Width="100px"  ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="$ Venta + IVA" HeaderStyle-CssClass="panel-footer" SortExpression="NOAplica">
                                                 <ItemTemplate>                                                    
                                                     <asp:Label ID="lblPrecio" Text='<%# Bind("PrecioVentaIVA","{0:C2}") %>' runat="server"></asp:Label>
                                                 </ItemTemplate>
                                                 <ItemStyle HorizontalAlign="Center" />
                                             </asp:TemplateField>
 
-
-                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-Width="90px" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Existencias" HeaderStyle-CssClass="panel-footer" SortExpression="NOAplica">
+                                            <asp:TemplateField HeaderStyle-Font-Size="Smaller" ItemStyle-Width="100px" ItemStyle-Font-Size="Smaller" HeaderText="M S/N" HeaderStyle-Width="150px" HeaderStyle-CssClass="panel-footer" SortExpression="Orden">
                                                 <ItemTemplate>
-                                                    <%# DataBinder.Eval(Container.DataItem, "CantidadEnAlmacen") %>
+                                                    <asp:label runat="server" ID="lblMedicamento" Text='<%# Convert.ToInt16(Eval("EsMedicamento")) == 0 ? "NO":"SI" %>'></asp:label>
                                                 </ItemTemplate>
-                                                <ItemStyle HorizontalAlign="Center" />
+                                                <ItemStyle  HorizontalAlign="Center" />
                                             </asp:TemplateField>
+                                            
            
                                         </Columns>
                                         <%--<PagerSettings FirstPageText="Primera" LastPageText="Ultima" Mode="NextPreviousFirstLast" NextPageText="Siguiente" PreviousPageText="Anterior" />--%>
                                     </asp:GridView>
                                     </div>
-                                    <div class="row">
-                                        <asp:Button runat="server" OnClick="btnAgregarDeCat_Click" OnClientClick="return fnc_ObtenerValoresSeleccionados();" ID="btnAgregarDeCat" Text="Agregar +" CssClass="btn btn-primary" />
-                                    </div>
+                                    
                                 </div>
                             </div>
 

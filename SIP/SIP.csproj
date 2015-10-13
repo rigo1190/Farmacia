@@ -826,6 +826,7 @@
     <Content Include="Formas\Catalogos\wfPresentaciones.aspx" />
     <Content Include="Formas\Catalogos\wfProveedores.aspx" />
     <Content Include="Formas\Catalogos\wfUnidadesDeMedida.aspx" />
+    <Content Include="Formas\Catalogos\wfUsuarios.aspx" />
     <Content Include="Formas\Compras\wfCotizaciones.aspx" />
     <Content Include="Formas\Compras\wfCotizacionesAdd.aspx" />
     <Content Include="Formas\Compras\wfFacturaCompararPreciosCatalogo.aspx" />
@@ -835,6 +836,7 @@
     <Content Include="Formas\Compras\wfPedidos.aspx" />
     <Content Include="Formas\frmSelectorEjercicio.aspx" />
     <Content Include="Formas\Inventarios\wfExistencias.aspx" />
+    <Content Include="Formas\Inventarios\wfInventarioFisico.aspx" />
     <Content Include="Formas\Inventarios\wfKardex.aspx" />
     <Content Include="Formas\Inventarios\wfStocksMinimos.aspx" />
     <Content Include="Formas\TEST.aspx" />
@@ -843,9 +845,14 @@
     <Content Include="Formas\Ventas\VentasRecetas.aspx" />
     <Content Include="Formas\Ventas\wfConsultarSalidas.aspx" />
     <Content Include="Formas\Ventas\wfConsultarVentas.aspx" />
+    <Content Include="Formas\Ventas\wfHoneywell.aspx" />
+    <Content Include="Formas\Ventas\wfListaSalidasGen.aspx" />
     <Content Include="Formas\Ventas\wfRecetas.aspx" />
     <Content Include="Formas\Ventas\wfSalidasGenericas.aspx" />
     <Content Include="Formas\Ventas\wfVentas.aspx" />
+    <Content Include="Formas\Ventas\wfVentasByLector.aspx" />
+    <Content Include="Formas\Ventas\wfVentasCancelaciones.aspx" />
+    <Content Include="Formas\Ventas\wfVentasCancelacionesAdd.aspx" />
     <Content Include="Formas\Ventas\wfVentasDia.aspx" />
     <Content Include="Global.asax" />
     <Content Include="img\cge.jpg" />
@@ -928,6 +935,7 @@
   <ItemGroup>
     <Compile Include="AbrirDocto.aspx.cs">
       <DependentUpon>AbrirDocto.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="AbrirDocto.aspx.designer.cs">
       <DependentUpon>AbrirDocto.aspx</DependentUpon>
@@ -1040,6 +1048,13 @@
     <Compile Include="Formas\Catalogos\wfUnidadesDeMedida.aspx.designer.cs">
       <DependentUpon>wfUnidadesDeMedida.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Formas\Catalogos\wfUsuarios.aspx.cs">
+      <DependentUpon>wfUsuarios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\wfUsuarios.aspx.designer.cs">
+      <DependentUpon>wfUsuarios.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Formas\Compras\wfCotizaciones.aspx.cs">
       <DependentUpon>wfCotizaciones.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1103,6 +1118,13 @@
     <Compile Include="Formas\Inventarios\wfExistencias.aspx.designer.cs">
       <DependentUpon>wfExistencias.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Formas\Inventarios\wfInventarioFisico.aspx.cs">
+      <DependentUpon>wfInventarioFisico.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formas\Inventarios\wfInventarioFisico.aspx.designer.cs">
+      <DependentUpon>wfInventarioFisico.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Formas\Inventarios\wfKardex.aspx.cs">
       <DependentUpon>wfKardex.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1145,6 +1167,20 @@
     <Compile Include="Formas\Ventas\wfConsultarVentas.aspx.designer.cs">
       <DependentUpon>wfConsultarVentas.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Formas\Ventas\wfHoneywell.aspx.cs">
+      <DependentUpon>wfHoneywell.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formas\Ventas\wfHoneywell.aspx.designer.cs">
+      <DependentUpon>wfHoneywell.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\wfListaSalidasGen.aspx.cs">
+      <DependentUpon>wfListaSalidasGen.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formas\Ventas\wfListaSalidasGen.aspx.designer.cs">
+      <DependentUpon>wfListaSalidasGen.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Formas\Ventas\wfRecetas.aspx.cs">
       <DependentUpon>wfRecetas.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1165,6 +1201,27 @@
     </Compile>
     <Compile Include="Formas\Ventas\wfVentas.aspx.designer.cs">
       <DependentUpon>wfVentas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\wfVentasByLector.aspx.cs">
+      <DependentUpon>wfVentasByLector.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formas\Ventas\wfVentasByLector.aspx.designer.cs">
+      <DependentUpon>wfVentasByLector.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\wfVentasCancelaciones.aspx.cs">
+      <DependentUpon>wfVentasCancelaciones.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formas\Ventas\wfVentasCancelaciones.aspx.designer.cs">
+      <DependentUpon>wfVentasCancelaciones.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\wfVentasCancelacionesAdd.aspx.cs">
+      <DependentUpon>wfVentasCancelacionesAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formas\Ventas\wfVentasCancelacionesAdd.aspx.designer.cs">
+      <DependentUpon>wfVentasCancelacionesAdd.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formas\Ventas\wfVentasDia.aspx.cs">
       <DependentUpon>wfVentasDia.aspx</DependentUpon>

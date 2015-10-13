@@ -41,17 +41,29 @@ namespace SIP
 
             var user = uow.UsuarioBusinessLogic.Get(u => u.Login == strlogin && u.Password == strContrasena).FirstOrDefault(u => u.Login == strlogin && u.Password == strContrasena);
 
+
+
             if (user != null)
             {
-                FormsAuthentication.RedirectFromLoginPage(user.Login, false);
-                Session.Timeout = 60;
-                Session["IsAuthenticated"] = true;
-                Session["NombreUsuario"] = user.Nombre;
-                Session["Login"] = user.Login;
-                Session["IdUser"] = user.Id.ToString();
 
-                //EL USUARIO VA A SER UNO DE ESTOS DOS GRANDES TIPOS: SEFIPLAN O DEPENDENCIA
-                Response.Redirect("~/Formas/Catalogos/Inicio.aspx");
+                if (user.Activo == true)
+                {
+                    FormsAuthentication.RedirectFromLoginPage(user.Login, false);
+                    Session.Timeout = 60;
+                    Session["IsAuthenticated"] = true;
+                    Session["NombreUsuario"] = user.Nombre;
+                    Session["Login"] = user.Login;
+                    Session["IdUser"] = user.Id.ToString();
+
+                    //EL USUARIO VA A SER UNO DE ESTOS DOS GRANDES TIPOS: SEFIPLAN O DEPENDENCIA
+                    Response.Redirect("~/Formas/Catalogos/Inicio.aspx");
+                }
+                else
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "script", "fnc_ShowMensaje()", true);
+                    lblMensajes.Text = "El Usuario " + user.Login + " ha sido dado de baja del sistema";
+                    lblMensajes.CssClass = "error";
+                }
 
             }
 

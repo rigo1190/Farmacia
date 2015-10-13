@@ -17,6 +17,14 @@ namespace SIP.Formas.Compras
         protected void Page_Load(object sender, EventArgs e)
         {
             uow = new UnitOfWork(Session["IdUser"].ToString());
+            
+            
+            //bloqueo del contenido segun tipo de usuario
+            int iduser = int.Parse(Session["IdUser"].ToString());
+            Usuario usuario = uow.UsuarioBusinessLogic.GetByID(iduser);
+            if (usuario.Nivel != 1)
+                divMain.Style.Add("display", "none");
+            //endBloqueo
 
             if (!IsPostBack)
             {

@@ -8,8 +8,8 @@
 
         var izq = (screen.width - 1000) / 2
         var sup = (screen.height - 600) / 2
-        var param = "123";
-        var argumentos = "?c=" + 123 + "&p=" + param;
+        var param = "125";
+        var argumentos = "?c=" + 125 + "&p=" + param;
 
         url = $("#<%= _URLVisor.ClientID %>").val();
 
@@ -24,18 +24,16 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-<div class="container">
+<div class="container" id="divMain" runat="server">
 
 
    <div class="panel panel-success">
         <div class="panel-heading">
 
             <div class="row">
-                <div class="col-md-4"><h3 class="panel-title">Kardex...</h3></div>
-                <div class="col-md-4">.</div>
-                <div class="col-md-4"> 
-                    <asp:LinkButton ID="linkReporte" runat="server" PostBackUrl="#" OnClientClick="fnc_verReporte()">Ver reporte</asp:LinkButton>  
-                </div>                
+                <div class="col-md-4"><h3 class="panel-title">Kardex de productos</h3></div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4"></div>                
              </div>
         </div>
     </div>
@@ -47,22 +45,24 @@
         <div id="divArticulos" class="row" runat ="server">
             
 
-
-
-
-            <div class="bs-example">
-            <div class="panel-group" id="accordion" runat="server">
-
-                
-
+            <div class="col-md-8">
+                <div class="form-group">
+                    <a>Seleccione el producto</a> 
+                    <asp:DropDownList ID="ddlArticulo" CssClass="form-control" runat="server"></asp:DropDownList>                                
+                </div>
             </div>
+
+            <div class="col-md-4">
+                <div class="form-group"> <br />
+                        <asp:Button  CssClass="btn btn-default" Text="Ver Reporte" ID="btnMostrar" runat="server" OnClick="btnMostrar_Click" AutoPostBack="false"/>            
+                </div>
             </div>
 
 
         </div>
 
 
-       
+    
 
     </div>
 </asp:Content>

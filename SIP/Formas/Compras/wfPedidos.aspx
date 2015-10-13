@@ -2,7 +2,18 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
  
+     <script type="text/javascript">
 
+
+
+         function fnc_Confirmar() {
+             return confirm("¿Está seguro de generar los pedidos?");
+         }
+
+
+
+
+    </script>
 
 </asp:Content>
 
@@ -11,7 +22,7 @@
  
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="container">
+<div class="container" id="divMain" runat="server">
     
  
 
@@ -77,7 +88,7 @@
 
                 <div class="form-group">
                     <br />
-                        <asp:Button ID="btnGenerar" runat="server" Text="Generar Pedidos" CssClass="btn btn-primary" OnClick="btnGenerar_Click" AutoPostBack="false" />
+                        <asp:Button ID="btnGenerar" runat="server" Text="Generar Pedidos" CssClass="btn btn-primary" OnClick="btnGenerar_Click" OnClientClick="return fnc_Confirmar()" AutoPostBack="false" />
                 </div>
             </div>
 

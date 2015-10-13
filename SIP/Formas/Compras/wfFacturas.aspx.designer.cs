@@ -13,6 +13,15 @@ namespace SIP.Formas.Compras {
     public partial class wfFacturas {
         
         /// <summary>
+        /// divMain control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divMain;
+        
+        /// <summary>
         /// divDatos control.
         /// </summary>
         /// <remarks>
@@ -20,6 +29,24 @@ namespace SIP.Formas.Compras {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divDatos;
+        
+        /// <summary>
+        /// linkRPTConcentrado control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton linkRPTConcentrado;
+        
+        /// <summary>
+        /// linkRPTdetallado control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton linkRPTdetallado;
         
         /// <summary>
         /// divBtnNuevo control.

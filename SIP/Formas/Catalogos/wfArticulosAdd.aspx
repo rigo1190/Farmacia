@@ -19,7 +19,7 @@
 
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-<div class="container">
+<div class="container" id="divMain" runat="server">
 
     <div class="panel-footer alert alert-success" id="divMsgSuccess" style="display:none" runat="server">
                 <asp:Label ID="lblMensajeSuccess" runat="server" Text=""></asp:Label>
@@ -69,13 +69,13 @@
 
                     <asp:TemplateField HeaderText="$ Compra + IVA" ItemStyle-CssClass="col-md-1">
                         <ItemTemplate>
-                            <asp:Label ID="lblPresentacion" runat="server" Text='<%# Bind("PrecioCompraIVA","{0:C2}") %>'></asp:Label>
+                            <asp:Label ID="lblPrecionCompra" runat="server" Text='<%# Bind("PrecioCompraIVA","{0:C2}") %>'></asp:Label>
                         </ItemTemplate>                        
                     </asp:TemplateField>
 
                     <asp:TemplateField HeaderText="$ Venta + IVA" ItemStyle-CssClass="col-md-1">
                         <ItemTemplate>
-                            <asp:Label ID="lblPresentacion" runat="server" Text='<%# Bind("PrecioVentaIVA","{0:C2}") %>'></asp:Label>
+                            <asp:Label ID="lblPrecioVenta" runat="server" Text='<%# Bind("PrecioVentaIVA","{0:C2}") %>'></asp:Label>
                         </ItemTemplate>                        
                     </asp:TemplateField>
 
@@ -132,7 +132,7 @@
                 <div class="form-group"">                    
                     <label for="Clave">Código</label>
                     <input type="text" class="input-sm required form-control" id="txtClave" runat="server" style="text-align: left; width:200px; align-items:flex-start" />
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtClave" ErrorMessage="El campo clave es obligatorio" ValidationGroup="validateX">*</asp:RequiredFieldValidator>                     
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtClave" ErrorMessage="El campo Código es obligatorio" ValidationGroup="validateX">*</asp:RequiredFieldValidator>                     
                 </div>
 
                 <div class="form-group">
@@ -227,9 +227,16 @@
     </div>
 
     <div class="col-md-4">
-                <div class="form-group"">                    
+                <div class="form-group" runat="server" id="DIVCantidad" >                    
                     <label for="Cantidad">Cantidad</label>
                     <input type="text" class="input-sm required form-control campoNumerico" id="txtCantidad" runat="server" style="text-align: left; width:200px; align-items:flex-start" disabled="disabled" />                    
+                </div>
+
+                <div class="form-group" runat="server" id="DIVgrupoPS">
+                    <label for="GrupoPS">Grupo</label>
+                    <div>
+                        <asp:DropDownList ID="ddlGrupo" CssClass="form-control" runat="server"></asp:DropDownList>
+                </div>
                 </div>
 
 

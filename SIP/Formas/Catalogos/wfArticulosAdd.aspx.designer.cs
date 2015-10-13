@@ -13,6 +13,15 @@ namespace SIP.Formas.Catalogos {
     public partial class wfArticulosAdd {
         
         /// <summary>
+        /// divMain control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divMain;
+        
+        /// <summary>
         /// divMsgSuccess control.
         /// </summary>
         /// <remarks>
@@ -247,6 +256,15 @@ namespace SIP.Formas.Catalogos {
         protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox chkEsMedicamento;
         
         /// <summary>
+        /// DIVCantidad control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DIVCantidad;
+        
+        /// <summary>
         /// txtCantidad control.
         /// </summary>
         /// <remarks>
@@ -254,6 +272,24 @@ namespace SIP.Formas.Catalogos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText txtCantidad;
+        
+        /// <summary>
+        /// DIVgrupoPS control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DIVgrupoPS;
+        
+        /// <summary>
+        /// ddlGrupo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlGrupo;
         
         /// <summary>
         /// txtStockMinimo control.

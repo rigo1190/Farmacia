@@ -14,10 +14,16 @@ namespace SIP.Formas.Inventarios
     public partial class wfStocksMinimos : System.Web.UI.Page
     {
         private UnitOfWork uow;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             uow = new UnitOfWork(Session["IdUser"].ToString());
-
+            //bloqueo del contenido segun tipo de usuario
+            int iduser = int.Parse(Session["IdUser"].ToString());
+            Usuario usuario = uow.UsuarioBusinessLogic.GetByID(iduser);
+            if (usuario.Nivel != 1)
+                divMain.Style.Add("display", "none");
+            //endBloqueo
 
             cargarGruposArticulos();
             _URLVisor.Value = ResolveClientUrl("~/rpts/wfVerReporte.aspx");
@@ -137,25 +143,25 @@ namespace SIP.Formas.Inventarios
             trHead.Attributes.Add("align", "center");
 
 
-            thOne.InnerText = "Clave";
-            thTwo.InnerText = "Nombre";
-            thThree.InnerText = "Unidad de Medida";
-            thFour.InnerText = "Presentación";
-            thFive.InnerText = "Stock Mínimo";
-            thSix.InnerText = "Existencia";
+            thOne.InnerText = "Cons.";
+            thTwo.InnerText = "Código";
+            thThree.InnerText = "Nombre";
+            thFour.InnerText = "Stock Mínimo";
+            thFive.InnerText = "Existencia";
+            thSix.InnerText = "";
 
             trHead.Controls.Add(thOne);
             trHead.Controls.Add(thTwo);
             trHead.Controls.Add(thThree);
             trHead.Controls.Add(thFour);
             trHead.Controls.Add(thFive);
-            trHead.Controls.Add(thSix);
+            //trHead.Controls.Add(thSix);
             tabla.Controls.Add(trHead);
 
-
+            int consecutivo=0;
             foreach (Articulos item in detalle)
             {
-
+                consecutivo++;
                 System.Web.UI.HtmlControls.HtmlGenericControl tr = new System.Web.UI.HtmlControls.HtmlGenericControl("TR");
                 System.Web.UI.HtmlControls.HtmlGenericControl tdOne = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
                 System.Web.UI.HtmlControls.HtmlGenericControl tdTwo = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
@@ -164,13 +170,13 @@ namespace SIP.Formas.Inventarios
                 System.Web.UI.HtmlControls.HtmlGenericControl tdFive = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
                 System.Web.UI.HtmlControls.HtmlGenericControl tdSix = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
 
-                tdOne.Attributes.Add("align", "left");
-                tdOne.InnerText = item.Clave;
-                tdTwo.InnerText = item.Nombre;
-                tdThree.InnerText = item.UnidadesDeMedida.Nombre;
-                tdFour.InnerText = item.Presentacion.Nombre;
-                tdFive.InnerText = item.StockMinimo.ToString();
-                tdSix.InnerText = item.CantidadEnAlmacen.ToString();
+                //tdOne.Attributes.Add("align", "left");
+                tdOne.InnerText = consecutivo.ToString() ;
+                tdTwo.InnerText = item.Clave;
+                tdThree.InnerText = item.NombreCompleto;
+                tdFour.InnerText = item.StockMinimo.ToString();
+                tdFive.InnerText = item.CantidadEnAlmacen.ToString();
+                tdSix.InnerText = "";
 
 
 
@@ -179,7 +185,7 @@ namespace SIP.Formas.Inventarios
                 tr.Controls.Add(tdThree);
                 tr.Controls.Add(tdFour);
                 tr.Controls.Add(tdFive);
-                tr.Controls.Add(tdSix);
+                //tr.Controls.Add(tdSix);
 
                 tabla.Controls.Add(tr);
             }

@@ -17,6 +17,13 @@ namespace SIP.Formas.Compras
         {
             uow = new UnitOfWork(Session["IdUser"].ToString());
 
+            //bloqueo del contenido segun tipo de usuario
+            int iduser = int.Parse(Session["IdUser"].ToString());
+            Usuario usuario = uow.UsuarioBusinessLogic.GetByID(iduser);
+            if (usuario.Nivel != 1)
+                divMain.Style.Add("display", "none");
+            //endBloqueo
+
             if (!IsPostBack)
             {
                 BindGrid();
@@ -74,6 +81,18 @@ namespace SIP.Formas.Compras
         protected void btnRegresar_Click(object sender, EventArgs e)
         {
             divModificar.Style.Add("display", "none");
+        }
+
+        protected void linTerminar_Click(object sender, EventArgs e)
+        {
+            int idFactura = int.Parse(Session["XFacturaId"].ToString());
+
+            FacturasAlmacen factura = uow.FacturasAlmacenBL.GetByID(idFactura);
+            factura.Status = 2;
+            uow.FacturasAlmacenBL.Update(factura);
+            uow.SaveChanges();
+            Response.Redirect("wfFacturas.aspx");
+
         }
 
 

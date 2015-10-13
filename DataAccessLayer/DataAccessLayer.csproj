@@ -77,6 +77,7 @@
     <Compile Include="Models\FPSfactores.cs" />
     <Compile Include="Models\Generica.cs" />
     <Compile Include="Models\GruposPS.cs" />
+    <Compile Include="Models\InventarioFisico.cs" />
     <Compile Include="Models\InventarioInicial.cs" />
     <Compile Include="Models\InventarioInicialArticulos.cs" />
     <Compile Include="Models\InventarioInicialArticulosCostos.cs" />

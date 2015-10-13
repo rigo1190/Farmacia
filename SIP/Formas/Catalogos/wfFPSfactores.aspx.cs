@@ -17,6 +17,13 @@ namespace SIP.Formas.Catalogos
         {
             uow = new UnitOfWork(Session["IdUser"].ToString());
 
+            //bloqueo del contenido segun tipo de usuario
+            int iduser = int.Parse(Session["IdUser"].ToString());
+            Usuario usuario = uow.UsuarioBusinessLogic.GetByID(iduser);
+            if (usuario.Nivel != 1)
+                divMain.Style.Add("display", "none");
+            //endBloqueo
+
             if (!IsPostBack)
             {
                 BindGrid();

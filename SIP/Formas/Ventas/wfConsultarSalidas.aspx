@@ -89,15 +89,12 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-    <div class="container">
-        <div class="page-header"">
-             <h3>Consultar Salidas</h3>
-        </div>
+    <div class="container" id="divMain" runat="server">
 
         <div class="panel panel-success">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                   Filtros para consultar Salidas
+                   Consultar Salidas
                 </h3>
             </div>
         

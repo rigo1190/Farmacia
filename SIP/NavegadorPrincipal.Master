@@ -85,7 +85,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                   </button>
-                  <a class="navbar-brand" href="#">Sistema de Inventarios</a>                 
+                  <a class="navbar-brand" href="<%=ResolveClientUrl("~/Formas/Catalogos/Inicio.aspx") %>">Sistema de Inventarios</a>                 
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -114,12 +114,12 @@
                           <li runat="server" id="menuVentas" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-fullscreen"></span> Ventas<b class="caret"></b></a>
                              <ul class="dropdown-menu">
                                   
-                                  <%--<li><a href="<%=ResolveClientUrl("~/Formas/Ventas/VentasRecetas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Ventas por Recetas</a></li> 
-                                 <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfVentas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Ventas</a></li>                                --%>
-                                 <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfVentasDia.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Ventas Día</a></li>
-                                  <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfSalidasGenericas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Otras Salidas</a></li>
+                                  <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfVentasDia.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Ventas Día</a></li>
+                                  <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfListaSalidasGen.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Otras Salidas</a></li>
                                  
-                                  
+                                  <li>-_-</li>
+                                 <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfVentasCancelaciones.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Cancelar Ventas</a></li>  
+                                 
                                                                   
                              </ul>
                           </li>
@@ -130,7 +130,7 @@
                                  <li><a href="<%=ResolveClientUrl("~/Formas/Inventarios/wfExistencias.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Existencias</a></li>
                                  <li><a href="<%=ResolveClientUrl("~/Formas/Inventarios/wfStocksMinimos.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Stocks Mínimos</a></li>
                                  <li><a href="<%=ResolveClientUrl("~/Formas/Inventarios/wfKardex.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Kardex</a></li>
-                                 
+                                 <li><a href="<%=ResolveClientUrl("~/Formas/Inventarios/wfInventarioFisico.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Inventario Físico</a></li>
                              </ul>
                           </li>
 
@@ -148,15 +148,14 @@
                                 <li><a href="<%=ResolveClientUrl( "~/Formas/Catalogos/wfLaboratorios.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Laboratorios</a></li>                                  
                                 <li>-_-</li>
                                 <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfProveedores.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Proveedores</a></li>  
-                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfCatPacientes.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Pacientes</a></li>  
+                                <li><a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfUsuarios.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Usuarios</a></li>  
+                                
                                                               
                             </ul>
                         </li>                                                 
                         
                          <li runat="server" id="menuInformes" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-th-list"></span> Informes<b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><span class="glyphicon glyphicon-minus"></span> Multicriterio de Compras</li>     
-                                <li>-_-</li>
                                 <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfConsultarVentas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Multicriterio de Ventas</a></li>
                                 <li><a href="<%=ResolveClientUrl("~/Formas/Ventas/wfConsultarSalidas.aspx") %>"><span class="glyphicon glyphicon-minus"></span> Multicriterio de Salidas</a></li>
                                                             

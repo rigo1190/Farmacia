@@ -32,9 +32,16 @@ namespace DataAccessLayer.Models
 
         public string FolioCadena { get; set; }
 
+        public string ObservacionCancelacion { get; set; }
+        public DateTime FechaCancelacion { get; set; }
+        public string UsuarioCancelacion { get; set; }
+
+        public int? UsuarioId { get; set; }
+
         public virtual Clientes Cliente { get; set; }
         public virtual Recetas Receta { get; set; }
 
+        public virtual Usuario Usuario { get; set; }
          
         public virtual ICollection<VentasArticulos> detalleVentas { get; set; }
 

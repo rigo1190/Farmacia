@@ -1,4 +1,6 @@
 ﻿using BusinessLogicLayer;
+using DataAccessLayer.Models;
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -26,6 +28,14 @@ namespace SIP.Formas.Ventas
 
                 BindGridVentas(list);
 
+
+                int idUsuario = int.Parse(Session["IdUser"].ToString());
+                Usuario usuario = uow.UsuarioBusinessLogic.GetByID(idUsuario);
+
+                if (!usuario.EsAdmin)
+                {
+                    divConsultarOtrasFechas.Style.Add("display", "none");
+                }
                 
             }
         }
@@ -33,49 +43,17 @@ namespace SIP.Formas.Ventas
         private string ArmarFiltro()
         {
             string filtro = string.Empty;
-            bool vacio = true;
+            
 
             DateTime fecha1 = Convert.ToDateTime(txtFechaFiltro.Value);
             string fecha = fecha1.ToString("yyyy-MM-dd") + " 00:00:00";
 
 
-            if (chkRecetas.Checked)
-            {
-
-               if (vacio)
-                {
-                    filtro += "(Ventas.RecetaId is not null)";
-                    vacio = false;
-                }
-                else
-                   filtro += " AND (Ventas.RecetaId is not null)";
-            }
 
 
-            if (chkCat.Checked)
-            {
-                if (vacio)
-                {
-                    filtro += "(Ventas.RecetaId is null)";
-                    vacio = false;
-                }
-                else
-                    filtro += "AND (Ventas.RecetaId is null)";
-            }
-
-
-            if (chkRecetas.Checked && chkCat.Checked)
-                filtro = string.Empty;
-
-
-            if (filtro.Equals(string.Empty))
-                filtro += "(Ventas.Fecha = '"+ fecha + "')";
-            else
-                filtro += "AND (Ventas.Fecha = '" + fecha + "')";
+            filtro = "WHERE ventas.status = 1  AND Ventas.Fecha = '" + fecha + "'";
             
-            //Se agrega la Clausula WHERE a el filtro
-            if (!filtro.Equals(string.Empty))
-                filtro = "WHERE " + filtro;
+            
 
 
             return filtro;
@@ -87,14 +65,21 @@ namespace SIP.Formas.Ventas
         {
             List<DataAccessLayer.Models.Ventas> list = new List<DataAccessLayer.Models.Ventas>();
             //string connString = @"data source=RIGO-PC\SQLEXPRESS;user id=sa;password=081995;initial catalog=BD3SoftInventarios;Persist Security Info=true";//System.Configuration.ConfigurationManager.ConnectionStrings[0].ConnectionString;
-            string connString = System.Configuration.ConfigurationManager.ConnectionStrings[2].ConnectionString;
+            //string connString = System.Configuration.ConfigurationManager.ConnectionStrings[2].ConnectionString;
             DataAccessLayer.Models.Ventas venta;
-            SqlConnection conn = null;
+            //SqlConnection conn = null;
             string ids = string.Empty; ;
+
+
+            SqlConnection conn = new SqlConnection(uow.Contexto.Database.Connection.ConnectionString.ToString());
 
             try
             {
-                conn = new SqlConnection(connString);
+                //conn = new SqlConnection(connString);
+
+                
+
+
                 conn.Open();
 
                 SqlCommand cmd = conn.CreateCommand();//new SqlCommand();
@@ -170,9 +155,25 @@ namespace SIP.Formas.Ventas
 
                 DataAccessLayer.Models.Ventas obj = uow.VentasBL.GetByID(id);
 
-                lblTipoVenta.Text = obj.RecetaId != null ? "POR RECETA" : "POR CATÁLOGO";
+                lblTipoVenta.Text = obj.RecetaId != null ? "POR RECETA" : "VENTA DIRECTA";
+
+
+                ImageButton imgBut = (ImageButton)e.Row.FindControl("imgRPT");
+                if (imgBut != null)
+                    imgBut.Attributes["onclick"] = "fnc_verVentaX(" + id + ");return false;";
+
 
             }
+        }
+
+        protected void imgRPT_Click(object sender, ImageClickEventArgs e)
+        {
+
+        }
+
+        protected void btnVentaCodeBar_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("wfVentasByLector.aspx");
         }
 
 

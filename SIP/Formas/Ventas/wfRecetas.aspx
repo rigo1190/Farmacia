@@ -198,51 +198,51 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
 
-    <div class="container">
-        <div class="page-header"">
-             <h3>Recetas</h3>
-        </div>
+    <div class="container" id="divMain" runat="server">
 
         <div class="panel panel-success">
             <div class="panel-heading">
-                <h3 class="panel-title">
-                    Elaboración de Recetas
-                </h3>
+                <div class="row">
+
+                    <div class="col-md-10">
+                        <h3 class="panel-title">
+                            Recetas
+                        </h3>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="<%=ResolveClientUrl("~/Formas/Catalogos/wfCatPacientes.aspx") %>">Catálogo de Pacientes</a>
+                    </div>
+
+
+                </div>
+                
             </div>
+
+            
+
+            
 
             <div class="panel-body">
                 <div id="divEncabezado" runat="server">
                      <div class="row">
                         <div class="panel panel-default">
-                            <div class="panel-heading">
-                                Listado de Recetas
-                            </div>
+                            
                             <div class="panel-body">
                                 <div class="row">  
-                                    <div class="form-group">  
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <label>Fecha recetas:</label>
-                                                </td>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <input  class="form-control datepicker" runat="server" id="txtFechaFiltro"/>
-                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                     <div>
-                                                        <asp:Button ID="btnConsultar" runat="server" Text="Consultar" OnClick="btnConsultar_Click" CssClass="btn btn-default" />
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        
-                                        </table>
+
+                                    <div class="col-md-4">
+                                        <div id="divBtnNuevo" runat="server">
+                                            <button type="button" onclick="fnc_Nuevo();" id="btnNuevo" class="btn btn-primary" value="Nuevo">Nuevo</button>
+                                        </div>
                                     </div>
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-6"></div>
+
+
+
                                 </div>
 
-
+                                
 
                                 <div style="height:330px; overflow:scroll">
                                      <asp:GridView Width="1250px" OnPageIndexChanging="gridRecetas_PageIndexChanging" OnRowDataBound="gridRecetas_RowDataBound" PageSize="10" Height="25px" EnablePersistedSelection="true" ShowHeaderWhenEmpty="true" ID="gridRecetas" DataKeyNames="Id" AutoGenerateColumns="False" runat="server">
@@ -311,9 +311,28 @@
                                     </asp:GridView>
                                 </div>
 
-                                <div id="divBtnNuevo" runat="server">
-                                    <button type="button" onclick="fnc_Nuevo();" id="btnNuevo" class="btn btn-primary" value="Nuevo">Nuevo</button>
-                                </div>
+                                
+                                <table>
+                                            <tr>                                                
+                                                <td>
+                                                    <label>Fecha recetas:</label>
+                                                </td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <input  class="form-control datepicker" runat="server" id="txtFechaFiltro"/>
+                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                     <div>
+                                                        <asp:Button ID="btnConsultar" runat="server" Text="Consultar" OnClick="btnConsultar_Click" CssClass="btn btn-default" />
+                                                    </div>
+                                                </td>
+                                                
+                                            </tr>
+                                        
+                                        </table>
+
 
                             </div>
                         </div>
@@ -332,6 +351,7 @@
                                 <div class="col-md-1">
                                     <button type="button" id="btnImprimir0" onclick="fnc_MostrarReceta();"><span class="glyphicon glyphicon-print"></span></button>
                                 </div>
+                                
                             </div>
                         </div>
                         <div class="panel-body">
@@ -434,7 +454,7 @@
                                         <Columns>
                                         <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderText="Eliminar">
                                             <ItemTemplate>
-                                                <asp:ImageButton  ID="imgBtnEliminarDetalle" ToolTip="Eliminar" runat="server" ImageUrl="~/img/close.png" OnClick="imgBtnEliminarDetalle_Click" OnClientClick="return fnc_MensajeDetalle();"/>
+                                                <asp:ImageButton  ID="imgBtnEliminarDetalle" ToolTip="Eliminar" runat="server" ImageUrl="~/img/close.png" OnClick="imgBtnEliminarDetalle_Click" />
                                             </ItemTemplate>
                                             <HeaderStyle BackColor="#EEEEEE" />
                                             <ItemStyle HorizontalAlign="right" VerticalAlign="Middle" Width="50px" BackColor="#EEEEEE" />
@@ -446,7 +466,7 @@
                                             </ItemTemplate>
                                         </asp:TemplateField>
 
-                                        <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderText="Cantidad" SortExpression="Orden">
+                                        <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderText="Aplicar" SortExpression="Orden">
                                             <ItemTemplate>
                                                 <%# DataBinder.Eval(Container.DataItem, "CantidadATomar") %>
                                             </ItemTemplate>
@@ -465,6 +485,14 @@
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" />
                                         </asp:TemplateField>
+
+                                        <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" ItemStyle-Font-Size="Smaller" HeaderStyle-HorizontalAlign="Center" HeaderText="Observaciones" SortExpression="NOAplica">
+                                            <ItemTemplate>
+                                                <%# DataBinder.Eval(Container.DataItem, "Observaciones") %>
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" />
+                                        </asp:TemplateField>
+
                                     </Columns>
                                         <PagerSettings FirstPageText="Primera" LastPageText="Ultima" Mode="NextPreviousFirstLast" NextPageText="Siguiente" PreviousPageText="Anterior" />
                                 </asp:GridView>
@@ -522,8 +550,11 @@
                                 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <asp:Button OnClick="btnGuardarDetalle_Click" ID="btnGuardarDetalle" OnClientClick="return fnc_ValidarDetalle();" runat="server" Text="Agregar/Guardar" CssClass="btn btn-primary" ></asp:Button>
-                                        <button type="button" onclick="fnc_Cancelar();" class="btn btn-default">Cancelar/Regresar</button> 
+                                        <asp:Button OnClick="btnGuardarDetalle_Click" ID="btnGuardarDetalle" OnClientClick="return fnc_ValidarDetalle();" runat="server" Text="Agregar Producto" CssClass="btn btn-default" ></asp:Button>                                       
+                                         
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" onclick="fnc_Cancelar();" class="btn btn-primary">Terminar Receta</button> 
                                     </div>
                                 </div>
                                 

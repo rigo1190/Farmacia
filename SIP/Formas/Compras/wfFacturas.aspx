@@ -20,9 +20,31 @@
         window.open(url, 'pmgw', 'toolbar=no,status=no,scrollbars=yes,resizable=yes,directories=no,location=no,menubar=no,width=750,height=500,top=' + sup + ',left=' + izq);
     }
 
-   
+
+    function fnc_verReporteDos() {
+
+        var izq = (screen.width - 750) / 2
+        var sup = (screen.height - 600) / 2
+        var param = 112;
+
+        url = $("#<%= _URLVisor.ClientID %>").val();
+        var argumentos = "?c=" + 112 + "&p=" + param;
+        url += argumentos;
+        window.open(url, 'pmgw', 'toolbar=no,status=no,scrollbars=yes,resizable=yes,directories=no,location=no,menubar=no,width=750,height=500,top=' + sup + ',left=' + izq);
+    }
 
 
+    function fnc_verReporteTres() {
+
+        var izq = (screen.width - 750) / 2
+        var sup = (screen.height - 600) / 2
+        var param = 113;
+
+        url = $("#<%= _URLVisor.ClientID %>").val();
+        var argumentos = "?c=" + 113 + "&p=" + param;
+        url += argumentos;
+        window.open(url, 'pmgw', 'toolbar=no,status=no,scrollbars=yes,resizable=yes,directories=no,location=no,menubar=no,width=750,height=500,top=' + sup + ',left=' + izq);
+    }
 
     </script>
 
@@ -30,12 +52,26 @@
 
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-   <div class="container">
+   <div class="container" id="divMain" runat="server">
 
     
      <div id="divDatos" runat="server" class="panel panel-success">
         <div class="panel-heading">
-            <h3 class="panel-title">Facturas</h3>
+            
+        
+            <div class="row">
+                <div class="col-md-4"><h3 class="panel-title">Facturas</h3></div>
+                <div class="col-md-2">.</div>
+                <div class="col-md-2">.</div>                
+                <div class="col-md-2"> 
+                    <asp:LinkButton ID="linkRPTConcentrado" runat="server" PostBackUrl="#" OnClientClick="fnc_verReporteDos()">Reporte Concentrado</asp:LinkButton>  
+                </div>                
+                <div class="col-md-2"> 
+                    <asp:LinkButton ID="linkRPTdetallado" runat="server" PostBackUrl="#" OnClientClick="fnc_verReporteTres()">Reporte Detallado</asp:LinkButton>  
+                </div>                
+             </div>
+        
+        
         </div>
 
         <div id="divBtnNuevo" runat="server">

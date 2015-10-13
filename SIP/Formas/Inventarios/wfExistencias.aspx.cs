@@ -9,6 +9,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using System.Data;
+using System.Data.SqlClient;
+
 
 namespace SIP.Formas.Inventarios
 {
@@ -18,12 +21,35 @@ namespace SIP.Formas.Inventarios
         protected void Page_Load(object sender, EventArgs e)
         {
             uow = new UnitOfWork(Session["IdUser"].ToString());
-
+            //bloqueo del contenido segun tipo de usuario
+            int iduser = int.Parse(Session["IdUser"].ToString());
+            Usuario usuario = uow.UsuarioBusinessLogic.GetByID(iduser);
+            if (usuario.Nivel != 1)
+                divMain.Style.Add("display", "none");
+            //endBloqueo
             
                 cargarGruposArticulos(); 
                 _URLVisor.Value = ResolveClientUrl("~/rpts/wfVerReporte.aspx");
-             
-            
+
+                if (!IsPostBack)
+                {
+                    SqlConnection sqlConnection1 = new SqlConnection(uow.Contexto.Database.Connection.ConnectionString.ToString());
+                    SqlCommand cmd = new SqlCommand();
+                    SqlDataReader reader;
+
+                    cmd.CommandText = "sp_RPTconcentradoEntradasSalidas";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = sqlConnection1;
+
+                    //cmd.Parameters.Add("@usuario", usuario);
+                    //cmd.Parameters.Add("@contrato", contrato.Id);
+                    sqlConnection1.Open();
+
+                    reader = cmd.ExecuteReader();
+                    sqlConnection1.Close();
+
+                    uow = new UnitOfWork(Session["IdUser"].ToString());
+                }
         }
 
 
@@ -137,22 +163,23 @@ namespace SIP.Formas.Inventarios
             trHead.Attributes.Add("align", "center");
 
 
-            thOne.InnerText = "Clave";
-            thTwo.InnerText = "Nombre";
-            thThree.InnerText = "Unidad de Medida";
-            thFour.InnerText = "Presentación";
-            thFive.InnerText = "Existencia";
+            thOne.InnerText = "Cons.";
+            thTwo.InnerText = "Código";
+            thThree.InnerText = "Nombre";
+            thFour.InnerText = "Existencia";
+            thFive.InnerText = "";
 
             trHead.Controls.Add(thOne);
             trHead.Controls.Add(thTwo);
             trHead.Controls.Add(thThree);
             trHead.Controls.Add(thFour);
-            trHead.Controls.Add(thFive);
+            //trHead.Controls.Add(thFive);
             tabla.Controls.Add(trHead);
 
-
+            int consecutivo = 0;
             foreach (Articulos item in detalle)
             {
+                consecutivo++;
 
                 System.Web.UI.HtmlControls.HtmlGenericControl tr = new System.Web.UI.HtmlControls.HtmlGenericControl("TR");
                 System.Web.UI.HtmlControls.HtmlGenericControl tdOne = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
@@ -162,12 +189,12 @@ namespace SIP.Formas.Inventarios
                 System.Web.UI.HtmlControls.HtmlGenericControl tdFive = new System.Web.UI.HtmlControls.HtmlGenericControl("TD");
 
 
-                tdOne.Attributes.Add("align", "left");
-                tdOne.InnerText = item.Clave;
-                tdTwo.InnerText = item.Nombre;
-                tdThree.InnerText = item.UnidadesDeMedida.Nombre;
-                tdFour.InnerText = item.Presentacion.Nombre;
-                tdFive.InnerText = item.CantidadEnAlmacen.ToString();
+                //tdOne.Attributes.Add("align", "left");
+                tdOne.InnerText = consecutivo.ToString();
+                tdTwo.InnerText = item.Clave;
+                tdThree.InnerText = item.NombreCompleto;
+                tdFour.InnerText = item.CantidadEnAlmacen.ToString();
+                tdFive.InnerText = "";
 
 
 
@@ -175,10 +202,51 @@ namespace SIP.Formas.Inventarios
                 tr.Controls.Add(tdTwo);
                 tr.Controls.Add(tdThree);
                 tr.Controls.Add(tdFour);
-                tr.Controls.Add(tdFive);
+                //tr.Controls.Add(tdFive);
 
                 tabla.Controls.Add(tr);
             }
+        }
+
+        protected void linkConcentradoInputOutput_Click(object sender, EventArgs e)
+        {
+
+            SqlConnection sqlConnection1 = new SqlConnection(uow.Contexto.Database.Connection.ConnectionString.ToString());
+            SqlCommand cmd = new SqlCommand();
+            SqlDataReader reader;
+
+            SqlDataReader rs;
+            SqlCommand com2;
+            string sql;
+            try
+            {
+
+                cmd.CommandText = "sp_RPTconcentradoEntradasSalidas";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Connection = sqlConnection1;
+
+                //cmd.Parameters.Add("@articulo", producto);
+                sqlConnection1.Open();
+
+                reader = cmd.ExecuteReader();
+
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.Print(ex.Message);
+            }
+            finally
+            {
+
+                sqlConnection1.Close();
+            }
+
+
+
         }
 
     }

@@ -15,6 +15,10 @@
 
  
 
+        function fnc_Confirmar() {
+            return confirm("¿Está seguro de que los datos de la factura son los correctos?");
+        }
+
     
         function fncChecked() {
 
@@ -38,7 +42,7 @@
 
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-<div class="container">
+<div class="container" id="divMain" runat="server">
 
 
 
@@ -158,7 +162,7 @@
                 <br/>
                 <div class="form-group">
                     <div class="row"> 
-                        <div class="col-md-6"><asp:Button  CssClass="btn btn-primary" Text="Guardar" ID="btnGuardarFactura" runat="server" OnClick="btnGuardarFactura_Click" AutoPostBack="false" ValidationGroup="validaFactura"/></div>
+                        <div class="col-md-6"><asp:Button  CssClass="btn btn-primary" Text="Guardar" ID="btnGuardarFactura" runat="server" OnClick="btnGuardarFactura_Click" OnClientClick="return fnc_Confirmar()" AutoPostBack="false" ValidationGroup="validaFactura"/></div>
                         <div class="col-md-6"><asp:Button  CssClass="btn btn-default" Text="Cancelar" ID="btnRegresar" runat="server" OnClick="btnRegresar_Click" AutoPostBack="false" />                    </div>
                     </div>
                 </div>
@@ -180,7 +184,7 @@
 
                     <div class="col-md-2">
                         <div class="form-group"">                    
-                            <a>Precio</a>
+                            <a>Precio de Factura</a>
                             <input type="text" class="input-sm required form-control campoNumerico" id="txtPrecio" runat="server" style="text-align: left;  align-items:flex-start" />
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtPrecio" ErrorMessage="El campo Precio es obligatorio" ValidationGroup="validateX">*</asp:RequiredFieldValidator>                                                     
                         </div>

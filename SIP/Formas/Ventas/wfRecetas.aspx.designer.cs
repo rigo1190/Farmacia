@@ -22,6 +22,15 @@ namespace SIP.Formas.Ventas {
         protected global::System.Web.UI.ScriptManager ScriptManager1;
         
         /// <summary>
+        /// divMain control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divMain;
+        
+        /// <summary>
         /// divEncabezado control.
         /// </summary>
         /// <remarks>
@@ -29,6 +38,24 @@ namespace SIP.Formas.Ventas {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divEncabezado;
+        
+        /// <summary>
+        /// divBtnNuevo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBtnNuevo;
+        
+        /// <summary>
+        /// gridRecetas control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gridRecetas;
         
         /// <summary>
         /// txtFechaFiltro control.
@@ -47,24 +74,6 @@ namespace SIP.Formas.Ventas {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnConsultar;
-        
-        /// <summary>
-        /// gridRecetas control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridRecetas;
-        
-        /// <summary>
-        /// divBtnNuevo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBtnNuevo;
         
         /// <summary>
         /// divCaptura control.
@@ -292,16 +301,16 @@ namespace SIP.Formas.Ventas {
         protected global::System.Web.UI.WebControls.Label lblMsgSuccess;
         
         /// <summary>
-        /// Control divImagenes.
+        /// divImagenes control.
         /// </summary>
         /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divImagenes;
         
         /// <summary>
-        /// Control _IDReceta.
+        /// _IDReceta control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.

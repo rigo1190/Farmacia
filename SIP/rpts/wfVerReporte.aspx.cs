@@ -44,7 +44,7 @@ namespace SIP.rpts
             switch (caller)
             {
                 case 1: //RECETA
-                    rdc.SetParameterValue("@RecetaID", primerArray[0]);
+                    rdc.SetParameterValue("receta", primerArray[0]);
                     break;
 
                 case 2: //VENTA
@@ -76,6 +76,39 @@ namespace SIP.rpts
                     rdc.SetParameterValue("@fechaFin", fechaFin.ToString("yyyy-MM-dd") + " 00:00:00");
                     break;
 
+
+                case 11://reporte de ventas x dia
+                    fechaInicio = Convert.ToDateTime(primerArray[0]);
+                    fechaFin = Convert.ToDateTime(primerArray[0]);
+
+                    rdc.RecordSelectionFormula = "{Ventas.Status} = 1 AND {Ventas.Fecha} in Date (" + fechaInicio.Year + ", " + fechaInicio.Month + ", " + fechaInicio.Day + ") to Date(" + fechaFin.Year + ", " + fechaFin.Month + ", " + fechaFin.Day + ")";
+                    rdc.SetParameterValue("fecha", fechaInicio);                  
+                    break;
+
+                case 12://reporte de ventas x dia x producto
+                    fechaInicio = Convert.ToDateTime(primerArray[0]);
+                    fechaFin = Convert.ToDateTime(primerArray[0]);
+
+                    rdc.RecordSelectionFormula = "{Ventas.Status} = 1 AND {Ventas.Fecha} in Date (" + fechaInicio.Year + ", " + fechaInicio.Month + ", " + fechaInicio.Day + ") to Date(" + fechaFin.Year + ", " + fechaFin.Month + ", " + fechaFin.Day + ")";
+                    rdc.SetParameterValue("fecha", fechaInicio);
+                    break;
+
+                case 13://reporte de venta X
+                    rdc.SetParameterValue("venta", primerArray[0]);
+                    break;
+                    
+
+
+                case 91://CatProductos
+                    break;
+
+                case 92://proyeccion de ganancias
+                    break;
+                case 93://prod por laboratorio
+                    break;
+                case 94://prod sin movimientos
+                    break;
+
                 case 101: //COTIZACIONES TMP
                     rdc.SetParameterValue("proveedor", primerArray[0]);
                     break;
@@ -98,11 +131,27 @@ namespace SIP.rpts
                     rdc.RecordSelectionFormula = "{FacturasAlmacen.Id} = " + primerArray[0] ;
                     break;
 
+                case 112://concentrado de facturas
+                    break;
+                case 113://detallado de facturas
+                    break;
                 case 121: //Existencias
                     //rdc.RecordSelectionFormula = "{FacturasAlmacen.Id} = " + primerArray[0];
                     break;
                 case 122: //Stocks Mínimos
                     //rdc.RecordSelectionFormula = "{FacturasAlmacen.Id} = " + primerArray[0];
+                    break;
+
+
+                case 123://formato para levantar inventario fisico
+                    break;
+
+                case 124://concentrado entradas salidas
+                    break;
+                case 125:                    
+                    break;
+
+                case 126:
                     break;
 
             }
@@ -119,7 +168,8 @@ namespace SIP.rpts
             string server = @System.Configuration.ConfigurationManager.AppSettings["server"];
             string db = System.Configuration.ConfigurationManager.AppSettings["db"];
 
-            
+          
+
 
             TableLogOnInfo Logon = new TableLogOnInfo();
 
@@ -159,7 +209,8 @@ namespace SIP.rpts
             switch (caller)
             {
                 case 1:
-                    nombreReporte = "rptReceta.rpt";
+                    //nombreReporte = "rptReceta.rpt";
+                    nombreReporte = "receta.rpt";
                     break;
 
                 case 2:
@@ -182,6 +233,33 @@ namespace SIP.rpts
                     nombreReporte = "rptArticulosVendidos.rpt";
                     break;
 
+
+                case 11:
+                    nombreReporte = "rptVentasDelDiaConcentrado.rpt";
+                    break;
+
+
+                case 12:
+                    nombreReporte = "rptVentasDelDiaConcentradoXproducto.rpt";
+                    break;
+
+                case 13:
+                    nombreReporte = "rptVentaX.rpt";
+                    break;
+
+                case 91:
+                    nombreReporte = "Productos.rpt";
+                    break;
+                case 92:
+                    nombreReporte = "ProductosProyeccionGanancias.rpt";
+                    break;
+                case 93:
+                    nombreReporte = "ProductosXlaboratorio.rpt";
+                    break;
+                case 94:
+                    nombreReporte = "ProductosSinMovimientos.rpt";
+                    break;
+
                 case 101:
                     nombreReporte = "cotizacionesTMP.rpt";
                     break;
@@ -198,10 +276,19 @@ namespace SIP.rpts
                     nombreReporte = "Pedidos.rpt";
                     break;
 
+
+
+               
+
                 case 111:
                     nombreReporte = "FacturasCompras.rpt";
                     break;
-
+                case 112:
+                    nombreReporte = "FacturasConcentrado.rpt";
+                    break;
+                case 113:
+                    nombreReporte = "FacturasDetallado.rpt";
+                    break;
 
 
                 case 121:
@@ -210,6 +297,21 @@ namespace SIP.rpts
 
                 case 122:
                     nombreReporte = "ProductosStocksMinimos.rpt";
+                    break;
+
+                case 123:
+                    nombreReporte = "InventarioFisico.rpt";
+                    break;
+                case 124:
+                    nombreReporte = "ProductosConcentradoEntradasSalidas.rpt";
+                    break;
+
+                case 125:
+                    nombreReporte = "ProductosKardex.rpt";
+                    break;
+
+                case 126:
+                    nombreReporte = "InventarioFisicoBarCode.rpt";
                     break;
             }
 

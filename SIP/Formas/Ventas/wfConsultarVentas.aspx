@@ -139,15 +139,13 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-     <div class="container">
-        <div class="page-header"">
-             <h3>Consultar Ventas</h3>
-        </div>
+     <div class="container" id="divMain" runat="server">
+        
 
         <div class="panel panel-success">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                   Filtros para consultar Ventas
+                   Consultar Ventas
                 </h3>
             </div>
 
@@ -166,7 +164,7 @@
                             </div>
                         </div>
                        
-                        <div class="col-md-3">
+                        <div class="col-md-3" style="display:none">
                             <div class="form-group">
                                  <label>Cliente</label>
                                  <input onclick="fncMostrarDivsFiltros(2)" type="checkbox" value="false" runat="server" id="chkCliente" />
@@ -307,9 +305,9 @@
                                         <ItemStyle HorizontalAlign="Center" />
                                     </asp:TemplateField>
 
-                                    <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Center" ItemStyle-Font-Size="Smaller"  HeaderText="Cliente" SortExpression="NOAplica">
+                                    <asp:TemplateField HeaderStyle-Font-Size="Smaller" HeaderStyle-CssClass="panel-footer" HeaderStyle-HorizontalAlign="Center" ItemStyle-Font-Size="Smaller"  HeaderText="Vendedor" SortExpression="NOAplica">
                                         <ItemTemplate>
-                                            <%# DataBinder.Eval(Container.DataItem, "Cliente.RazonSocial") %>
+                                            <%# DataBinder.Eval(Container.DataItem, "Usuario.Nombre") %>
                                         </ItemTemplate>
                                         <ItemStyle HorizontalAlign="Center" />
                                     </asp:TemplateField>

@@ -17,6 +17,9 @@ namespace SIP.Formas.Compras
         {
             uow = new UnitOfWork(Session["IdUser"].ToString());
 
+            
+
+
             if (!IsPostBack)
             {
                 //BindGrid();
